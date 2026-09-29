@@ -2820,6 +2820,494 @@ body::after { display:none; }
   }
 }
 
+
+/* ================================================================
+   V14 — LARGE INFO FIELDS + FULL ARTICLE WORKSPACE
+   ================================================================ */
+
+:root {
+  --wiki-frame: 1760px;
+  --wiki-sidebar: clamp(460px, 31vw, 520px);
+}
+
+/* Fill the available screen more confidently. */
+#editorView .app-shell,
+#characterWorkspace.workspace {
+  width: min(var(--wiki-frame), calc(100vw - 20px)) !important;
+}
+
+/* ---------- Profile / Infobox ---------- */
+.workspace-grid {
+  grid-template-columns: var(--wiki-sidebar) minmax(0, 1fr) !important;
+  gap: 18px !important;
+  align-items: start !important;
+}
+
+.profile-panel {
+  top: 72px !important;
+  max-height: calc(100vh - 86px) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(460px 260px at 20% 0%, rgba(99, 231, 255, .07), transparent 70%),
+    linear-gradient(180deg, rgba(14, 21, 33, .985), rgba(8, 13, 21, .99)) !important;
+}
+
+.profile-header {
+  min-height: 62px !important;
+  padding: 0 22px !important;
+}
+
+.profile-hero-grid {
+  padding: 20px !important;
+}
+
+.portrait-frame,
+.identity-top .portrait-frame {
+  border-radius: 22px !important;
+  aspect-ratio: 4 / 4.7 !important;
+}
+
+/* Core identity fields should feel important, not tiny form controls. */
+.profile-information {
+  padding-top: 22px !important;
+}
+
+.profile-information .field-block > span {
+  display: block;
+  margin: 0 0 8px !important;
+  font-size: 9px !important;
+  letter-spacing: .14em !important;
+  color: #7fe8f7 !important;
+}
+
+#charName {
+  min-height: 66px !important;
+  padding: 0 18px !important;
+  border-radius: 15px !important;
+  font-size: 25px !important;
+  font-weight: 760 !important;
+  letter-spacing: -.03em !important;
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(166, 201, 236, .12) !important;
+}
+
+.core-facts {
+  gap: 12px !important;
+}
+
+#charAge,
+#charHeight {
+  min-height: 54px !important;
+  padding: 0 15px !important;
+  border-radius: 13px !important;
+  font-size: 15px !important;
+  background: rgba(255,255,255,.028) !important;
+  border: 1px solid rgba(166, 201, 236, .105) !important;
+}
+
+#charName:focus,
+#charAge:focus,
+#charHeight:focus {
+  border-color: rgba(110,231,255,.34) !important;
+  background: rgba(110,231,255,.045) !important;
+  box-shadow: 0 0 0 3px rgba(110,231,255,.06) !important;
+}
+
+/* Profile detail section gets stronger hierarchy. */
+.profile-divider {
+  margin: 22px 0 18px !important;
+}
+
+.profile-data-head {
+  margin-bottom: 12px !important;
+}
+
+.profile-data-head .micro-label,
+.custom-field-heading .micro-label {
+  font-size: 9px !important;
+  letter-spacing: .14em !important;
+}
+
+.add-data-btn {
+  min-height: 40px !important;
+  padding: 0 14px !important;
+  border-radius: 11px !important;
+  font-size: 10px !important;
+}
+
+/* Custom fields are now substantial stacked blocks, not tiny rows. */
+.custom-fields {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+  margin-top: 12px !important;
+  border-top: 0 !important;
+}
+
+.custom-field {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 34px !important;
+  grid-template-areas:
+    "label remove"
+    "value value" !important;
+  gap: 7px 10px !important;
+  padding: 13px !important;
+  border: 1px solid rgba(158,188,224,.09) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.027), rgba(255,255,255,.014)) !important;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease !important;
+}
+
+.custom-field:hover {
+  border-color: rgba(110,231,255,.12) !important;
+  background:
+    linear-gradient(180deg, rgba(110,231,255,.035), rgba(255,255,255,.015)) !important;
+}
+
+.custom-field:focus-within {
+  border-color: rgba(110,231,255,.24) !important;
+  background:
+    linear-gradient(180deg, rgba(110,231,255,.05), rgba(255,255,255,.017)) !important;
+  box-shadow: 0 0 0 3px rgba(110,231,255,.035) !important;
+}
+
+.custom-field .field-label {
+  grid-area: label !important;
+  min-height: 36px !important;
+  padding: 8px 10px !important;
+  border-radius: 9px !important;
+  color: #83e8f7 !important;
+  font: 820 10px/1.45 var(--mono) !important;
+  letter-spacing: .08em !important;
+  background: rgba(110,231,255,.025) !important;
+}
+
+.custom-field .field-value {
+  grid-area: value !important;
+  min-height: 62px !important;
+  padding: 11px 12px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  line-height: 1.62 !important;
+  color: #edf4fd !important;
+  background: rgba(255,255,255,.02) !important;
+}
+
+.custom-field .field-label:focus,
+.custom-field .field-value:focus {
+  border-color: rgba(110,231,255,.18) !important;
+  background: rgba(110,231,255,.035) !important;
+}
+
+.custom-field .remove-mini {
+  grid-area: remove !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 9px !important;
+}
+
+.quick-data {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  margin: 10px 0 14px !important;
+}
+
+.quick-data-btn {
+  min-height: 34px !important;
+  padding: 0 11px !important;
+  border-radius: 999px !important;
+  font-size: 9px !important;
+}
+
+/* ---------- Sections ---------- */
+.section-nav {
+  min-height: 64px !important;
+  padding: 9px !important;
+  border-radius: 20px !important;
+}
+
+.section-tab,
+.add-tab-btn {
+  min-height: 44px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  font-size: 11px !important;
+}
+
+/* ---------- Article ---------- */
+/* Make the ARTICLE itself the workspace, rather than a small page inside it. */
+.content-panel {
+  min-height: calc(100vh - 252px) !important;
+  border-radius: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(920px 420px at 50% 0%, rgba(110,231,255,.028), transparent 68%),
+    linear-gradient(180deg, rgba(13,19,29,.985), rgba(7,11,18,.985)) !important;
+  box-shadow:
+    0 26px 70px rgba(0,0,0,.24),
+    inset 0 1px rgba(255,255,255,.028) !important;
+}
+
+.content-heading {
+  flex: 0 0 auto !important;
+  min-height: 94px !important;
+  padding: 19px 22px !important;
+  background:
+    linear-gradient(180deg, rgba(19,27,41,.78), rgba(13,19,29,.52)) !important;
+}
+
+.section-title-input {
+  font-size: clamp(28px, 2.25vw, 38px) !important;
+  font-weight: 780 !important;
+  letter-spacing: -.035em !important;
+}
+
+.content-actions {
+  gap: 7px !important;
+}
+
+.content-actions button {
+  min-height: 40px !important;
+  padding: 0 12px !important;
+  border-radius: 11px !important;
+}
+
+/* Full-width article canvas. */
+.rich-editor {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: max(680px, calc(100vh - 390px)) !important;
+  margin: 0 !important;
+  padding: 48px clamp(38px, 5.2vw, 84px) 92px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 17px !important;
+  line-height: 1.82 !important;
+  color: #e2eaf5 !important;
+}
+
+/* Readability: long prose still gets a comfortable reading measure
+   by constraining paragraph-like blocks rather than the whole editor. */
+.rich-editor > p,
+.rich-editor > h1,
+.rich-editor > h2,
+.rich-editor > h3,
+.rich-editor > blockquote,
+.rich-editor > ul,
+.rich-editor > ol {
+  max-width: 82ch;
+}
+
+.rich-editor > p,
+.rich-editor > blockquote,
+.rich-editor > ul,
+.rich-editor > ol {
+  font-size: 17px !important;
+}
+
+.rich-editor:focus {
+  outline: none !important;
+  box-shadow: inset 0 1px 0 rgba(110,231,255,.05) !important;
+}
+
+.rich-editor:empty::before {
+  display: block;
+  max-width: 46ch;
+  font-size: 16px !important;
+  line-height: 1.7 !important;
+  color: #536176 !important;
+}
+
+.editor-footer {
+  flex: 0 0 auto !important;
+  min-height: 48px !important;
+  padding: 0 20px !important;
+  border-top: 1px solid rgba(255,255,255,.05) !important;
+  background: rgba(6,10,16,.54) !important;
+}
+
+/* Focus mode becomes a true full-width writing environment. */
+#editorView.focus-mode .content-panel {
+  max-width: 1480px !important;
+}
+#editorView.focus-mode .rich-editor {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1200px) {
+  :root {
+    --wiki-sidebar: clamp(410px, 34vw, 460px);
+  }
+
+  .content-heading {
+    align-items: flex-start !important;
+  }
+
+  .content-actions {
+    max-width: 46%;
+    justify-content: flex-end !important;
+  }
+}
+
+@media (max-width: 920px) {
+  .workspace-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .profile-panel {
+    position: static !important;
+    max-height: none !important;
+  }
+
+  .profile-hero-grid {
+    display: grid !important;
+    grid-template-columns: minmax(260px, 38%) minmax(0, 1fr) !important;
+    gap: 22px !important;
+  }
+
+  .portrait-frame,
+  .identity-top .portrait-frame {
+    aspect-ratio: 4 / 5 !important;
+  }
+
+  .profile-information {
+    padding-top: 0 !important;
+  }
+
+  .custom-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .rich-editor {
+    min-height: 620px !important;
+    padding-left: clamp(28px, 6vw, 56px) !important;
+    padding-right: clamp(28px, 6vw, 56px) !important;
+  }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 640px) {
+  :root {
+    --wiki-sidebar: 100%;
+  }
+
+  #editorView .app-shell,
+  #characterWorkspace.workspace {
+    width: calc(100vw - 10px) !important;
+  }
+
+  .profile-panel,
+  .content-panel,
+  .section-nav {
+    border-radius: 17px !important;
+  }
+
+  .profile-hero-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 12px !important;
+  }
+
+  .portrait-frame,
+  .identity-top .portrait-frame {
+    aspect-ratio: 4 / 5 !important;
+    width: 100% !important;
+  }
+
+  .profile-information {
+    padding-top: 16px !important;
+  }
+
+  #charName {
+    min-height: 58px !important;
+    font-size: 22px !important;
+  }
+
+  #charAge,
+  #charHeight {
+    min-height: 50px !important;
+  }
+
+  .custom-fields {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  .custom-field {
+    padding: 12px !important;
+  }
+
+  .custom-field .field-value {
+    min-height: 58px !important;
+    font-size: 14px !important;
+  }
+
+  .section-nav {
+    min-height: 56px !important;
+    padding: 6px !important;
+  }
+
+  .section-tab,
+  .add-tab-btn {
+    min-height: 42px !important;
+  }
+
+  .content-heading {
+    min-height: 0 !important;
+    padding: 14px !important;
+  }
+
+  .section-title-input {
+    font-size: 28px !important;
+  }
+
+  .content-actions {
+    max-width: none !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none !important;
+  }
+  .content-actions::-webkit-scrollbar { display: none; }
+
+  .content-actions button {
+    flex: 0 0 auto !important;
+    min-height: 38px !important;
+  }
+
+  .rich-editor {
+    min-height: 520px !important;
+    padding: 28px 18px 60px !important;
+    font-size: 16px !important;
+    line-height: 1.74 !important;
+  }
+
+  .rich-editor > p,
+  .rich-editor > h1,
+  .rich-editor > h2,
+  .rich-editor > h3,
+  .rich-editor > blockquote,
+  .rich-editor > ul,
+  .rich-editor > ol {
+    max-width: none !important;
+  }
+
+  .editor-footer {
+    padding: 0 12px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3458,7 +3946,7 @@ function renderCustomFields(character) {
 function autoGrowFieldValue(el) {
   if (!el) return;
   el.style.height = 'auto';
-  el.style.height = `${Math.max(el.scrollHeight, el.classList.contains("field-label") ? 30 : 40)}px`;
+  el.style.height = `${Math.max(el.scrollHeight, el.classList.contains("field-label") ? 36 : 62)}px`;
 }
 
 customFields.addEventListener("input", event => {
@@ -4327,7 +4815,7 @@ if (deepStoryMatch) {
   try { openStory(decodeURIComponent(deepStoryMatch[1])); } catch {}
 }
 
-console.info("Stories With Friends — Character Wiki v13 loaded");
+console.info("Stories With Friends — Character Wiki v14 loaded");
 </script>
 </body>
 </html>
