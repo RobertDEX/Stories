@@ -2316,6 +2316,510 @@ body::after { display:none; }
   }
 }
 
+
+/* ================================================================
+   V13 — BALANCED DESKTOP + MOBILE WIKI LAYOUT
+   Larger infobox, less dead space, deliberate phone layout.
+   ================================================================ */
+
+:root {
+  --wiki-frame: 1680px;
+  --wiki-sidebar: clamp(410px, 30vw, 470px);
+}
+
+/* Use more of the monitor instead of leaving unused gutters. */
+#editorView .app-shell,
+#characterWorkspace.workspace {
+  width: min(var(--wiki-frame), calc(100vw - 24px)) !important;
+}
+
+/* More visual weight for the character profile. */
+.workspace-grid {
+  grid-template-columns: var(--wiki-sidebar) minmax(0, 1fr) !important;
+  gap: 16px 18px !important;
+}
+
+.profile-panel {
+  border-radius: 24px !important;
+  top: 76px !important;
+  max-height: calc(100vh - 92px) !important;
+  box-shadow:
+    0 24px 64px rgba(0,0,0,.20),
+    inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.profile-header {
+  min-height: 60px !important;
+  padding: 0 20px !important;
+}
+
+.profile-header .micro-label {
+  font-size: 9px !important;
+  letter-spacing: .13em !important;
+}
+
+/* The portrait is intentionally larger and feels like the anchor of the page. */
+.profile-hero-grid {
+  padding: 18px !important;
+}
+
+.portrait-frame,
+.identity-top .portrait-frame {
+  aspect-ratio: 4 / 4.85 !important;
+  border-radius: 20px !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.018),
+    0 18px 44px rgba(0,0,0,.18);
+}
+
+.profile-information {
+  padding-top: 20px !important;
+}
+
+#charName {
+  min-height: 60px !important;
+  padding: 0 16px !important;
+  font-size: 24px !important;
+  border-radius: 14px !important;
+}
+
+#charAge,
+#charHeight {
+  min-height: 48px !important;
+  font-size: 14px !important;
+  border-radius: 12px !important;
+}
+
+.core-facts {
+  gap: 12px !important;
+}
+
+.profile-divider {
+  margin: 20px 0 18px !important;
+}
+
+/* Profile details remain one-per-line and are easier to scan. */
+.custom-field {
+  padding: 14px 0 16px !important;
+  border-bottom: 1px solid rgba(255,255,255,.045) !important;
+}
+
+.custom-field .field-label {
+  font-size: 9px !important;
+  letter-spacing: .09em !important;
+}
+
+.custom-field .field-value {
+  font-size: 13px !important;
+  line-height: 1.62 !important;
+  color: #e5edf8 !important;
+}
+
+/* Give the right column a cleaner rhythm. */
+.section-nav {
+  top: 76px !important;
+  min-height: 62px !important;
+  border-radius: 20px !important;
+  padding: 9px !important;
+}
+
+.section-tab,
+.add-tab-btn {
+  min-height: 42px !important;
+}
+
+.content-panel {
+  min-height: 0 !important;
+  border-radius: 24px !important;
+  overflow: visible !important;
+}
+
+.content-heading {
+  padding: 20px 22px !important;
+  min-height: 84px !important;
+}
+
+/* Do not fill the entire screen with an empty editor.
+   It grows naturally as content is added. */
+.rich-editor {
+  width: min(76ch, calc(100% - 72px)) !important;
+  max-width: 76ch !important;
+  min-height: clamp(460px, 56vh, 640px) !important;
+  margin: 0 auto !important;
+  padding: 42px 0 64px !important;
+  font-size: 16px !important;
+  line-height: 1.78 !important;
+}
+
+/* A little more intention when the article is empty. */
+.rich-editor:empty::before {
+  display: block;
+  max-width: 38ch;
+  line-height: 1.7;
+  color: #58657a !important;
+}
+
+/* Keep the footer compact instead of adding another large strip. */
+.editor-footer {
+  min-height: 46px !important;
+  padding: 0 18px !important;
+}
+
+/* Better medium-screen balance. */
+@media (max-width: 1260px) {
+  :root {
+    --wiki-sidebar: clamp(370px, 32vw, 420px);
+  }
+
+  .rich-editor {
+    width: min(72ch, calc(100% - 54px)) !important;
+  }
+
+  .content-heading {
+    gap: 10px !important;
+  }
+
+  .section-mini-tools {
+    display: none !important;
+  }
+}
+
+/* Tablet: profile becomes a strong top card instead of a cramped sidebar. */
+@media (max-width: 900px) {
+  #editorView .app-shell,
+  #characterWorkspace.workspace {
+    width: calc(100vw - 18px) !important;
+  }
+
+  .workspace-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "profile"
+      "nav"
+      "content" !important;
+    gap: 12px !important;
+  }
+
+  .profile-panel {
+    position: static !important;
+    top: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .profile-hero-grid {
+    display: grid !important;
+    grid-template-columns: minmax(240px, 36%) minmax(0, 1fr) !important;
+    gap: 22px !important;
+    align-items: start !important;
+  }
+
+  .portrait-column {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .portrait-frame,
+  .identity-top .portrait-frame {
+    aspect-ratio: 4 / 5 !important;
+  }
+
+  .profile-information {
+    padding-top: 0 !important;
+  }
+
+  .section-nav {
+    position: sticky !important;
+    top: 62px !important;
+  }
+
+  .rich-editor {
+    width: min(74ch, calc(100% - 48px)) !important;
+    min-height: 460px !important;
+  }
+}
+
+/* Phone layout: intentionally redesigned rather than merely stacked. */
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    height: 58px !important;
+    padding: 0 12px !important;
+  }
+
+  .brand-copy strong {
+    font-size: 11px !important;
+  }
+
+  .brand-copy small,
+  .public-badge {
+    display: none !important;
+  }
+
+  #editorView .app-shell,
+  #characterWorkspace.workspace {
+    width: calc(100vw - 12px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .story-head {
+    min-height: 0 !important;
+    padding: 14px !important;
+    border-radius: 18px !important;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0,1fr) !important;
+    align-items: start !important;
+    gap: 10px !important;
+  }
+
+  .story-head-copy h2 {
+    margin-top: 4px !important;
+    font-size: clamp(24px, 8vw, 32px) !important;
+    white-space: normal !important;
+    overflow: visible !important;
+  }
+
+  .story-head-copy small {
+    display: none !important;
+  }
+
+  .head-actions {
+    grid-column: 1 / -1;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 7px !important;
+    width: 100%;
+  }
+
+  .head-actions button {
+    min-width: 0 !important;
+    padding: 0 7px !important;
+    font-size: 9px !important;
+  }
+
+  .character-bar {
+    padding: 10px !important;
+    border-radius: 16px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 9px !important;
+  }
+
+  .character-picker {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .character-select {
+    width: 100% !important;
+  }
+
+  .utility-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) 44px !important;
+    gap: 8px !important;
+  }
+
+  .utility-actions > .primary-btn {
+    width: 100%;
+  }
+
+  /* Profile card */
+  .profile-panel {
+    border-radius: 18px !important;
+  }
+
+  .profile-header {
+    min-height: 50px !important;
+    padding: 0 14px !important;
+  }
+
+  .serial {
+    display: none !important;
+  }
+
+  .profile-hero-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 12px !important;
+  }
+
+  .portrait-column {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .portrait-frame,
+  .identity-top .portrait-frame {
+    width: 100% !important;
+    max-height: none !important;
+    aspect-ratio: 4 / 5 !important;
+    border-radius: 16px !important;
+  }
+
+  .profile-information {
+    padding-top: 16px !important;
+  }
+
+  #charName {
+    min-height: 54px !important;
+    font-size: 21px !important;
+  }
+
+  .core-facts {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 9px !important;
+  }
+
+  .profile-data-head {
+    align-items: center !important;
+  }
+
+  .profile-data-actions {
+    flex-shrink: 0;
+  }
+
+  .add-data-btn {
+    min-height: 36px !important;
+  }
+
+  /* Swipeable section bar */
+  .section-nav {
+    top: 58px !important;
+    min-height: 54px !important;
+    padding: 6px !important;
+    border-radius: 15px !important;
+    gap: 4px !important;
+  }
+
+  .nav-label {
+    display: none !important;
+  }
+
+  .section-tabs {
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+  }
+
+  .section-tab {
+    scroll-snap-align: start;
+    min-height: 40px !important;
+    padding: 0 12px !important;
+    font-size: 11px !important;
+  }
+
+  .add-tab-btn {
+    min-height: 40px !important;
+    padding: 0 10px !important;
+  }
+
+  /* Article */
+  .content-panel {
+    border-radius: 18px !important;
+  }
+
+  .content-heading {
+    min-height: 0 !important;
+    padding: 14px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .section-title-input {
+    font-size: 26px !important;
+  }
+
+  .content-actions {
+    width: 100% !important;
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .content-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .content-actions > * {
+    flex: 0 0 auto;
+  }
+
+  .section-mini-tools {
+    display: none !important;
+  }
+
+  .format-panel {
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    top: auto !important;
+    bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: 45vh;
+    overflow-y: auto;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    border-radius: 18px !important;
+    padding: 10px !important;
+    z-index: 1000 !important;
+  }
+
+  .rich-editor {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 380px !important;
+    padding: 26px 18px 48px !important;
+    font-size: 16px !important;
+    line-height: 1.72 !important;
+  }
+
+  .editor-footer {
+    min-height: 42px !important;
+    padding: 0 12px !important;
+  }
+
+  .shortcut-hint {
+    display: none !important;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 390px) {
+  .head-actions {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  #deleteStoryBtn {
+    grid-column: 1 / -1;
+  }
+
+  .core-facts {
+    grid-template-columns: 1fr !important;
+  }
+
+  .profile-data-head {
+    align-items: flex-start !important;
+  }
+
+  .content-heading {
+    padding: 12px !important;
+  }
+
+  .rich-editor {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3823,7 +4327,7 @@ if (deepStoryMatch) {
   try { openStory(decodeURIComponent(deepStoryMatch[1])); } catch {}
 }
 
-console.info("Stories With Friends — Character Wiki v12 loaded");
+console.info("Stories With Friends — Character Wiki v13 loaded");
 </script>
 </body>
 </html>
