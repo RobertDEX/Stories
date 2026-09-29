@@ -1001,6 +1001,213 @@ body::after { display:none; }
   .shortcut-hint { display:none; }
 }
 
+
+/* =========================================================
+   V9 — CONTINUOUS DOSSIER LAYOUT
+   ========================================================= */
+#editorView { --profile-width: clamp(430px, 27vw, 490px); }
+
+.workspace-grid {
+  grid-template-columns: var(--profile-width) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.profile-panel {
+  min-height: calc(100vh - 270px);
+  max-height: calc(100vh - 166px);
+}
+
+.identity-top {
+  grid-template-columns: 178px minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px;
+}
+
+.identity-top .portrait-frame {
+  width: 178px;
+  min-height: 270px;
+  aspect-ratio: auto;
+  border-radius: 16px;
+}
+
+.identity-top .profile-fields {
+  min-width: 0;
+}
+
+.field-block input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Additional data now reads line-by-line and expands indefinitely. */
+.custom-fields {
+  display: block;
+  margin: 0 18px;
+}
+
+.custom-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px;
+  grid-template-areas:
+    "label remove"
+    "value value";
+  gap: 6px 10px;
+  width: 100%;
+  padding: 13px 0 15px;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+.custom-field .field-label {
+  grid-area: label;
+  width: 100%;
+  min-width: 0;
+  min-height: 30px;
+  height: auto;
+  padding: 5px 6px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #8be8f7;
+  font: 800 9px/1.45 var(--mono);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.custom-field .field-value {
+  grid-area: value;
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  height: auto;
+  padding: 7px 6px 4px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #e2e9f3;
+  font: 500 12px/1.55 var(--sans);
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.custom-field .field-label:focus,
+.custom-field .field-value:focus {
+  border: 0;
+  outline: none;
+  background: rgba(110,231,255,.025);
+  box-shadow: inset 2px 0 0 rgba(110,231,255,.42);
+}
+
+.custom-field .remove-mini {
+  grid-area: remove;
+  align-self: start;
+  justify-self: end;
+  width: 28px;
+  height: 28px;
+}
+
+.custom-empty {
+  padding: 18px 0 22px;
+  line-height: 1.65;
+}
+
+/* The dossier is one continuous surface — no "page inside a page". */
+.content-panel {
+  min-height: calc(100vh - 270px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content-heading {
+  flex: 0 0 auto;
+}
+
+.rich-editor {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: max(640px, calc(100vh - 405px));
+  margin: 0;
+  padding: 42px clamp(34px, 4vw, 64px) 72px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #dfe7f3;
+  font-size: 16px;
+  line-height: 1.82;
+}
+
+.rich-editor:focus {
+  border: 0;
+  box-shadow: inset 0 1px 0 rgba(110,231,255,.06);
+  outline: none;
+}
+
+.editor-footer {
+  flex: 0 0 auto;
+}
+
+#editorView.focus-mode .rich-editor {
+  width: 100%;
+  margin: 0;
+}
+
+/* Make long core text fail gracefully instead of breaking the panel. */
+.section-title-input,
+#charName,
+#charAge,
+#charHeight {
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1350px) {
+  #editorView { --profile-width: 405px; }
+  .identity-top { grid-template-columns: 160px minmax(0,1fr); }
+  .identity-top .portrait-frame { width:160px; min-height:244px; }
+}
+
+@media (max-width: 1100px) {
+  .workspace-grid { grid-template-columns: 360px minmax(0,1fr); }
+  .identity-top { grid-template-columns: 1fr; }
+  .identity-top .portrait-frame {
+    width:100%;
+    min-height:300px;
+    aspect-ratio: 4 / 5;
+  }
+}
+
+@media (max-width: 860px) {
+  .workspace-grid { grid-template-columns:1fr; }
+  .profile-panel { min-height:0; max-height:none; }
+  .identity-top { grid-template-columns: 170px minmax(0,1fr); }
+  .identity-top .portrait-frame {
+    width:170px;
+    min-height:255px;
+    aspect-ratio:auto;
+  }
+  .content-panel { min-height:620px; }
+}
+
+@media (max-width: 560px) {
+  .identity-top { grid-template-columns:1fr; }
+  .identity-top .portrait-frame {
+    width:100%;
+    min-height:360px;
+    aspect-ratio: 4 / 5;
+  }
+  .rich-editor { padding:30px 22px 60px; }
+}
+
 </style>
 </head>
 <body>
@@ -1585,24 +1792,30 @@ function renderCustomFields(character) {
 
   customFields.innerHTML = fields.map(field => `
     <div class="custom-field" data-field-id="${field.id}">
-      <input class="field-label" value="${escapeHtml(field.label || "")}" placeholder="DATA LABEL" aria-label="Custom field label" />
+      <textarea class="field-label" rows="1" placeholder="DATA LABEL" aria-label="Custom field label">${escapeHtml(field.label || "")}</textarea>
       <textarea class="field-value" rows="1" placeholder="Enter value…" aria-label="Custom field value">${escapeHtml(field.value || "")}</textarea>
       <button class="remove-mini" type="button" title="Remove field" aria-label="Remove field">×</button>
     </div>`).join("");
-  requestAnimationFrame(() => $$('textarea.field-value', customFields).forEach(autoGrowFieldValue));
+  requestAnimationFrame(() => $$('.field-label, .field-value', customFields).forEach(autoGrowFieldValue));
 }
 
 function autoGrowFieldValue(el) {
   if (!el) return;
   el.style.height = 'auto';
-  el.style.height = `${Math.min(Math.max(el.scrollHeight, 38), 150)}px`;
+  el.style.height = `${Math.max(el.scrollHeight, el.classList.contains("field-label") ? 30 : 40)}px`;
 }
 
 customFields.addEventListener("input", event => {
   const row = event.target.closest(".custom-field");
   if (!row) return;
-  if (event.target.classList.contains("field-label")) updateCustomField(row.dataset.fieldId, "label", event.target.value);
-  if (event.target.classList.contains("field-value")) { autoGrowFieldValue(event.target); updateCustomField(row.dataset.fieldId, "value", event.target.value); }
+  if (event.target.classList.contains("field-label")) {
+    autoGrowFieldValue(event.target);
+    updateCustomField(row.dataset.fieldId, "label", event.target.value);
+  }
+  if (event.target.classList.contains("field-value")) {
+    autoGrowFieldValue(event.target);
+    updateCustomField(row.dataset.fieldId, "value", event.target.value);
+  }
 });
 customFields.addEventListener("click", event => {
   const button = event.target.closest(".remove-mini");
@@ -2458,7 +2671,7 @@ if (deepStoryMatch) {
   try { openStory(decodeURIComponent(deepStoryMatch[1])); } catch {}
 }
 
-console.info("Stories With Friends — Ultra Dossier v8 loaded");
+console.info("Stories With Friends — Ultra Dossier v9 loaded");
 </script>
 </body>
 </html>
