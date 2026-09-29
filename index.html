@@ -401,6 +401,180 @@ input, select { color-scheme: dark; }
 #saveState.saving { color:var(--warning); }
 #saveState.error { color:var(--danger); }
 
+
+/* ============================================================
+   V7 — WIDE DOSSIER WORKSPACE / HIGH-DENSITY IDENTITY RAIL
+   ============================================================ */
+#editorView { --profile-width: clamp(420px, 28vw, 500px); }
+#editorView .story-head,
+#editorView .character-bar { max-width: 1460px; margin-left:auto; margin-right:auto; }
+#editorView .section-nav,
+#editorView .workspace-grid {
+  width: calc(100vw - 24px);
+  margin-left: calc((100% - 100vw) / 2 + 12px);
+  margin-right: 0;
+}
+#editorView .section-nav { border-radius: 18px; }
+.workspace-grid {
+  grid-template-columns: var(--profile-width) minmax(0, 1fr);
+  gap: 16px;
+}
+.profile-panel {
+  top: 150px;
+  max-height: calc(100vh - 166px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(16,23,36,.97), rgba(8,13,21,.95)),
+    radial-gradient(circle at 0 0, rgba(118,233,255,.07), transparent 36%);
+}
+.profile-panel::before {
+  content:"";
+  position:absolute;
+  left:0; top:22px; bottom:22px;
+  width:2px;
+  border-radius:999px;
+  background:linear-gradient(180deg, transparent, var(--accent), rgba(139,124,255,.7), transparent);
+  box-shadow:0 0 20px rgba(118,233,255,.22);
+}
+.identity-top {
+  display:grid;
+  grid-template-columns: 162px minmax(0,1fr);
+  gap:14px;
+  align-items:start;
+}
+.identity-top .portrait-frame { aspect-ratio: 4 / 5; border-radius:16px; }
+.identity-top .profile-fields { margin-top:0; }
+.identity-top .field-row { grid-template-columns: 1fr; gap:9px; }
+.profile-fields { align-content:start; }
+.quick-data {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.quick-data-btn {
+  min-height:30px;
+  padding:0 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  background:rgba(255,255,255,.022);
+  font:700 9px/1 var(--mono);
+  letter-spacing:.035em;
+}
+.quick-data-btn:hover { color:var(--accent); border-color:rgba(118,233,255,.25); background:rgba(118,233,255,.045); }
+.custom-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:8px;
+}
+.custom-field {
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:6px;
+  align-items:start;
+  padding:9px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:rgba(255,255,255,.018);
+}
+.custom-field:focus-within { border-color:rgba(118,233,255,.22); background:rgba(118,233,255,.025); }
+.custom-field input { min-height:34px; padding:0 9px; }
+.custom-field .field-label {
+  padding-right:28px;
+  font:800 9px/1 var(--mono);
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.custom-field .field-value { font-size:11px; }
+.custom-field .remove-mini { position:absolute; right:5px; top:4px; width:27px; height:27px; }
+.dossier-stats {
+  margin-top:12px;
+  padding:10px 0 0;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:var(--muted2);
+  font:700 9px/1.4 var(--mono);
+  letter-spacing:.04em;
+}
+.content-panel {
+  min-height: calc(100vh - 290px);
+  background:linear-gradient(180deg, rgba(15,21,33,.94), rgba(8,13,21,.91));
+}
+.content-panel::before {
+  content:"";
+  display:block;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(118,233,255,.45), rgba(139,124,255,.28), transparent);
+}
+.rich-editor {
+  min-height: max(650px, calc(100vh - 370px));
+  padding:38px clamp(28px,4vw,64px) 90px;
+  max-width: 1180px;
+}
+.rich-editor blockquote {
+  margin:1.1em 0;
+  padding:.2em 0 .2em 1.15em;
+  border-left:2px solid rgba(118,233,255,.55);
+  color:#aebbd0;
+}
+.rich-editor h2 { margin:1.4em 0 .55em; font-size:1.55em; line-height:1.25; letter-spacing:-.025em; }
+.rich-editor a { color:var(--accent); text-decoration-color:rgba(118,233,255,.35); text-underline-offset:3px; }
+.utility-actions { display:flex; align-items:center; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+.utility-btn {
+  min-height:38px;
+  padding:0 11px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:rgba(255,255,255,.025);
+  color:var(--muted);
+  font-size:10px;
+  font-weight:750;
+}
+.utility-btn:hover { color:var(--text); background:var(--surface-hover); border-color:var(--line-strong); }
+.utility-btn.accent { color:var(--accent); }
+.section-mini-tools { display:flex; gap:6px; }
+.section-mini-tools .utility-btn { width:38px; padding:0; }
+.section-mini-tools .utility-btn:disabled { opacity:.25; }
+.focus-toggle.active { color:var(--accent); border-color:rgba(118,233,255,.28); background:rgba(118,233,255,.06); }
+#editorView.focus-mode .profile-panel { display:none; }
+#editorView.focus-mode .workspace-grid { grid-template-columns:minmax(0,1fr); }
+#editorView.focus-mode .content-panel { max-width:none; }
+.format-panel { gap:5px; }
+.format-btn[data-command="heading"] { font-size:10px; }
+.format-btn[data-command="quote"] { font-family:Georgia,serif; font-size:16px; }
+
+@media (max-width:1200px) {
+  #editorView { --profile-width: 390px; }
+  .identity-top { grid-template-columns:138px minmax(0,1fr); }
+  .custom-fields { grid-template-columns:1fr; }
+}
+@media (max-width:1050px) {
+  #editorView .section-nav,
+  #editorView .workspace-grid { width:100%; margin-left:0; }
+  .workspace-grid { grid-template-columns:340px minmax(0,1fr); }
+  .profile-panel { max-height:none; overflow:visible; }
+  .identity-top { grid-template-columns:125px minmax(0,1fr); }
+}
+@media (max-width:820px) {
+  .workspace-grid { grid-template-columns:1fr; }
+  .identity-top { grid-template-columns: minmax(120px, 32vw) minmax(0,1fr); }
+  .custom-fields { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .utility-actions { justify-content:flex-start; }
+}
+@media (max-width:560px) {
+  .identity-top { grid-template-columns:1fr; }
+  .identity-top .portrait-frame { width:min(240px,100%); }
+  .custom-fields { grid-template-columns:1fr; }
+  .utility-actions { width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .utility-btn { width:100%; }
+}
+
 /* modal */
 .modal-backdrop { position:fixed; inset:0; z-index:120; display:grid; place-items:center; padding:20px; background:rgba(2,4,8,.72); backdrop-filter:blur(12px); }
 .modal { width:min(520px,100%); border-radius:24px; padding:24px; position:relative; background:#0c111b; border:1px solid var(--line-strong); box-shadow:var(--shadow); }
@@ -464,7 +638,7 @@ input, select { color-scheme: dark; }
   <header class="topbar">
     <button class="brand" id="homeBtn" type="button" aria-label="Open story archive">
       <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-copy"><strong>African Americans</strong><small>Shared character dossiers</small></span>
+      <span class="brand-copy"><strong>STORIES WITH FRIENDS</strong><small>Shared character dossiers</small></span>
     </button>
     <div class="topbar-right">
       <span class="public-badge">Open collaborative archive</span>
@@ -477,8 +651,8 @@ input, select { color-scheme: dark; }
       <section class="dashboard-hero glass">
         <div class="hero-copy">
           <div class="micro-label">Shared story archive</div>
-          <h1>The N-Word.<br><span>A Common Slur used to refer to a man of African Descent.</span></h1>
-          <p>All it takes to be in the receiving end of this Slur is to be on the other end of a Cod Loby Line, or be black, but thats Optional.</p>
+          <h1>Build the world.<br><span>Keep every character on file.</span></h1>
+          <p>A clean, live dossier system for characters, lore and backstory. Every story is shared through Firebase and updates for everyone.</p>
         </div>
         <div class="hero-actions"><button class="primary-btn" id="newStoryBtn" type="button">＋ New story</button></div>
       </section>
@@ -505,7 +679,14 @@ input, select { color-scheme: dark; }
 
       <section class="character-bar glass">
         <div class="character-picker"><span class="micro-label">Active subject</span><select id="characterSelect" class="modern-select character-select"></select></div>
-        <div class="head-actions"><button class="secondary-btn" id="newCharacterBtn" type="button">＋ Add character</button><button class="danger-btn" id="deleteCharacterBtn" type="button">Delete character</button></div>
+        <div class="utility-actions" aria-label="Character file tools">
+          <button class="secondary-btn" id="newCharacterBtn" type="button">＋ Add character</button>
+          <button class="utility-btn" id="duplicateCharacterBtn" type="button" title="Duplicate this character">⧉ Duplicate</button>
+          <button class="utility-btn" id="exportCharacterBtn" type="button" title="Download this character as JSON">⇩ Export</button>
+          <button class="utility-btn" id="importCharacterBtn" type="button" title="Import a character JSON file">⇧ Import</button>
+          <input id="characterImportInput" type="file" accept="application/json,.json" hidden />
+          <button class="danger-btn" id="deleteCharacterBtn" type="button">Delete character</button>
+        </div>
       </section>
 
       <section id="noCharacters" class="empty-state glass hidden"><div class="empty-mark">⌁</div><h2>No character dossiers</h2><p>Add the first character to this story.</p><button class="primary-btn" id="emptyNewCharacterBtn" type="button">＋ Add character</button></section>
@@ -520,41 +701,68 @@ input, select { color-scheme: dark; }
         <div class="workspace-grid">
           <aside class="profile-panel glass">
             <div class="panel-title-line"><span class="micro-label">Identity record</span><span class="serial" id="characterSerial">FILE 0000</span></div>
-            <div class="portrait-frame" id="portraitFrame" title="Click or drop an image to upload" role="button" tabindex="0">
-              <input id="portraitInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
-              <img id="portraitImage" alt="Character portrait" />
-              <span class="portrait-placeholder" id="portraitPlaceholder"><b>＋</b><strong>Add portrait</strong><small>Click or drag an image here</small></span>
-              <span class="portrait-corner">PROFILE</span>
-              <span class="portrait-overlay">
-                <button class="portrait-action" id="changePortraitBtn" type="button">Change</button>
-                <button class="portrait-action danger" id="removePortraitBtn" type="button">Remove</button>
-              </span>
-            </div>
+            <div class="identity-top">
+              <div class="portrait-frame" id="portraitFrame" title="Click or drop an image to upload" role="button" tabindex="0">
+                <input id="portraitInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+                <img id="portraitImage" alt="Character portrait" />
+                <span class="portrait-placeholder" id="portraitPlaceholder"><b>＋</b><strong>Add portrait</strong><small>Click or drop image</small></span>
+                <span class="portrait-corner">PROFILE</span>
+                <span class="portrait-overlay">
+                  <button class="portrait-action" id="changePortraitBtn" type="button">Change</button>
+                  <button class="portrait-action danger" id="removePortraitBtn" type="button">Remove</button>
+                </span>
+              </div>
 
-            <div class="profile-fields">
-              <label class="field-block"><span>Character name</span><input id="charName" type="text" placeholder="Robert Storm" autocomplete="off" /></label>
-              <div class="field-row">
-                <label class="field-block"><span>Age</span><input id="charAge" type="text" placeholder="20" autocomplete="off" /></label>
-                <label class="field-block"><span>Height</span><input id="charHeight" type="text" placeholder="192 cm" autocomplete="off" /></label>
+              <div class="profile-fields">
+                <label class="field-block"><span>Character name</span><input id="charName" type="text" placeholder="Robert Storm" autocomplete="off" /></label>
+                <div class="field-row">
+                  <label class="field-block"><span>Age</span><input id="charAge" type="text" placeholder="20" autocomplete="off" /></label>
+                  <label class="field-block"><span>Height</span><input id="charHeight" type="text" placeholder="192 cm" autocomplete="off" /></label>
+                </div>
               </div>
             </div>
 
             <div class="custom-field-heading"><div><span class="micro-label">Additional data</span><strong>Custom fields</strong></div><button class="round-btn" id="addFieldBtn" type="button" title="Add custom field">＋</button></div>
+            <div class="quick-data" aria-label="Quick add data fields">
+              <button class="quick-data-btn" type="button" data-field-preset="World">＋ World</button>
+              <button class="quick-data-btn" type="button" data-field-preset="Species">＋ Species</button>
+              <button class="quick-data-btn" type="button" data-field-preset="Role">＋ Role</button>
+              <button class="quick-data-btn" type="button" data-field-preset="Faction">＋ Faction</button>
+              <button class="quick-data-btn" type="button" data-field-preset="Status">＋ Status</button>
+              <button class="quick-data-btn" type="button" data-field-preset="Power">＋ Power</button>
+            </div>
             <div id="customFields" class="custom-fields"></div>
+            <div class="dossier-stats"><span id="dataPointCount">3 data points</span><span id="sectionCount">0 sections</span></div>
           </aside>
 
           <section class="content-panel glass">
             <div class="content-heading">
               <div class="section-name-wrap"><span class="micro-label">Current dossier section</span><input id="sectionTitleInput" class="section-title-input" type="text" placeholder="Section title" /></div>
               <div class="content-actions">
+                <div class="section-mini-tools" aria-label="Section tools">
+                  <button class="utility-btn" id="moveSectionLeftBtn" type="button" title="Move section left">←</button>
+                  <button class="utility-btn" id="moveSectionRightBtn" type="button" title="Move section right">→</button>
+                  <button class="utility-btn" id="duplicateSectionBtn" type="button" title="Duplicate section">⧉</button>
+                </div>
+                <button class="utility-btn focus-toggle" id="focusModeBtn" type="button" title="Hide identity rail and focus on writing">Focus</button>
                 <button class="format-toggle" id="formatToggle" type="button" aria-expanded="false" title="Formatting (Ctrl/Cmd + Shift + F)"><span class="aa">Aa</span> Format</button>
                 <div class="format-panel hidden" id="formatPanel" role="toolbar" aria-label="Text formatting">
-                  <button class="format-btn" type="button" data-command="bold" title="Bold"><b>B</b></button>
-                  <button class="format-btn" type="button" data-command="italic" title="Italic"><i>I</i></button>
-                  <button class="format-btn" type="button" data-command="highlight" title="Highlight">▰</button>
+                  <button class="format-btn" type="button" data-command="undo" title="Undo">↶</button>
+                  <button class="format-btn" type="button" data-command="redo" title="Redo">↷</button>
                   <span class="toolbar-divider"></span>
+                  <button class="format-btn" type="button" data-command="bold" title="Bold (Ctrl/Cmd+B)"><b>B</b></button>
+                  <button class="format-btn" type="button" data-command="italic" title="Italic (Ctrl/Cmd+I)"><i>I</i></button>
+                  <button class="format-btn" type="button" data-command="underline" title="Underline (Ctrl/Cmd+U)"><u>U</u></button>
+                  <button class="format-btn" type="button" data-command="strike" title="Strikethrough"><s>S</s></button>
+                  <button class="format-btn" type="button" data-command="highlight" title="Highlight (Ctrl/Cmd+Shift+H)">▰</button>
+                  <span class="toolbar-divider"></span>
+                  <button class="format-btn" type="button" data-command="heading" title="Heading">H2</button>
+                  <button class="format-btn" type="button" data-command="quote" title="Quote">❝</button>
                   <button class="format-btn" type="button" data-command="bullet" title="Bullet list">• List</button>
-                  <span class="shortcut-chip"><kbd data-shortcut="MOD+B">MOD+B</kbd> · <kbd data-shortcut="MOD+I">MOD+I</kbd></span>
+                  <button class="format-btn" type="button" data-command="numbered" title="Numbered list">1. List</button>
+                  <span class="toolbar-divider"></span>
+                  <button class="format-btn" type="button" data-command="link" title="Add link (Ctrl/Cmd+K)">Link</button>
+                  <button class="format-btn" type="button" data-command="clear" title="Clear formatting">Clear</button>
                 </div>
                 <button class="danger-btn" id="deleteSectionBtn" type="button">Delete section</button>
               </div>
@@ -562,7 +770,7 @@ input, select { color-scheme: dark; }
 
             <div id="sectionContent" class="rich-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Write the dossier here…" spellcheck="true"></div>
             <div class="editor-footer">
-              <div class="editor-footer-left"><span id="contentWordCount">0 words · 0 chars</span><span class="shortcut-hint"><kbd>-</kbd> + space → bullet · <kbd data-shortcut="MOD+S">MOD+S</kbd> save · <kbd data-shortcut="MOD+SHIFT+H">MOD+SHIFT+H</kbd> highlight</span></div>
+              <div class="editor-footer-left"><span id="contentWordCount">0 words · 0 chars</span><span class="shortcut-hint"><kbd>-</kbd> + space → bullet · <kbd data-shortcut="MOD+S">MOD+S</kbd> save · <kbd data-shortcut="MOD+B">MOD+B</kbd> bold · <kbd data-shortcut="MOD+I">MOD+I</kbd> italic · <kbd data-shortcut="MOD+U">MOD+U</kbd> underline</span></div>
               <span id="saveState">Ready</span>
             </div>
           </section>
@@ -600,63 +808,19 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 // =============================================================
-// FIREBASE CONFIG AUTO-LOADER
-// This build deliberately keeps your old working app.js in place and
-// reads ONLY its firebaseConfig values. That means you do not have to
-// paste your Firebase keys into this replacement index.html.
+// FIREBASE CONFIG
+// Stories With Friends — configured Firebase project.
 // =============================================================
-const FIREBASE_CONFIG_FALLBACK = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+const firebaseConfig = {
+  apiKey: "AIzaSyAAOVSAJ6C4l9GvvQB0_2ZNkAYt1UTrcnY",
+  authDomain: "storieswith.firebaseapp.com",
+  databaseURL: "https://storieswith-default-rtdb.firebaseio.com",
+  projectId: "storieswith",
+  storageBucket: "storieswith.firebasestorage.app",
+  messagingSenderId: "811341249061",
+  appId: "1:811341249061:web:282d5fa5ca99199ab3ddcc",
+  measurementId: "G-5RXTPT9XTZ"
 };
-
-function parseFirebaseConfig(source) {
-  const block = source.match(/(?:const|let|var)\s+firebaseConfig\s*=\s*\{([\s\S]*?)\}\s*;?/);
-  if (!block) return null;
-
-  const keys = ["apiKey", "authDomain", "projectId", "storageBucket", "messagingSenderId", "appId"];
-  const config = {};
-  for (const key of keys) {
-    const match = block[1].match(new RegExp(`${key}\\s*:\\s*["']([^"']+)["']`));
-    if (match) config[key] = match[1];
-  }
-  return config;
-}
-
-function configLooksValid(config) {
-  return !!(
-    config &&
-    config.apiKey &&
-    config.projectId &&
-    config.appId &&
-    !Object.values(config).some(value => String(value || "").includes("PASTE_YOUR"))
-  );
-}
-
-async function loadFirebaseConfig() {
-  if (configLooksValid(FIREBASE_CONFIG_FALLBACK)) return FIREBASE_CONFIG_FALLBACK;
-
-  try {
-    const response = await fetch("./app.js?firebase-config-source=v5", { cache: "no-store" });
-    if (!response.ok) throw new Error(`Could not read existing app.js (${response.status})`);
-    const source = await response.text();
-    const config = parseFirebaseConfig(source);
-    if (!configLooksValid(config)) throw new Error("Existing app.js does not contain a usable Firebase config.");
-    return config;
-  } catch (error) {
-    const banner = document.createElement("div");
-    banner.style.cssText = "position:fixed;inset:16px;z-index:99999;display:grid;place-items:center;background:rgba(4,5,8,.96);color:#f1e0bd;font:16px/1.6 Arial,sans-serif;padding:30px;text-align:center;border:1px solid #c59449";
-    banner.innerHTML = `<div style="max-width:760px"><h2 style="margin-top:0;color:#f0c576">FIREBASE CONFIG NOT FOUND</h2><p>This build reads your Firebase configuration from the existing working <b>app.js</b> beside <b>index.html</b>.</p><p>Do not delete the old app.js. Keep that app.js in place, upload this new index.html, then refresh.</p><small style="color:#a89f8e">${String(error.message || error)}</small></div>`;
-    document.body.appendChild(banner);
-    throw error;
-  }
-}
-
-const firebaseConfig = await loadFirebaseConfig();
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -697,6 +861,16 @@ const formatPanel = $("#formatPanel");
 const contentWordCount = $("#contentWordCount");
 const removePortraitBtn = $("#removePortraitBtn");
 const changePortraitBtn = $("#changePortraitBtn");
+const duplicateCharacterBtn = $("#duplicateCharacterBtn");
+const exportCharacterBtn = $("#exportCharacterBtn");
+const importCharacterBtn = $("#importCharacterBtn");
+const characterImportInput = $("#characterImportInput");
+const duplicateSectionBtn = $("#duplicateSectionBtn");
+const moveSectionLeftBtn = $("#moveSectionLeftBtn");
+const moveSectionRightBtn = $("#moveSectionRightBtn");
+const focusModeBtn = $("#focusModeBtn");
+const dataPointCount = $("#dataPointCount");
+const sectionCount = $("#sectionCount");
 
 const modalBackdrop = $("#modalBackdrop");
 const modalForm = $("#modalForm");
@@ -999,6 +1173,8 @@ function renderCharacterSwitcher() {
     : `<option value="">NO CHARACTERS</option>`;
   characterSelect.disabled = characters.length === 0;
   $("#deleteCharacterBtn").disabled = characters.length === 0;
+  if (duplicateCharacterBtn) duplicateCharacterBtn.disabled = characters.length === 0;
+  if (exportCharacterBtn) exportCharacterBtn.disabled = characters.length === 0;
 }
 
 function renderCharacter(force = false) {
@@ -1025,6 +1201,7 @@ function renderCharacter(force = false) {
 
   renderCustomFields(character);
   renderSections(character, force);
+  updateDossierStats(character);
 }
 
 function renderCustomFields(character) {
@@ -1036,9 +1213,9 @@ function renderCustomFields(character) {
 
   customFields.innerHTML = fields.map(field => `
     <div class="custom-field" data-field-id="${field.id}">
-      <input class="field-label" value="${escapeHtml(field.label || "")}" placeholder="LABEL" />
-      <input class="field-value" value="${escapeHtml(field.value || "")}" placeholder="VALUE" />
-      <button class="remove-mini" type="button" title="Remove field">×</button>
+      <input class="field-label" value="${escapeHtml(field.label || "")}" placeholder="DATA LABEL" aria-label="Custom field label" />
+      <input class="field-value" value="${escapeHtml(field.value || "")}" placeholder="Enter value…" aria-label="Custom field value" />
+      <button class="remove-mini" type="button" title="Remove field" aria-label="Remove field">×</button>
     </div>`).join("");
 }
 
@@ -1052,6 +1229,39 @@ customFields.addEventListener("click", event => {
   const button = event.target.closest(".remove-mini");
   const row = button?.closest(".custom-field");
   if (row) removeCustomField(row.dataset.fieldId);
+});
+
+
+function updateDossierStats(character = currentCharacter()) {
+  if (!character) return;
+  const customCount = Array.isArray(character.fields) ? character.fields.length : 0;
+  const sections = normaliseSections(character);
+  if (dataPointCount) dataPointCount.textContent = `${3 + customCount} data point${3 + customCount === 1 ? "" : "s"}`;
+  if (sectionCount) sectionCount.textContent = `${sections.length} section${sections.length === 1 ? "" : "s"}`;
+}
+
+async function addPresetField(label) {
+  const character = currentCharacter();
+  if (!character) return;
+  const fields = [...(character.fields || [])];
+  const existing = fields.find(field => String(field.label || "").trim().toLowerCase() === label.toLowerCase());
+  if (existing) {
+    toast(`${label} is already in this file.`);
+    const target = customFields.querySelector(`[data-field-id="${CSS.escape(existing.id)}"] .field-value`);
+    target?.focus();
+    return;
+  }
+  const field = { id: uid(), label, value: "" };
+  fields.push(field);
+  await updateCharacterNow({ fields });
+  renderCustomFields(character);
+  updateDossierStats(character);
+  requestAnimationFrame(() => customFields.querySelector(`[data-field-id="${CSS.escape(field.id)}"] .field-value`)?.focus());
+}
+
+document.querySelector('.quick-data')?.addEventListener('click', event => {
+  const button = event.target.closest('[data-field-preset]');
+  if (button) addPresetField(button.dataset.fieldPreset);
 });
 
 function normaliseSections(character) {
@@ -1091,6 +1301,10 @@ function renderSections(character, force = false) {
 
   const active = sections.find(section => section.id === activeSectionId);
   if (!active) return;
+  const activeIndex = sections.findIndex(section => section.id === activeSectionId);
+  if (moveSectionLeftBtn) moveSectionLeftBtn.disabled = activeIndex <= 0;
+  if (moveSectionRightBtn) moveSectionRightBtn.disabled = activeIndex < 0 || activeIndex >= sections.length - 1;
+  updateDossierStats(character);
 
   if (force || document.activeElement !== sectionTitleInput) sectionTitleInput.value = active.title || "";
 
@@ -1148,6 +1362,103 @@ async function createCharacter() {
   } catch (error) {
     console.error(error);
     toast("Could not add the character.", "error");
+  }
+}
+
+
+function cleanFilename(value, fallback = "character") {
+  return String(value || fallback).trim().replace(/[^a-z0-9-_]+/gi, "-").replace(/^-+|-+$/g, "") || fallback;
+}
+
+function downloadJson(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 500);
+}
+
+async function duplicateCurrentCharacter() {
+  const source = currentCharacter();
+  if (!source || !currentStoryId) return;
+  try {
+    const created = await addDoc(collection(db, "stories", currentStoryId, "characters"), {
+      name: `${source.name || "Unnamed Character"} Copy`,
+      age: source.age || "",
+      height: source.height || "",
+      profileData: source.profileData || "",
+      profileUrl: source.profileUrl || "",
+      fields: (source.fields || []).map(field => ({ ...field, id: uid() })),
+      sections: normaliseSections(source).map(section => ({ ...section, id: uid() })),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    activeCharacterId = created.id;
+    activeSectionId = null;
+    lastRenderedSectionId = null;
+    toast("Character duplicated.");
+  } catch (error) {
+    console.error(error);
+    toast("Could not duplicate the character.", "error");
+  }
+}
+
+function exportCurrentCharacter() {
+  const character = currentCharacter();
+  if (!character) return;
+  const payload = {
+    format: "stories-with-friends-character-v1",
+    exportedAt: new Date().toISOString(),
+    character: {
+      name: character.name || "",
+      age: character.age || "",
+      height: character.height || "",
+      profileData: character.profileData || "",
+      fields: (character.fields || []).map(({ id, ...field }) => field),
+      sections: normaliseSections(character).map(({ id, ...section }) => section)
+    }
+  };
+  downloadJson(`${cleanFilename(character.name)}.json`, payload);
+  toast("Character exported.");
+}
+
+async function importCharacterFile(file) {
+  if (!file || !currentStoryId) return;
+  try {
+    const raw = JSON.parse(await file.text());
+    const data = raw?.character || raw;
+    if (!data || typeof data !== "object") throw new Error("That file does not contain a character.");
+    const fields = Array.isArray(data.fields) ? data.fields.slice(0, 80).map(field => ({
+      id: uid(), label: String(field.label || "Field").slice(0, 80), value: String(field.value || "").slice(0, 5000)
+    })) : [];
+    const sections = Array.isArray(data.sections) && data.sections.length ? data.sections.slice(0, 40).map(section => ({
+      id: uid(), title: String(section.title || "Section").slice(0, 100), contentHtml: sanitiseHtml(section.contentHtml || plainTextToHtml(section.content || ""))
+    })) : [{ id: uid(), title: "Personality", contentHtml: "" }];
+    let profileData = typeof data.profileData === "string" && data.profileData.startsWith("data:image/") ? data.profileData : "";
+    if (profileData.length > 420000) profileData = "";
+    const created = await addDoc(collection(db, "stories", currentStoryId, "characters"), {
+      name: String(data.name || "Imported Character").slice(0, 120),
+      age: String(data.age || "").slice(0, 80),
+      height: String(data.height || "").slice(0, 80),
+      profileData,
+      fields,
+      sections,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    activeCharacterId = created.id;
+    activeSectionId = null;
+    lastRenderedSectionId = null;
+    toast("Character imported.");
+  } catch (error) {
+    console.error(error);
+    toast(error.message || "Could not import that character file.", "error");
+  } finally {
+    if (characterImportInput) characterImportInput.value = "";
   }
 }
 
@@ -1232,6 +1543,8 @@ async function addCustomField() {
 
   const fields = [...(character.fields || []), { id: uid(), label: result.value, value: "" }];
   await updateCharacterNow({ fields });
+  renderCustomFields(character);
+  updateDossierStats(character);
 }
 
 async function removeCustomField(fieldId) {
@@ -1239,6 +1552,8 @@ async function removeCustomField(fieldId) {
   if (!character) return;
   const fields = (character.fields || []).filter(field => field.id !== fieldId);
   await updateCharacterNow({ fields });
+  renderCustomFields(character);
+  updateDossierStats(character);
 }
 
 async function addSection() {
@@ -1274,6 +1589,36 @@ async function deleteActiveSection() {
   activeSectionId = next[0]?.id || null;
   lastRenderedSectionId = null;
   await updateCharacterNow({ sections: next });
+  renderSections(character, true);
+}
+
+
+async function duplicateActiveSection() {
+  const character = currentCharacter();
+  if (!character) return;
+  const sections = normaliseSections(character);
+  const index = sections.findIndex(section => section.id === activeSectionId);
+  if (index < 0) return;
+  const source = sections[index];
+  const clone = { ...source, id: uid(), title: `${source.title || "Section"} Copy` };
+  sections.splice(index + 1, 0, clone);
+  activeSectionId = clone.id;
+  lastRenderedSectionId = null;
+  await updateCharacterNow({ sections });
+  renderSections(character, true);
+  toast("Section duplicated.");
+}
+
+async function moveActiveSection(delta) {
+  const character = currentCharacter();
+  if (!character) return;
+  const sections = normaliseSections(character);
+  const index = sections.findIndex(section => section.id === activeSectionId);
+  const nextIndex = index + delta;
+  if (index < 0 || nextIndex < 0 || nextIndex >= sections.length) return;
+  const [section] = sections.splice(index, 1);
+  sections.splice(nextIndex, 0, section);
+  await updateCharacterNow({ sections });
   renderSections(character, true);
 }
 
@@ -1387,6 +1732,8 @@ function sanitiseHtml(html) {
       const name = attr.name.toLowerCase();
       const value = attr.value.trim().toLowerCase();
       if (name.startsWith("on") || value.startsWith("javascript:")) el.removeAttribute(attr.name);
+      if (name === "href" && !/^(https?:\/\/|mailto:|#)/i.test(attr.value.trim())) el.removeAttribute(attr.name);
+      if (["src", "srcset", "formaction"].includes(name)) el.removeAttribute(attr.name);
       if (name === "style") {
         const safeStyles = attr.value.split(";").map(rule => rule.trim()).filter(rule => {
           const prop = rule.split(":")[0]?.trim().toLowerCase();
@@ -1448,8 +1795,10 @@ function updateFormatStates() {
     const command = button.dataset.command;
     let active = false;
     try {
-      if (command === "bold" || command === "italic") active = document.queryCommandState(command);
+      if (["bold", "italic", "underline"].includes(command)) active = document.queryCommandState(command);
+      if (command === "strike") active = document.queryCommandState("strikeThrough");
       if (command === "bullet") active = document.queryCommandState("insertUnorderedList");
+      if (command === "numbered") active = document.queryCommandState("insertOrderedList");
     } catch (_) {}
     button.classList.toggle("active", !!active);
   });
@@ -1463,9 +1812,23 @@ function applyFormat(command) {
   sectionContent.focus();
   restoreEditorSelection();
   if (command === "highlight") {
-    document.execCommand("hiliteColor", false, "#7a5424");
+    document.execCommand("hiliteColor", false, "#375d6c");
   } else if (command === "bullet") {
     document.execCommand("insertUnorderedList", false, null);
+  } else if (command === "numbered") {
+    document.execCommand("insertOrderedList", false, null);
+  } else if (command === "strike") {
+    document.execCommand("strikeThrough", false, null);
+  } else if (command === "heading") {
+    document.execCommand("formatBlock", false, "h2");
+  } else if (command === "quote") {
+    document.execCommand("formatBlock", false, "blockquote");
+  } else if (command === "link") {
+    const raw = prompt("Paste a link (https://…):", "https://");
+    if (raw && /^https?:\/\//i.test(raw.trim())) document.execCommand("createLink", false, raw.trim());
+    else if (raw) toast("Only http:// or https:// links are allowed.", "error");
+  } else if (command === "clear") {
+    document.execCommand("removeFormat", false, null);
   } else {
     document.execCommand(command, false, null);
   }
@@ -1562,6 +1925,12 @@ sectionContent.addEventListener("keydown", event => {
   } else if (key === "i") {
     event.preventDefault();
     applyFormat("italic");
+  } else if (key === "u") {
+    event.preventDefault();
+    applyFormat("underline");
+  } else if (key === "k") {
+    event.preventDefault();
+    applyFormat("link");
   } else if (event.shiftKey && key === "h") {
     event.preventDefault();
     applyFormat("highlight");
@@ -1629,7 +1998,14 @@ removePortraitBtn?.addEventListener("click", async event => {
 });
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeFormatPanel();
+  if (event.key === "Escape") {
+    closeFormatPanel();
+    if (editorView.classList.contains("focus-mode")) {
+      editorView.classList.remove("focus-mode");
+      focusModeBtn?.classList.remove("active");
+      if (focusModeBtn) focusModeBtn.textContent = "Focus";
+    }
+  }
 });
 
 const shortcutMod = shortcutLabel();
@@ -1651,6 +2027,18 @@ $("#deleteStoryBtn").addEventListener("click", deleteCurrentStory);
 $("#addFieldBtn").addEventListener("click", addCustomField);
 $("#addSectionBtn").addEventListener("click", addSection);
 $("#deleteSectionBtn").addEventListener("click", deleteActiveSection);
+duplicateCharacterBtn?.addEventListener("click", duplicateCurrentCharacter);
+exportCharacterBtn?.addEventListener("click", exportCurrentCharacter);
+importCharacterBtn?.addEventListener("click", () => characterImportInput?.click());
+characterImportInput?.addEventListener("change", () => importCharacterFile(characterImportInput.files?.[0]));
+duplicateSectionBtn?.addEventListener("click", duplicateActiveSection);
+moveSectionLeftBtn?.addEventListener("click", () => moveActiveSection(-1));
+moveSectionRightBtn?.addEventListener("click", () => moveActiveSection(1));
+focusModeBtn?.addEventListener("click", () => {
+  const active = editorView.classList.toggle("focus-mode");
+  focusModeBtn.classList.toggle("active", active);
+  focusModeBtn.textContent = active ? "Exit focus" : "Focus";
+});
 
 characterSelect.addEventListener("change", () => {
   flushPendingSave();
@@ -1674,10 +2062,9 @@ window.addEventListener("beforeunload", () => {
 setSync("", "Connecting");
 subscribeToStories();
 
-console.info("Stories With Friends fixed single-file build v4 loaded.");
 
 
-console.info("Stories With Friends — Future Dossier v5 loaded");
+console.info("Stories With Friends — Future Dossier v7 loaded");
 </script>
 </body>
 </html>
