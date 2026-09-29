@@ -4,8 +4,809 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#090806" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Stories With Friends — Character Archive</title>
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Fixed single-file build v4 -->
+  <style>
+:root {
+  --bg: #080806;
+  --bg-2: #0e0d0a;
+  --panel: rgba(19, 17, 13, 0.94);
+  --panel-2: rgba(27, 23, 17, 0.96);
+  --panel-soft: rgba(197, 148, 73, 0.07);
+  --brass: #c59449;
+  --brass-hi: #f0c576;
+  --copper: #9e5534;
+  --cyan: #42d9cc;
+  --cyan-dim: #1d857d;
+  --pink: #ef4f9a;
+  --cream: #f1e0bd;
+  --text: #eee7d7;
+  --muted: #a89f8e;
+  --muted-2: #6f695f;
+  --danger: #e36352;
+  --line: rgba(197, 148, 73, 0.28);
+  --line-strong: rgba(197, 148, 73, 0.58);
+  --cyan-line: rgba(66, 217, 204, 0.28);
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
+  --mono: "Courier New", Courier, monospace;
+  --sans: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--sans);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(197, 148, 73, 0.13), transparent 30%),
+    radial-gradient(circle at 92% 15%, rgba(66, 217, 204, 0.10), transparent 27%),
+    radial-gradient(circle at 70% 100%, rgba(239, 79, 154, 0.06), transparent 32%),
+    linear-gradient(180deg, #0b0a08 0%, #060706 52%, #07080a 100%);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(66, 217, 204, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(66, 217, 204, 0.025) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,.6) 55%, transparent 100%);
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 80;
+  opacity: .045;
+  background-image: repeating-radial-gradient(circle at 0 0, transparent 0, #fff 1px, transparent 2px, transparent 4px);
+  background-size: 7px 7px;
+  mix-blend-mode: soft-light;
+}
+
+.grid-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+  background: linear-gradient(transparent 50%, rgba(66,217,204,.018) 50%);
+  background-size: 100% 4px;
+}
+
+button, input, select, [contenteditable="true"] { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .42; cursor: not-allowed; }
+input, select { color-scheme: dark; }
+
+.hidden { display: none !important; }
+.view { display: none; }
+.view.active { display: block; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  min-height: 74px;
+  padding: 10px clamp(18px, 4vw, 62px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  background: rgba(8, 8, 6, 0.88);
+  border-bottom: 1px solid var(--line-strong);
+  box-shadow: 0 8px 32px rgba(0,0,0,.32), inset 0 -1px rgba(66,217,204,.09);
+  backdrop-filter: blur(16px);
+}
+
+.brand {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 0;
+  text-align: left;
+}
+.brand-gear {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  color: var(--brass-hi);
+  font-size: 24px;
+  background: linear-gradient(145deg, rgba(197,148,73,.16), rgba(66,217,204,.05));
+  box-shadow: inset 0 0 20px rgba(197,148,73,.08), 0 0 20px rgba(197,148,73,.06);
+  transform: rotate(-7deg);
+}
+.brand-copy { display: grid; gap: 1px; }
+.brand-copy strong {
+  font-family: var(--mono);
+  letter-spacing: .12em;
+  font-size: 16px;
+  color: var(--cream);
+}
+.brand-copy small {
+  font-family: var(--mono);
+  letter-spacing: .20em;
+  font-size: 8px;
+  color: var(--cyan);
+}
+.topbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.public-badge,
+.sync-pill {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  background: rgba(197,148,73,.05);
+  font: 700 9px/1 var(--mono);
+  letter-spacing: .12em;
+  color: var(--muted);
+}
+.public-badge { color: var(--brass-hi); }
+.sync-light {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brass);
+  box-shadow: 0 0 10px var(--brass);
+}
+.sync-pill.online { border-color: rgba(66,217,204,.35); color: var(--cyan); }
+.sync-pill.online .sync-light { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+.sync-pill.error { border-color: rgba(227,99,82,.5); color: #ff9b8e; }
+.sync-pill.error .sync-light { background: var(--danger); box-shadow: 0 0 12px var(--danger); }
+
+.app-shell {
+  width: min(1540px, calc(100% - 36px));
+  margin: 28px auto 80px;
+}
+
+.deck-panel {
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(197,148,73,.055), transparent 26%),
+    linear-gradient(180deg, rgba(22,20,15,.97), rgba(13,13,11,.98));
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,.018);
+}
+.deck-panel::before,
+.deck-panel::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(240,197,118,.55);
+  background: #12100c;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.deck-panel::before { top: 8px; left: 8px; }
+.deck-panel::after { right: 8px; bottom: 8px; }
+
+.micro-label {
+  font: 700 9px/1.2 var(--mono);
+  letter-spacing: .18em;
+  color: var(--cyan);
+  text-transform: uppercase;
+}
+
+.hero {
+  min-height: 330px;
+  padding: clamp(34px, 6vw, 78px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  overflow: hidden;
+}
+.hero::after {
+  content: "03 \00B7 17 \00B7 ARCHIVE";
+  position: absolute;
+  right: 28px;
+  top: 25px;
+  font: 700 10px/1 var(--mono);
+  color: rgba(197,148,73,.45);
+  letter-spacing: .18em;
+}
+.hero-copy { max-width: 900px; }
+.hero h1 {
+  margin: 16px 0 18px;
+  font: 900 clamp(43px, 7.4vw, 102px)/.88 var(--sans);
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+  color: var(--cream);
+  text-shadow: 0 0 32px rgba(197,148,73,.09);
+}
+.hero h1 span {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--brass-hi);
+  text-shadow: 4px 4px 0 rgba(66,217,204,.10);
+}
+.hero p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.primary-btn,
+.secondary-btn,
+.danger-btn,
+.square-btn,
+.round-btn,
+.add-tab-btn,
+.format-btn {
+  border: 1px solid var(--line-strong);
+  color: var(--cream);
+  background: rgba(197,148,73,.06);
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  transition: .18s ease;
+}
+.primary-btn {
+  min-height: 48px;
+  padding: 0 18px;
+  color: #130f08;
+  background: linear-gradient(180deg, var(--brass-hi), #b3782f);
+  border-color: #f6cf83;
+  box-shadow: 4px 4px 0 #4c2a16, 0 0 26px rgba(197,148,73,.10);
+}
+.primary-btn:hover { transform: translate(-1px,-1px); box-shadow: 6px 6px 0 #4c2a16, 0 0 30px rgba(197,148,73,.16); }
+.secondary-btn,
+.danger-btn { min-height: 40px; padding: 0 14px; font-size: 10px; }
+.secondary-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(66,217,204,.07); }
+.danger-btn { border-color: rgba(227,99,82,.30); color: #d58d82; background: rgba(227,99,82,.035); }
+.danger-btn:hover { border-color: var(--danger); color: #ff9d91; background: rgba(227,99,82,.08); }
+.square-btn { width: 42px; height: 42px; font-size: 20px; }
+.square-btn:hover, .round-btn:hover, .add-tab-btn:hover { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 18px rgba(66,217,204,.09); }
+.round-btn { width: 34px; height: 34px; }
+
+.archive-toolbar {
+  margin-top: 18px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-field {
+  min-width: min(620px, 70vw);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  min-height: 46px;
+  border: 1px solid rgba(197,148,73,.22);
+  background: rgba(0,0,0,.18);
+  color: var(--brass-hi);
+}
+.search-field input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: 700 11px/1 var(--mono);
+  letter-spacing: .08em;
+}
+.search-field input::placeholder { color: var(--muted-2); }
+.metal-select {
+  min-height: 46px;
+  border: 1px solid rgba(197,148,73,.28);
+  background: #11100d;
+  color: var(--cream);
+  padding: 0 38px 0 13px;
+  outline: none;
+  font: 700 10px/1 var(--mono);
+  letter-spacing: .04em;
+}
+.metal-select:focus { border-color: var(--cyan); box-shadow: 0 0 0 2px rgba(66,217,204,.08); }
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+.story-card {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: #100f0c;
+  color: var(--text);
+  text-align: left;
+  box-shadow: 0 20px 50px rgba(0,0,0,.32);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.story-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(66,217,204,.50);
+  box-shadow: 0 26px 60px rgba(0,0,0,.44), 0 0 28px rgba(66,217,204,.07);
+}
+.story-card-cover {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(.78) contrast(1.08) brightness(.66);
+  transform: scale(1.01);
+}
+.story-card.no-cover .story-card-cover {
+  background:
+    linear-gradient(135deg, rgba(197,148,73,.16), transparent 55%),
+    radial-gradient(circle at 70% 25%, rgba(66,217,204,.18), transparent 28%),
+    repeating-linear-gradient(45deg, transparent 0 16px, rgba(197,148,73,.035) 16px 17px),
+    #11100d;
+}
+.story-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6,7,6,.08) 15%, rgba(6,7,6,.85) 72%, #080806 100%);
+}
+.story-card-content {
+  position: absolute;
+  z-index: 2;
+  left: 24px;
+  right: 24px;
+  bottom: 22px;
+}
+.story-card-kicker {
+  color: var(--cyan);
+  font: 700 9px/1 var(--mono);
+  letter-spacing: .16em;
+}
+.story-card h3 {
+  margin: 10px 0 9px;
+  font: 900 30px/1 var(--sans);
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+}
+.story-card-meta { color: var(--muted); font: 700 9px/1.3 var(--mono); letter-spacing: .07em; }
+.story-card-arrow {
+  position: absolute;
+  z-index: 3;
+  right: 18px;
+  top: 18px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(240,197,118,.45);
+  color: var(--brass-hi);
+  background: rgba(8,8,6,.68);
+}
+
+.empty-state {
+  margin-top: 18px;
+  min-height: 330px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 48px;
+}
+.empty-mark { color: var(--brass-hi); font-size: 52px; line-height: 1; }
+.empty-state h2 { margin: 4px 0 0; font: 900 30px/1 var(--sans); letter-spacing: -.02em; }
+.empty-state p { margin: 0 0 12px; color: var(--muted); }
+
+.story-head,
+.character-bar {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.story-head-copy { flex: 1; min-width: 0; }
+.story-head-copy h2 {
+  margin: 6px 0 4px;
+  font: 900 clamp(26px, 4vw, 48px)/1 var(--sans);
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.story-head-copy small { color: var(--muted-2); font: 700 9px/1.4 var(--mono); letter-spacing: .03em; }
+.head-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.character-bar { margin-top: 14px; justify-content: space-between; }
+.character-picker { min-width: min(520px, 55vw); }
+.character-picker .micro-label { display: block; margin-bottom: 7px; }
+.character-select { width: 100%; }
+
+.workspace { margin-top: 14px; }
+.section-nav {
+  min-height: 68px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  border-color: rgba(66,217,204,.22);
+}
+.nav-label { flex: 0 0 auto; padding: 0 8px; }
+.section-tabs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brass) transparent;
+  padding: 4px 0;
+}
+.section-tab {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(197,148,73,.22);
+  background: rgba(0,0,0,.16);
+  color: var(--muted);
+  font: 700 10px/1 var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.section-tab:hover { color: var(--cream); border-color: var(--line-strong); }
+.section-tab.active {
+  color: #07100f;
+  background: linear-gradient(180deg, #62e8dc, #2eaaa0);
+  border-color: #75fff1;
+  box-shadow: 3px 3px 0 #174c48, 0 0 22px rgba(66,217,204,.12);
+}
+.add-tab-btn { flex: 0 0 auto; min-height: 40px; padding: 0 12px; color: var(--brass-hi); }
+
+.workspace-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.profile-panel { padding: 16px; position: sticky; top: 90px; }
+.panel-title-line { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.serial { color: var(--brass); font: 700 9px/1 var(--mono); letter-spacing: .12em; }
+.portrait-frame {
+  position: relative;
+  height: 390px;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(66,217,204,.08), transparent 34%),
+    linear-gradient(135deg, rgba(197,148,73,.10), rgba(0,0,0,.08)),
+    #0c0c0a;
+  cursor: pointer;
+  box-shadow: inset 0 0 40px rgba(0,0,0,.45);
+}
+.portrait-frame::before,
+.portrait-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  width: 52px;
+  height: 52px;
+  pointer-events: none;
+}
+.portrait-frame::before { left: 8px; top: 8px; border-left: 2px solid var(--brass); border-top: 2px solid var(--brass); }
+.portrait-frame::after { right: 8px; bottom: 8px; border-right: 2px solid var(--cyan); border-bottom: 2px solid var(--cyan); }
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+  display: none;
+  object-fit: cover;
+  filter: saturate(.90) contrast(1.04);
+}
+.portrait-frame.has-image img { display: block; }
+.portrait-frame.has-image .portrait-placeholder,
+.portrait-frame.has-image .portrait-grid { display: none; }
+.portrait-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(197,148,73,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(197,148,73,.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.portrait-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  text-align: center;
+  color: var(--muted);
+}
+.portrait-placeholder b { color: var(--cyan); font: 400 36px/1 var(--mono); }
+.portrait-placeholder strong { color: var(--cream); font: 700 11px/1 var(--mono); letter-spacing: .12em; }
+.portrait-placeholder small { font: 700 8px/1 var(--mono); letter-spacing: .08em; color: var(--muted-2); }
+.portrait-corner {
+  position: absolute;
+  z-index: 7;
+  right: 11px;
+  top: 11px;
+  padding: 5px 7px;
+  background: rgba(6,7,6,.78);
+  border: 1px solid rgba(66,217,204,.35);
+  color: var(--cyan);
+  font: 700 8px/1 var(--mono);
+  letter-spacing: .08em;
+}
+
+.profile-fields { margin-top: 14px; }
+.field-block { display: grid; gap: 6px; }
+.field-block > span,
+#modalInputLabel {
+  color: var(--muted);
+  font: 700 9px/1 var(--mono);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+.field-block input,
+.section-title-input {
+  width: 100%;
+  min-height: 43px;
+  border: 1px solid rgba(197,148,73,.24);
+  background: rgba(0,0,0,.18);
+  color: var(--cream);
+  outline: none;
+  padding: 0 12px;
+  font-weight: 700;
+}
+.field-block input:focus,
+.section-title-input:focus { border-color: var(--cyan); box-shadow: 0 0 0 2px rgba(66,217,204,.07); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.custom-field-heading {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(197,148,73,.16);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.custom-field-heading strong { display: block; margin-top: 6px; font: 800 12px/1 var(--sans); letter-spacing: .07em; }
+.custom-fields { display: grid; gap: 8px; margin-top: 12px; }
+.custom-empty { color: var(--muted-2); font: 700 9px/1.55 var(--mono); }
+.custom-field {
+  position: relative;
+  display: grid;
+  grid-template-columns: .8fr 1.2fr 30px;
+  gap: 6px;
+}
+.custom-field input {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  padding: 0 9px;
+  border: 1px solid rgba(197,148,73,.18);
+  outline: none;
+  background: rgba(0,0,0,.16);
+  color: var(--text);
+  font-size: 12px;
+}
+.custom-field input.field-label { color: var(--brass-hi); font-family: var(--mono); font-size: 10px; }
+.custom-field input:focus { border-color: var(--cyan); }
+.remove-mini {
+  border: 1px solid rgba(227,99,82,.22);
+  background: rgba(227,99,82,.04);
+  color: #c67b70;
+}
+.remove-mini:hover { border-color: var(--danger); color: #ff9e90; }
+
+.content-panel { min-height: 740px; padding: 18px; }
+.content-heading {
+  display: flex;
+  align-items: end;
+  gap: 14px;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(197,148,73,.16);
+}
+.section-name-wrap { flex: 1; max-width: 850px; }
+.section-title-input {
+  margin-top: 7px;
+  min-height: 54px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  font: 900 clamp(30px, 4vw, 54px)/1 var(--sans);
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+}
+.section-title-input:focus { border-bottom-color: var(--cyan); box-shadow: none; }
+
+.format-toolbar {
+  margin-top: 14px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px;
+  border: 1px solid rgba(197,148,73,.20);
+  background: rgba(0,0,0,.16);
+}
+.format-btn {
+  min-width: 36px;
+  height: 34px;
+  padding: 0 10px;
+  color: var(--cream);
+  font-size: 11px;
+}
+.format-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.highlight-btn { color: var(--brass-hi); }
+.toolbar-divider { width: 1px; height: 24px; background: rgba(197,148,73,.24); }
+.format-hint { margin-left: auto; padding-right: 7px; color: var(--muted-2); font: 700 8px/1 var(--mono); letter-spacing: .06em; }
+kbd { border: 1px solid rgba(197,148,73,.28); padding: 2px 5px; background: rgba(197,148,73,.06); color: var(--brass-hi); font: inherit; }
+
+.rich-editor {
+  min-height: 570px;
+  padding: 28px 24px;
+  margin-top: 10px;
+  outline: none;
+  border: 1px solid rgba(66,217,204,.11);
+  background:
+    linear-gradient(90deg, rgba(197,148,73,.045) 1px, transparent 1px),
+    linear-gradient(rgba(197,148,73,.025) 1px, transparent 1px),
+    rgba(4,6,6,.28);
+  background-size: 46px 100%, 100% 28px, auto;
+  color: #e9e0cf;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.75;
+  caret-color: var(--cyan);
+  overflow-wrap: anywhere;
+}
+.rich-editor:focus { border-color: rgba(66,217,204,.33); box-shadow: inset 0 0 28px rgba(66,217,204,.025); }
+.rich-editor:empty::before { content: attr(data-placeholder); color: #5f5a51; pointer-events: none; }
+.rich-editor p { margin: 0 0 .8em; }
+.rich-editor ul, .rich-editor ol { padding-left: 1.6em; }
+.rich-editor li { margin: .22em 0; padding-left: .25em; }
+.rich-editor li::marker { color: var(--cyan); }
+.rich-editor mark,
+.rich-editor [style*="background-color"] { color: #fff2c6; }
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  color: var(--muted-2);
+  font: 700 8px/1 var(--mono);
+  letter-spacing: .08em;
+}
+#saveState.saving { color: var(--brass-hi); }
+#saveState.saved { color: var(--cyan); }
+#saveState.error { color: #ff8f80; }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.76);
+  backdrop-filter: blur(12px);
+}
+.modal {
+  width: min(520px, 100%);
+  padding: 28px;
+}
+.modal h2 { margin: 9px 0 8px; font: 900 34px/1 var(--sans); text-transform: uppercase; }
+.modal p { margin: 0 0 22px; color: var(--muted); line-height: 1.55; }
+.modal-close {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,.15);
+  color: var(--muted);
+  font-size: 20px;
+}
+.modal-rivets i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--brass); opacity: .65; }
+.modal-rivets i:nth-child(1){left:8px;top:8px}.modal-rivets i:nth-child(2){right:8px;top:8px}.modal-rivets i:nth-child(3){left:8px;bottom:8px}.modal-rivets i:nth-child(4){right:8px;bottom:8px}
+.upload-drop {
+  margin-top: 14px;
+  min-height: 88px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  border: 1px dashed rgba(66,217,204,.30);
+  background: rgba(66,217,204,.035);
+  cursor: pointer;
+}
+.upload-drop:hover { border-color: var(--cyan); }
+.upload-icon { color: var(--cyan); font-size: 24px; }
+.upload-drop strong { display: block; font: 700 10px/1 var(--mono); letter-spacing: .08em; }
+.upload-drop small { display: block; margin-top: 7px; color: var(--muted-2); font: 700 9px/1.2 var(--mono); }
+.modal-actions { margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px; }
+
+.toast-stack {
+  position: fixed;
+  z-index: 120;
+  right: 18px;
+  bottom: 18px;
+  display: grid;
+  gap: 8px;
+}
+.toast {
+  max-width: 380px;
+  padding: 12px 14px;
+  border: 1px solid var(--line-strong);
+  background: #17130e;
+  color: var(--cream);
+  box-shadow: 0 12px 40px rgba(0,0,0,.42);
+  font: 700 10px/1.45 var(--mono);
+  letter-spacing: .04em;
+}
+.toast.error { border-color: rgba(227,99,82,.62); color: #ffab9f; }
+
+@media (max-width: 1050px) {
+  .story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .workspace-grid { grid-template-columns: 280px minmax(0,1fr); }
+  .portrait-frame { height: 335px; }
+  .format-hint { display: none; }
+}
+
+@media (max-width: 820px) {
+  .topbar { align-items: flex-start; }
+  .public-badge { display: none; }
+  .hero { min-height: 430px; flex-direction: column; align-items: flex-start; justify-content: flex-end; }
+  .archive-toolbar, .story-head, .character-bar { align-items: stretch; flex-direction: column; }
+  .search-field, .character-picker { min-width: 0; width: 100%; }
+  .head-actions { width: 100%; }
+  .head-actions > * { flex: 1; }
+  .workspace-grid { grid-template-columns: 1fr; }
+  .profile-panel { position: static; }
+  .portrait-frame { height: min(620px, 120vw); }
+  .content-panel { min-height: 620px; }
+  .rich-editor { min-height: 450px; padding: 22px 16px; }
+  .section-nav { align-items: stretch; flex-wrap: wrap; }
+  .nav-label { width: 100%; }
+  .section-tabs { order: 3; width: 100%; }
+}
+
+@media (max-width: 620px) {
+  .app-shell { width: min(100% - 20px, 1540px); margin-top: 12px; }
+  .topbar { padding: 10px 12px; }
+  .brand-copy strong { font-size: 13px; }
+  .brand-copy small { font-size: 7px; }
+  .sync-pill { font-size: 8px; }
+  .hero { padding: 28px 20px; }
+  .hero h1 { font-size: 45px; }
+  .story-grid { grid-template-columns: 1fr; }
+  .story-card { min-height: 300px; }
+  .field-row { grid-template-columns: 1fr 1fr; }
+  .content-heading { align-items: stretch; flex-direction: column; }
+  .section-title-input { font-size: 34px; }
+  .format-toolbar { flex-wrap: wrap; }
+  .editor-footer { flex-direction: column; }
+}
+
+</style>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
@@ -221,6 +1022,944 @@
 
   <div id="toastStack" class="toast-stack" aria-live="polite"></div>
 
-  <script type="module" src="app.js"></script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+// =============================================================
+// FIREBASE CONFIG AUTO-LOADER
+// This build deliberately keeps your old working app.js in place and
+// reads ONLY its firebaseConfig values. That means you do not have to
+// paste your Firebase keys into this replacement index.html.
+// =============================================================
+const FIREBASE_CONFIG_FALLBACK = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+
+function parseFirebaseConfig(source) {
+  const block = source.match(/(?:const|let|var)\s+firebaseConfig\s*=\s*\{([\s\S]*?)\}\s*;?/);
+  if (!block) return null;
+
+  const keys = ["apiKey", "authDomain", "projectId", "storageBucket", "messagingSenderId", "appId"];
+  const config = {};
+  for (const key of keys) {
+    const match = block[1].match(new RegExp(`${key}\\s*:\\s*["']([^"']+)["']`));
+    if (match) config[key] = match[1];
+  }
+  return config;
+}
+
+function configLooksValid(config) {
+  return !!(
+    config &&
+    config.apiKey &&
+    config.projectId &&
+    config.appId &&
+    !Object.values(config).some(value => String(value || "").includes("PASTE_YOUR"))
+  );
+}
+
+async function loadFirebaseConfig() {
+  if (configLooksValid(FIREBASE_CONFIG_FALLBACK)) return FIREBASE_CONFIG_FALLBACK;
+
+  try {
+    const response = await fetch("./app.js?firebase-config-source=v4", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Could not read existing app.js (${response.status})`);
+    const source = await response.text();
+    const config = parseFirebaseConfig(source);
+    if (!configLooksValid(config)) throw new Error("Existing app.js does not contain a usable Firebase config.");
+    return config;
+  } catch (error) {
+    const banner = document.createElement("div");
+    banner.style.cssText = "position:fixed;inset:16px;z-index:99999;display:grid;place-items:center;background:rgba(4,5,8,.96);color:#f1e0bd;font:16px/1.6 Arial,sans-serif;padding:30px;text-align:center;border:1px solid #c59449";
+    banner.innerHTML = `<div style="max-width:760px"><h2 style="margin-top:0;color:#f0c576">FIREBASE CONFIG NOT FOUND</h2><p>This fixed build expected your existing working <b>app.js</b> to stay beside <b>index.html</b>.</p><p>Do not delete the old app.js. Upload only the new index.html, then refresh.</p><small style="color:#a89f8e">${String(error.message || error)}</small></div>`;
+    document.body.appendChild(banner);
+    throw error;
+  }
+}
+
+const firebaseConfig = await loadFirebaseConfig();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const uid = () => crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, c => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#039;", '"': "&quot;"
+}[c]));
+const timestampToMs = (value) => value?.toMillis?.() || 0;
+
+const dashboardView = $("#dashboardView");
+const editorView = $("#editorView");
+const storyGrid = $("#storyGrid");
+const emptyStories = $("#emptyStories");
+const storySearch = $("#storySearch");
+const sortSelect = $("#sortSelect");
+const syncPill = $("#syncPill");
+const syncText = $("#syncText");
+const storyTitle = $("#storyTitle");
+const characterSelect = $("#characterSelect");
+const noCharacters = $("#noCharacters");
+const characterWorkspace = $("#characterWorkspace");
+const portraitFrame = $("#portraitFrame");
+const portraitImage = $("#portraitImage");
+const portraitInput = $("#portraitInput");
+const charName = $("#charName");
+const charAge = $("#charAge");
+const charHeight = $("#charHeight");
+const customFields = $("#customFields");
+const sectionList = $("#sectionList");
+const sectionTitleInput = $("#sectionTitleInput");
+const sectionContent = $("#sectionContent");
+const saveState = $("#saveState");
+const characterSerial = $("#characterSerial");
+
+const modalBackdrop = $("#modalBackdrop");
+const modalForm = $("#modalForm");
+const modalTitle = $("#modalTitle");
+const modalDescription = $("#modalDescription");
+const modalEyebrow = $("#modalEyebrow");
+const modalInputLabel = $("#modalInputLabel");
+const modalInput = $("#modalInput");
+const modalUploadWrap = $("#modalUploadWrap");
+const modalFile = $("#modalFile");
+const modalFileName = $("#modalFileName");
+const modalSubmit = $("#modalSubmit");
+
+let stories = [];
+let currentStoryId = null;
+let currentStory = null;
+let characters = [];
+let activeCharacterId = null;
+let activeSectionId = null;
+let lastRenderedSectionId = null;
+let unsubscribeStories = null;
+let unsubscribeStory = null;
+let unsubscribeCharacters = null;
+let modalResolver = null;
+let saveTimer = null;
+let pendingSave = null;
+let savedSelection = null;
+
+const currentCharacter = () => characters.find(c => c.id === activeCharacterId) || null;
+
+function setSync(status, text) {
+  syncPill.classList.remove("online", "error");
+  if (status) syncPill.classList.add(status);
+  syncText.textContent = String(text || "").toUpperCase();
+}
+
+function setSaveState(state, text) {
+  saveState.classList.remove("saving", "saved", "error");
+  if (state) saveState.classList.add(state);
+  saveState.textContent = text;
+}
+
+function toast(message, type = "") {
+  const el = document.createElement("div");
+  el.className = `toast ${type}`.trim();
+  el.textContent = message;
+  $("#toastStack").append(el);
+  setTimeout(() => el.remove(), 3400);
+}
+
+function showView(name) {
+  dashboardView.classList.toggle("active", name === "dashboard");
+  editorView.classList.toggle("active", name === "editor");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openModal(options = {}) {
+  modalEyebrow.textContent = options.eyebrow || "// CREATE";
+  modalTitle.textContent = options.title || "NEW FILE";
+  modalDescription.textContent = options.description || "";
+  modalInputLabel.textContent = options.label || "NAME";
+  modalInput.placeholder = options.placeholder || "";
+  modalInput.value = options.value || "";
+  modalSubmit.textContent = options.submit || "CREATE";
+  modalUploadWrap.classList.toggle("hidden", !options.showUpload);
+  modalFile.value = "";
+  modalFileName.textContent = options.uploadText || "OPTIONAL";
+  modalBackdrop.classList.remove("hidden");
+  setTimeout(() => modalInput.focus(), 30);
+
+  return new Promise(resolve => { modalResolver = resolve; });
+}
+
+function closeModal(result = null) {
+  modalBackdrop.classList.add("hidden");
+  modalForm.reset();
+  modalFileName.textContent = "OPTIONAL";
+  modalResolver?.(result);
+  modalResolver = null;
+}
+
+modalForm.addEventListener("submit", event => {
+  event.preventDefault();
+  const value = modalInput.value.trim();
+  if (!value) return;
+  closeModal({ value, file: modalFile.files[0] || null });
+});
+$("#modalCancel").addEventListener("click", () => closeModal());
+$("#modalClose").addEventListener("click", () => closeModal());
+modalBackdrop.addEventListener("click", event => { if (event.target === modalBackdrop) closeModal(); });
+modalFile.addEventListener("change", () => {
+  modalFileName.textContent = modalFile.files[0]?.name || "OPTIONAL";
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !modalBackdrop.classList.contains("hidden")) closeModal();
+});
+
+function renderStories() {
+  const search = storySearch.value.trim().toLowerCase();
+  const sort = sortSelect.value;
+  let filtered = stories.filter(story => (story.title || "Untitled Story").toLowerCase().includes(search));
+
+  filtered = [...filtered].sort((a, b) => {
+    if (sort === "az") return (a.title || "").localeCompare(b.title || "");
+    if (sort === "za") return (b.title || "").localeCompare(a.title || "");
+    if (sort === "oldest") return timestampToMs(a.createdAt) - timestampToMs(b.createdAt);
+    return timestampToMs(b.createdAt) - timestampToMs(a.createdAt);
+  });
+
+  storyGrid.innerHTML = filtered.map(story => {
+    const cover = story.coverData || story.coverUrl || "";
+    const coverStyle = cover ? `style="background-image:url('${escapeHtml(cover)}')"` : "";
+    const created = story.createdAt?.toDate?.();
+    const dateText = created
+      ? created.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })
+      : "NEW FILE";
+
+    return `
+      <button class="story-card ${cover ? "" : "no-cover"}" type="button" data-story-id="${story.id}">
+        <div class="story-card-cover" ${coverStyle}></div>
+        <div class="story-card-arrow">↗</div>
+        <div class="story-card-content">
+          <span class="story-card-kicker">// STORY FILE</span>
+          <h3>${escapeHtml(story.title || "Untitled Story")}</h3>
+          <div class="story-card-meta">ARCHIVED ${escapeHtml(dateText.toUpperCase())}</div>
+        </div>
+      </button>`;
+  }).join("");
+
+  emptyStories.classList.toggle("hidden", stories.length > 0 || search.length > 0);
+  storyGrid.classList.toggle("hidden", filtered.length === 0);
+}
+
+storyGrid.addEventListener("click", event => {
+  const card = event.target.closest(".story-card");
+  if (card) openStory(card.dataset.storyId);
+});
+
+function subscribeToStories() {
+  unsubscribeStories?.();
+  unsubscribeStories = onSnapshot(collection(db, "stories"), snapshot => {
+    stories = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderStories();
+    setSync("online", "Synced");
+  }, error => {
+    console.error(error);
+    setSync("error", "Sync error");
+    toast("Firestore denied access. Publish the included firestore.rules file.", "error");
+  });
+}
+
+function dataUrlBytes(dataUrl) {
+  const base64 = String(dataUrl).split(",")[1] || "";
+  return Math.ceil(base64.length * 0.75);
+}
+
+async function fileToCompressedDataUrl(file, options = {}) {
+  if (!file?.type?.startsWith("image/")) throw new Error("Please choose an image file.");
+
+  const maxWidth = options.maxWidth || 1100;
+  const maxHeight = options.maxHeight || 1100;
+  const maxBytes = options.maxBytes || 360000;
+
+  const inputUrl = URL.createObjectURL(file);
+  const image = new Image();
+  image.decoding = "async";
+
+  try {
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = () => reject(new Error("The image could not be opened."));
+      image.src = inputUrl;
+    });
+
+    let scale = Math.min(1, maxWidth / image.naturalWidth, maxHeight / image.naturalHeight);
+    let quality = 0.86;
+    let dataUrl = "";
+
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const width = Math.max(1, Math.round(image.naturalWidth * scale));
+      const height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d", { alpha: false });
+      ctx.fillStyle = "#11100d";
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(image, 0, 0, width, height);
+      dataUrl = canvas.toDataURL("image/jpeg", quality);
+
+      if (dataUrlBytes(dataUrl) <= maxBytes) return dataUrl;
+      quality = Math.max(0.54, quality - 0.07);
+      scale *= 0.86;
+    }
+
+    if (dataUrlBytes(dataUrl) > maxBytes) throw new Error("Image is still too large after compression.");
+    return dataUrl;
+  } finally {
+    URL.revokeObjectURL(inputUrl);
+  }
+}
+
+async function createStory() {
+  const result = await openModal({
+    eyebrow: "// NEW STORY FILE",
+    title: "CREATE STORY",
+    description: "The story file name is independent from every character name inside it.",
+    label: "STORY / FILE NAME",
+    placeholder: "Jumping Through Mysteries",
+    submit: "CREATE STORY",
+    showUpload: true,
+    uploadText: "OPTIONAL COVER IMAGE"
+  });
+  if (!result) return;
+
+  try {
+    setSync("", "Saving");
+    let coverData = "";
+    if (result.file) {
+      coverData = await fileToCompressedDataUrl(result.file, { maxWidth: 1500, maxHeight: 900, maxBytes: 470000 });
+    }
+
+    const refDoc = await addDoc(collection(db, "stories"), {
+      title: result.value,
+      coverData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    toast("Story file created.");
+    openStory(refDoc.id);
+  } catch (error) {
+    console.error(error);
+    setSync("error", "Save failed");
+    toast(error.message || "Could not create the story.", "error");
+  }
+}
+
+function openStory(storyId) {
+  flushPendingSave();
+  currentStoryId = storyId;
+  currentStory = null;
+  characters = [];
+  activeCharacterId = null;
+  activeSectionId = null;
+  lastRenderedSectionId = null;
+  showView("editor");
+
+  unsubscribeStory?.();
+  unsubscribeCharacters?.();
+
+  unsubscribeStory = onSnapshot(doc(db, "stories", storyId), snap => {
+    if (!snap.exists()) return goHome();
+    currentStory = { id: snap.id, ...snap.data() };
+    storyTitle.textContent = currentStory.title || "Untitled Story";
+  }, error => {
+    console.error(error);
+    toast("Could not load this story file.", "error");
+  });
+
+  unsubscribeCharacters = onSnapshot(collection(db, "stories", storyId, "characters"), snapshot => {
+    const previousId = activeCharacterId;
+    characters = snapshot.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+    if (!activeCharacterId || !characters.some(c => c.id === activeCharacterId)) {
+      activeCharacterId = characters[0]?.id || null;
+      activeSectionId = null;
+      lastRenderedSectionId = null;
+    }
+
+    renderCharacterSwitcher();
+    renderCharacter(previousId !== activeCharacterId);
+    setSync("online", "Synced");
+  }, error => {
+    console.error(error);
+    toast("Could not load characters.", "error");
+  });
+}
+
+function goHome() {
+  flushPendingSave();
+  unsubscribeStory?.();
+  unsubscribeCharacters?.();
+  unsubscribeStory = null;
+  unsubscribeCharacters = null;
+  currentStoryId = null;
+  currentStory = null;
+  characters = [];
+  activeCharacterId = null;
+  activeSectionId = null;
+  lastRenderedSectionId = null;
+  showView("dashboard");
+}
+
+function renderCharacterSwitcher() {
+  characterSelect.innerHTML = characters.length
+    ? characters.map(c => `<option value="${c.id}" ${c.id === activeCharacterId ? "selected" : ""}>${escapeHtml(c.name || "Unnamed Character")}</option>`).join("")
+    : `<option value="">NO CHARACTERS</option>`;
+  characterSelect.disabled = characters.length === 0;
+  $("#deleteCharacterBtn").disabled = characters.length === 0;
+}
+
+function renderCharacter(force = false) {
+  const character = currentCharacter();
+  const exists = !!character;
+  noCharacters.classList.toggle("hidden", exists);
+  characterWorkspace.classList.toggle("hidden", !exists);
+  if (!character) return;
+
+  characterSerial.textContent = `FILE ${character.id.slice(0, 4).toUpperCase()}`;
+
+  if (force || document.activeElement !== charName) charName.value = character.name || "";
+  if (force || document.activeElement !== charAge) charAge.value = character.age || "";
+  if (force || document.activeElement !== charHeight) charHeight.value = character.height || "";
+
+  const portrait = character.profileData || character.profileUrl || "";
+  if (portrait) {
+    portraitImage.src = portrait;
+    portraitFrame.classList.add("has-image");
+  } else {
+    portraitImage.removeAttribute("src");
+    portraitFrame.classList.remove("has-image");
+  }
+
+  renderCustomFields(character);
+  renderSections(character, force);
+}
+
+function renderCustomFields(character) {
+  const fields = Array.isArray(character.fields) ? character.fields : [];
+  if (!fields.length) {
+    customFields.innerHTML = `<div class="custom-empty">ADD WORLD, POWER, SPECIES, OCCUPATION, WEAPON, AFFILIATION — ANYTHING.</div>`;
+    return;
+  }
+
+  customFields.innerHTML = fields.map(field => `
+    <div class="custom-field" data-field-id="${field.id}">
+      <input class="field-label" value="${escapeHtml(field.label || "")}" placeholder="LABEL" />
+      <input class="field-value" value="${escapeHtml(field.value || "")}" placeholder="VALUE" />
+      <button class="remove-mini" type="button" title="Remove field">×</button>
+    </div>`).join("");
+}
+
+customFields.addEventListener("input", event => {
+  const row = event.target.closest(".custom-field");
+  if (!row) return;
+  if (event.target.classList.contains("field-label")) updateCustomField(row.dataset.fieldId, "label", event.target.value);
+  if (event.target.classList.contains("field-value")) updateCustomField(row.dataset.fieldId, "value", event.target.value);
+});
+customFields.addEventListener("click", event => {
+  const button = event.target.closest(".remove-mini");
+  const row = button?.closest(".custom-field");
+  if (row) removeCustomField(row.dataset.fieldId);
+});
+
+function normaliseSections(character) {
+  const raw = Array.isArray(character.sections) ? character.sections : [];
+  return raw.map(section => ({
+    ...section,
+    id: section.id || uid(),
+    title: section.title || "Untitled Section",
+    contentHtml: section.contentHtml ?? plainTextToHtml(section.content || "")
+  }));
+}
+
+function plainTextToHtml(text) {
+  return escapeHtml(text).replace(/\n/g, "<br>");
+}
+
+function renderSections(character, force = false) {
+  let sections = normaliseSections(character);
+  if (!sections.length) {
+    sections = [
+      { id: uid(), title: "Personality", contentHtml: "" },
+      { id: uid(), title: "Backstory", contentHtml: "" }
+    ];
+    character.sections = sections;
+    scheduleCharacterSave({ sections });
+  }
+
+  if (!activeSectionId || !sections.some(s => s.id === activeSectionId)) {
+    activeSectionId = sections[0].id;
+    lastRenderedSectionId = null;
+  }
+
+  sectionList.innerHTML = sections.map(section => `
+    <button class="section-tab ${section.id === activeSectionId ? "active" : ""}" type="button" data-section-id="${section.id}">
+      ${escapeHtml(section.title || "Untitled Section")}
+    </button>`).join("");
+
+  const active = sections.find(section => section.id === activeSectionId);
+  if (!active) return;
+
+  if (force || document.activeElement !== sectionTitleInput) sectionTitleInput.value = active.title || "";
+
+  const sectionChanged = lastRenderedSectionId !== activeSectionId;
+  if (force || sectionChanged || document.activeElement !== sectionContent) {
+    sectionContent.innerHTML = sanitiseHtml(active.contentHtml || "");
+    lastRenderedSectionId = activeSectionId;
+  }
+
+  $("#deleteSectionBtn").disabled = sections.length <= 1;
+}
+
+sectionList.addEventListener("click", event => {
+  const tab = event.target.closest(".section-tab");
+  if (!tab) return;
+  flushPendingSave();
+  activeSectionId = tab.dataset.sectionId;
+  lastRenderedSectionId = null;
+  renderSections(currentCharacter(), true);
+});
+
+async function createCharacter() {
+  if (!currentStoryId) return;
+  const result = await openModal({
+    eyebrow: "// NEW CHARACTER FILE",
+    title: "ADD CHARACTER",
+    description: "This name belongs only to the character. It will not rename the story file.",
+    label: "CHARACTER NAME",
+    placeholder: "Robert Storm",
+    submit: "ADD CHARACTER"
+  });
+  if (!result) return;
+
+  try {
+    const created = await addDoc(collection(db, "stories", currentStoryId, "characters"), {
+      name: result.value,
+      age: "",
+      height: "",
+      profileData: "",
+      fields: [],
+      sections: [
+        { id: uid(), title: "Personality", contentHtml: "" },
+        { id: uid(), title: "Backstory", contentHtml: "" },
+        { id: uid(), title: "Abilities", contentHtml: "" }
+      ],
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    activeCharacterId = created.id;
+    activeSectionId = null;
+    lastRenderedSectionId = null;
+    toast("Character file created.");
+  } catch (error) {
+    console.error(error);
+    toast("Could not add the character.", "error");
+  }
+}
+
+function scheduleCharacterSave(patch) {
+  const character = currentCharacter();
+  if (!character || !currentStoryId || !activeCharacterId) return;
+  Object.assign(character, patch);
+
+  if (pendingSave && (pendingSave.storyId !== currentStoryId || pendingSave.characterId !== activeCharacterId)) {
+    flushPendingSave();
+  }
+
+  pendingSave = {
+    storyId: currentStoryId,
+    characterId: activeCharacterId,
+    patch: { ...(pendingSave?.patch || {}), ...patch }
+  };
+
+  clearTimeout(saveTimer);
+  setSaveState("saving", "SAVING…");
+  saveTimer = setTimeout(flushPendingSave, 600);
+}
+
+async function flushPendingSave() {
+  clearTimeout(saveTimer);
+  if (!pendingSave) return;
+
+  const payload = pendingSave;
+  pendingSave = null;
+
+  try {
+    await updateDoc(doc(db, "stories", payload.storyId, "characters", payload.characterId), {
+      ...payload.patch,
+      updatedAt: serverTimestamp()
+    });
+    setSaveState("saved", "SAVED");
+  } catch (error) {
+    console.error(error);
+    setSaveState("error", "SAVE FAILED");
+    toast("A change could not be saved.", "error");
+  }
+}
+
+async function updateCharacterNow(patch) {
+  const character = currentCharacter();
+  if (!character || !currentStoryId || !activeCharacterId) return;
+  Object.assign(character, patch);
+  try {
+    setSaveState("saving", "SAVING…");
+    await updateDoc(doc(db, "stories", currentStoryId, "characters", activeCharacterId), {
+      ...patch,
+      updatedAt: serverTimestamp()
+    });
+    setSaveState("saved", "SAVED");
+  } catch (error) {
+    console.error(error);
+    setSaveState("error", "SAVE FAILED");
+    toast("A change could not be saved.", "error");
+  }
+}
+
+function updateCustomField(fieldId, key, value) {
+  const character = currentCharacter();
+  if (!character) return;
+  const fields = (character.fields || []).map(field => field.id === fieldId ? { ...field, [key]: value } : field);
+  character.fields = fields;
+  scheduleCharacterSave({ fields });
+}
+
+async function addCustomField() {
+  const character = currentCharacter();
+  if (!character) return;
+  const result = await openModal({
+    eyebrow: "// EXTRA DATA",
+    title: "ADD FIELD",
+    description: "Create any extra character property you need.",
+    label: "FIELD NAME",
+    placeholder: "Power",
+    submit: "ADD FIELD"
+  });
+  if (!result) return;
+
+  const fields = [...(character.fields || []), { id: uid(), label: result.value, value: "" }];
+  await updateCharacterNow({ fields });
+}
+
+async function removeCustomField(fieldId) {
+  const character = currentCharacter();
+  if (!character) return;
+  const fields = (character.fields || []).filter(field => field.id !== fieldId);
+  await updateCharacterNow({ fields });
+}
+
+async function addSection() {
+  const character = currentCharacter();
+  if (!character) return;
+  const result = await openModal({
+    eyebrow: "// FILE NAVIGATION",
+    title: "ADD SECTION",
+    description: "The new section becomes a tab in the navigation bar above the character file.",
+    label: "SECTION TITLE",
+    placeholder: "Relationships",
+    submit: "ADD SECTION"
+  });
+  if (!result) return;
+
+  const sections = normaliseSections(character);
+  const section = { id: uid(), title: result.value, contentHtml: "" };
+  sections.push(section);
+  activeSectionId = section.id;
+  lastRenderedSectionId = null;
+  await updateCharacterNow({ sections });
+  renderSections(character, true);
+}
+
+async function deleteActiveSection() {
+  const character = currentCharacter();
+  if (!character) return;
+  const sections = normaliseSections(character);
+  if (sections.length <= 1) return;
+  if (!confirm("Delete this section and all of its text?")) return;
+
+  const next = sections.filter(section => section.id !== activeSectionId);
+  activeSectionId = next[0]?.id || null;
+  lastRenderedSectionId = null;
+  await updateCharacterNow({ sections: next });
+  renderSections(character, true);
+}
+
+function updateActiveSection(key, value) {
+  const character = currentCharacter();
+  if (!character) return;
+  const sections = normaliseSections(character).map(section =>
+    section.id === activeSectionId ? { ...section, [key]: value } : section
+  );
+  character.sections = sections;
+  scheduleCharacterSave({ sections });
+
+  if (key === "title") {
+    const tab = sectionList.querySelector(`[data-section-id="${CSS.escape(activeSectionId)}"]`);
+    if (tab) tab.textContent = value || "Untitled Section";
+  }
+}
+
+async function uploadCharacterPortrait(file) {
+  if (!file || !currentStoryId || !activeCharacterId) return;
+  try {
+    setSync("", "Processing image");
+    setSaveState("saving", "PROCESSING IMAGE…");
+    const profileData = await fileToCompressedDataUrl(file, { maxWidth: 900, maxHeight: 1100, maxBytes: 300000 });
+    await updateCharacterNow({ profileData });
+    portraitImage.src = profileData;
+    portraitFrame.classList.add("has-image");
+    setSync("online", "Synced");
+    toast("Portrait saved directly in Firestore.");
+  } catch (error) {
+    console.error(error);
+    setSync("error", "Image failed");
+    toast(error.message || "Could not process the portrait.", "error");
+  } finally {
+    portraitInput.value = "";
+  }
+}
+
+async function editStorySettings() {
+  if (!currentStoryId || !currentStory) return;
+  const result = await openModal({
+    eyebrow: "// STORY FILE SETTINGS",
+    title: "EDIT STORY FILE",
+    description: "This changes the story/file name only. Character names stay untouched.",
+    label: "STORY / FILE NAME",
+    placeholder: "Story title",
+    value: currentStory.title || "",
+    submit: "SAVE STORY",
+    showUpload: true,
+    uploadText: "OPTIONAL REPLACEMENT COVER"
+  });
+  if (!result) return;
+
+  try {
+    const patch = { title: result.value, updatedAt: serverTimestamp() };
+    if (result.file) {
+      setSync("", "Processing cover");
+      patch.coverData = await fileToCompressedDataUrl(result.file, { maxWidth: 1500, maxHeight: 900, maxBytes: 470000 });
+    }
+    await updateDoc(doc(db, "stories", currentStoryId), patch);
+    setSync("online", "Synced");
+    toast("Story file updated.");
+  } catch (error) {
+    console.error(error);
+    toast(error.message || "Could not update the story.", "error");
+  }
+}
+
+async function deleteCurrentCharacter() {
+  if (!currentStoryId || !activeCharacterId) return;
+  const character = currentCharacter();
+  if (!confirm(`Delete ${character?.name || "this character"}? This cannot be undone.`)) return;
+  try {
+    flushPendingSave();
+    await deleteDoc(doc(db, "stories", currentStoryId, "characters", activeCharacterId));
+    activeCharacterId = null;
+    activeSectionId = null;
+    lastRenderedSectionId = null;
+    toast("Character file deleted.");
+  } catch (error) {
+    console.error(error);
+    toast("Could not delete the character.", "error");
+  }
+}
+
+async function deleteCurrentStory() {
+  if (!currentStoryId) return;
+  if (!confirm("Delete this story file and all currently loaded character files? This cannot be undone.")) return;
+  try {
+    flushPendingSave();
+    await Promise.all(characters.map(character =>
+      deleteDoc(doc(db, "stories", currentStoryId, "characters", character.id))
+    ));
+    await deleteDoc(doc(db, "stories", currentStoryId));
+    toast("Story file deleted.");
+    goHome();
+  } catch (error) {
+    console.error(error);
+    toast("Could not delete the story.", "error");
+  }
+}
+
+function sanitiseHtml(html) {
+  const template = document.createElement("template");
+  template.innerHTML = String(html || "");
+  const blocked = ["script", "style", "iframe", "object", "embed", "link", "meta", "form", "input", "button", "textarea", "select"];
+  blocked.forEach(selector => template.content.querySelectorAll(selector).forEach(el => el.remove()));
+
+  template.content.querySelectorAll("*").forEach(el => {
+    [...el.attributes].forEach(attr => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+      if (name.startsWith("on") || value.startsWith("javascript:")) el.removeAttribute(attr.name);
+      if (name === "style") {
+        const safeStyles = attr.value.split(";").map(rule => rule.trim()).filter(rule => {
+          const prop = rule.split(":")[0]?.trim().toLowerCase();
+          return ["background-color", "font-weight", "font-style", "text-decoration"].includes(prop);
+        });
+        if (safeStyles.length) el.setAttribute("style", safeStyles.join("; "));
+        else el.removeAttribute("style");
+      }
+    });
+  });
+
+  return template.innerHTML;
+}
+
+function saveEditorSelection() {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) return;
+  const range = selection.getRangeAt(0);
+  if (sectionContent.contains(range.commonAncestorContainer)) savedSelection = range.cloneRange();
+}
+
+function restoreEditorSelection() {
+  if (!savedSelection) return;
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(savedSelection);
+}
+
+function applyFormat(command) {
+  sectionContent.focus();
+  restoreEditorSelection();
+  if (command === "highlight") {
+    document.execCommand("hiliteColor", false, "#7a5424");
+  } else if (command === "bullet") {
+    document.execCommand("insertUnorderedList", false, null);
+  } else {
+    document.execCommand(command, false, null);
+  }
+  saveEditorSelection();
+  updateActiveSection("contentHtml", sanitiseHtml(sectionContent.innerHTML));
+}
+
+function blockForNode(node) {
+  let el = node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
+  while (el && el !== sectionContent) {
+    if (["DIV", "P", "LI"].includes(el.tagName)) return el;
+    el = el.parentElement;
+  }
+  return sectionContent;
+}
+
+function textBeforeCaretWithin(block, range) {
+  const probe = document.createRange();
+  probe.selectNodeContents(block);
+  probe.setEnd(range.startContainer, range.startOffset);
+  return probe.toString();
+}
+
+function convertDashToBullet(event) {
+  if (event.key !== " " || event.ctrlKey || event.metaKey || event.altKey) return;
+  const selection = window.getSelection();
+  if (!selection?.rangeCount || !selection.isCollapsed) return;
+  const range = selection.getRangeAt(0);
+  if (!sectionContent.contains(range.startContainer)) return;
+
+  const block = blockForNode(range.startContainer);
+  if (!block || block.tagName === "LI") return;
+  const before = textBeforeCaretWithin(block, range);
+  if (before !== "-") return;
+
+  event.preventDefault();
+  const remove = document.createRange();
+  remove.selectNodeContents(block);
+  remove.setEnd(range.startContainer, range.startOffset);
+  remove.deleteContents();
+
+  const place = document.createRange();
+  place.selectNodeContents(block);
+  place.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(place);
+  document.execCommand("insertUnorderedList", false, null);
+  updateActiveSection("contentHtml", sanitiseHtml(sectionContent.innerHTML));
+}
+
+$$('.format-btn').forEach(button => {
+  button.addEventListener("mousedown", event => {
+    event.preventDefault();
+    applyFormat(button.dataset.command);
+  });
+});
+sectionContent.addEventListener("mouseup", saveEditorSelection);
+sectionContent.addEventListener("keyup", saveEditorSelection);
+sectionContent.addEventListener("keydown", convertDashToBullet);
+sectionContent.addEventListener("input", () => {
+  updateActiveSection("contentHtml", sanitiseHtml(sectionContent.innerHTML));
+  saveEditorSelection();
+});
+sectionContent.addEventListener("paste", event => {
+  // Paste as plain text so public collaborators cannot inject scripts/styles.
+  event.preventDefault();
+  const text = event.clipboardData?.getData("text/plain") || "";
+  document.execCommand("insertText", false, text);
+});
+
+storySearch.addEventListener("input", renderStories);
+sortSelect.addEventListener("change", renderStories);
+$("#newStoryBtn").addEventListener("click", createStory);
+$("#emptyNewStoryBtn").addEventListener("click", createStory);
+$("#homeBtn").addEventListener("click", goHome);
+$("#backBtn").addEventListener("click", goHome);
+$("#newCharacterBtn").addEventListener("click", createCharacter);
+$("#emptyNewCharacterBtn").addEventListener("click", createCharacter);
+$("#deleteCharacterBtn").addEventListener("click", deleteCurrentCharacter);
+$("#storySettingsBtn").addEventListener("click", editStorySettings);
+$("#deleteStoryBtn").addEventListener("click", deleteCurrentStory);
+$("#addFieldBtn").addEventListener("click", addCustomField);
+$("#addSectionBtn").addEventListener("click", addSection);
+$("#deleteSectionBtn").addEventListener("click", deleteActiveSection);
+
+characterSelect.addEventListener("change", () => {
+  flushPendingSave();
+  activeCharacterId = characterSelect.value;
+  activeSectionId = null;
+  lastRenderedSectionId = null;
+  renderCharacter(true);
+});
+
+charName.addEventListener("input", () => scheduleCharacterSave({ name: charName.value }));
+charAge.addEventListener("input", () => scheduleCharacterSave({ age: charAge.value }));
+charHeight.addEventListener("input", () => scheduleCharacterSave({ height: charHeight.value }));
+sectionTitleInput.addEventListener("input", () => updateActiveSection("title", sectionTitleInput.value));
+portraitInput.addEventListener("change", () => uploadCharacterPortrait(portraitInput.files[0]));
+
+window.addEventListener("beforeunload", () => {
+  if (pendingSave) flushPendingSave();
+});
+
+// Public mode: no Authentication required. Anyone with the site URL can read/edit.
+setSync("", "Connecting");
+subscribeToStories();
+
+console.info("Stories With Friends fixed single-file build v4 loaded.");
+
+</script>
 </body>
 </html>
