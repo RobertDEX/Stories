@@ -3308,6 +3308,188 @@ body::after { display:none; }
   }
 }
 
+
+/* ================================================================
+   V15 — PROFILE DETAILS AS A WIKI REFERENCE LIST
+   ================================================================ */
+
+.profile-data-head {
+  margin-bottom: 8px !important;
+}
+
+.profile-data-head p {
+  max-width: 38ch;
+  margin-top: 5px !important;
+}
+
+/* Plain, readable label:value lines instead of input cards. */
+.custom-fields {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  margin: 12px 0 4px !important;
+  padding: 10px 4px 12px !important;
+  border-top: 1px solid rgba(255,255,255,.045) !important;
+  border-bottom: 1px solid rgba(255,255,255,.045) !important;
+}
+
+.custom-field {
+  display: grid !important;
+  grid-template-columns: minmax(120px, max-content) 10px minmax(0, 1fr) 26px !important;
+  grid-template-areas: "label colon value remove" !important;
+  gap: 0 5px !important;
+  align-items: start !important;
+  width: 100% !important;
+  padding: 3px 2px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: background .14s ease !important;
+}
+
+.custom-field:hover,
+.custom-field:focus-within {
+  background: rgba(255,255,255,.018) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.custom-field .field-label,
+.custom-field .field-value {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 24px !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 2px 3px !important;
+  border: 0 !important;
+  border-radius: 5px !important;
+  background: transparent !important;
+  resize: none !important;
+  overflow: hidden !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  box-shadow: none !important;
+}
+
+.custom-field .field-label {
+  grid-area: label !important;
+  text-align: right !important;
+  color: #f0f4fa !important;
+  font-family: var(--sans) !important;
+  font-size: 13px !important;
+  font-weight: 780 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.custom-field .field-colon {
+  grid-area: colon !important;
+  padding-top: 2px;
+  color: #f0f4fa;
+  font-size: 13px;
+  font-weight: 780;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.custom-field .field-value {
+  grid-area: value !important;
+  text-align: left !important;
+  color: #dce5f1 !important;
+  font-family: var(--sans) !important;
+  font-size: 13px !important;
+  font-weight: 480 !important;
+  line-height: 1.45 !important;
+}
+
+.custom-field .field-label:focus,
+.custom-field .field-value:focus {
+  outline: none !important;
+  background: rgba(110,231,255,.035) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.custom-field .remove-mini {
+  grid-area: remove !important;
+  position: static !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  align-self: start !important;
+  justify-self: end !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  transition: opacity .14s ease, background .14s ease !important;
+}
+
+.custom-field:hover .remove-mini,
+.custom-field:focus-within .remove-mini {
+  opacity: .68 !important;
+}
+
+/* A label ending in ":" with no value becomes a heading,
+   e.g. "Basic Character Traits:" */
+.custom-field.detail-heading {
+  grid-template-columns: minmax(0, 1fr) 26px !important;
+  grid-template-areas: "label remove" !important;
+  padding-top: 12px !important;
+  padding-bottom: 5px !important;
+}
+
+.custom-field.detail-heading .field-label {
+  text-align: center !important;
+  color: #f6f8fc !important;
+  font-size: 14px !important;
+  font-weight: 820 !important;
+  line-height: 1.4 !important;
+}
+
+.custom-field.detail-heading .remove-mini {
+  grid-area: remove !important;
+}
+
+.custom-empty {
+  padding: 14px 8px !important;
+  text-align: center !important;
+  line-height: 1.6 !important;
+}
+
+/* Keep the compact label:value look on phones too. */
+@media (max-width: 640px) {
+  .custom-fields {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .custom-field {
+    grid-template-columns: minmax(92px, 38%) 8px minmax(0,1fr) 24px !important;
+    gap: 0 3px !important;
+  }
+
+  .custom-field .field-label,
+  .custom-field .field-value,
+  .custom-field .field-colon {
+    font-size: 12px !important;
+  }
+
+  .custom-field.detail-heading {
+    grid-template-columns: minmax(0,1fr) 24px !important;
+  }
+
+  .custom-field.detail-heading .field-label {
+    font-size: 13px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3934,19 +4116,26 @@ function renderCustomFields(character) {
     return;
   }
 
-  customFields.innerHTML = fields.map(field => `
-    <div class="custom-field" data-field-id="${field.id}">
-      <textarea class="field-label" rows="1" placeholder="DATA LABEL" aria-label="Custom field label">${escapeHtml(field.label || "")}</textarea>
-      <textarea class="field-value" rows="1" placeholder="Enter value…" aria-label="Custom field value">${escapeHtml(field.value || "")}</textarea>
-      <button class="remove-mini" type="button" title="Remove field" aria-label="Remove field">×</button>
-    </div>`).join("");
+  customFields.innerHTML = fields.map(field => {
+    const label = String(field.label || "");
+    const value = String(field.value || "");
+    const heading = label.trim().endsWith(":") && !value.trim();
+    const colon = label.trim().endsWith(":") ? "" : ":";
+    return `
+      <div class="custom-field ${heading ? "detail-heading" : ""}" data-field-id="${field.id}">
+        <textarea class="field-label" rows="1" placeholder="Label" aria-label="Custom field label">${escapeHtml(label)}</textarea>
+        ${heading ? "" : `<span class="field-colon" aria-hidden="true">${colon}</span>
+        <textarea class="field-value" rows="1" placeholder="Value" aria-label="Custom field value">${escapeHtml(value)}</textarea>`}
+        <button class="remove-mini" type="button" title="Remove detail" aria-label="Remove detail">×</button>
+      </div>`;
+  }).join("");
   requestAnimationFrame(() => $$('.field-label, .field-value', customFields).forEach(autoGrowFieldValue));
 }
 
 function autoGrowFieldValue(el) {
   if (!el) return;
   el.style.height = 'auto';
-  el.style.height = `${Math.max(el.scrollHeight, el.classList.contains("field-label") ? 36 : 62)}px`;
+  el.style.height = `${Math.max(el.scrollHeight, 24)}px`;
 }
 
 customFields.addEventListener("input", event => {
@@ -4815,7 +5004,7 @@ if (deepStoryMatch) {
   try { openStory(decodeURIComponent(deepStoryMatch[1])); } catch {}
 }
 
-console.info("Stories With Friends — Character Wiki v14 loaded");
+console.info("Stories With Friends — Character Wiki v15 loaded");
 </script>
 </body>
 </html>
