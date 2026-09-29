@@ -5,7 +5,7 @@ service cloud.firestore {
     match /stories/{storyId} {
       allow read, write: if true;
 
-      match /characters/{characterId} {
+      match /{document=**} {
         allow read, write: if true;
       }
     }

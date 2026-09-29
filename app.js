@@ -9,32 +9,31 @@ import {
   onSnapshot,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
 
-// 1) Replace this object with the config from:
-// Firebase Console → Project settings → Your apps → Web app → SDK setup and configuration.
+// =============================================================
+// FIREBASE CONFIG
+// Paste the SAME config that already works on your current site.
+// Firebase Console → Project settings → Your apps → Web app → Config
+// =============================================================
 const firebaseConfig = {
-    apiKey: "AIzaSyAAOVSAJ6C4l9GvvQB0_2ZNkAYt1UTrcnY",
-    authDomain: "storieswith.firebaseapp.com",
-    databaseURL: "https://storieswith-default-rtdb.firebaseio.com",
-    projectId: "storieswith",
-    storageBucket: "storieswith.firebasestorage.app",
-    messagingSenderId: "811341249061",
-    appId: "1:811341249061:web:282d5fa5ca99199ab3ddcc",
-    measurementId: "G-5RXTPT9XTZ"
+  apiKey: "PASTE_YOUR_API_KEY_HERE",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
+  messagingSenderId: "PASTE_YOUR_SENDER_ID",
+  appId: "PASTE_YOUR_APP_ID"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
-const $ = (selector) => document.querySelector(selector);
-const $$ = (selector) => [...document.querySelectorAll(selector)];
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const uid = () => crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, c => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#039;", '"': "&quot;"
+}[c]));
+const timestampToMs = (value) => value?.toMillis?.() || 0;
 
 const dashboardView = $("#dashboardView");
 const editorView = $("#editorView");
@@ -44,7 +43,6 @@ const storySearch = $("#storySearch");
 const sortSelect = $("#sortSelect");
 const syncPill = $("#syncPill");
 const syncText = $("#syncText");
-
 const storyTitle = $("#storyTitle");
 const characterSelect = $("#characterSelect");
 const noCharacters = $("#noCharacters");
@@ -59,6 +57,8 @@ const customFields = $("#customFields");
 const sectionList = $("#sectionList");
 const sectionTitleInput = $("#sectionTitleInput");
 const sectionContent = $("#sectionContent");
+const saveState = $("#saveState");
+const characterSerial = $("#characterSerial");
 
 const modalBackdrop = $("#modalBackdrop");
 const modalForm = $("#modalForm");
@@ -78,23 +78,27 @@ let currentStory = null;
 let characters = [];
 let activeCharacterId = null;
 let activeSectionId = null;
+let lastRenderedSectionId = null;
 let unsubscribeStories = null;
 let unsubscribeStory = null;
 let unsubscribeCharacters = null;
-let modalMode = null;
 let modalResolver = null;
 let saveTimer = null;
+let pendingSave = null;
+let savedSelection = null;
 
-const uid = () => crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#039;","\"":"&quot;"}[c]));
-const safeFileName = (name = "image") => name.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
-const timestampToMs = (value) => value?.toMillis?.() || 0;
 const currentCharacter = () => characters.find(c => c.id === activeCharacterId) || null;
 
 function setSync(status, text) {
   syncPill.classList.remove("online", "error");
   if (status) syncPill.classList.add(status);
-  syncText.textContent = text;
+  syncText.textContent = String(text || "").toUpperCase();
+}
+
+function setSaveState(state, text) {
+  saveState.classList.remove("saving", "saved", "error");
+  if (state) saveState.classList.add(state);
+  saveState.textContent = text;
 }
 
 function toast(message, type = "") {
@@ -102,7 +106,7 @@ function toast(message, type = "") {
   el.className = `toast ${type}`.trim();
   el.textContent = message;
   $("#toastStack").append(el);
-  setTimeout(() => el.remove(), 3200);
+  setTimeout(() => el.remove(), 3400);
 }
 
 function showView(name) {
@@ -111,20 +115,19 @@ function showView(name) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function openModal(mode, options = {}) {
-  modalMode = mode;
-  modalEyebrow.textContent = options.eyebrow || "CREATE";
-  modalTitle.textContent = options.title || "New item";
+function openModal(options = {}) {
+  modalEyebrow.textContent = options.eyebrow || "// CREATE";
+  modalTitle.textContent = options.title || "NEW FILE";
   modalDescription.textContent = options.description || "";
-  modalInputLabel.textContent = options.label || "Name";
+  modalInputLabel.textContent = options.label || "NAME";
   modalInput.placeholder = options.placeholder || "";
   modalInput.value = options.value || "";
-  modalSubmit.textContent = options.submit || "Create";
+  modalSubmit.textContent = options.submit || "CREATE";
   modalUploadWrap.classList.toggle("hidden", !options.showUpload);
   modalFile.value = "";
-  modalFileName.textContent = options.uploadText || "Optional";
+  modalFileName.textContent = options.uploadText || "OPTIONAL";
   modalBackdrop.classList.remove("hidden");
-  setTimeout(() => modalInput.focus(), 40);
+  setTimeout(() => modalInput.focus(), 30);
 
   return new Promise(resolve => { modalResolver = resolve; });
 }
@@ -132,28 +135,24 @@ function openModal(mode, options = {}) {
 function closeModal(result = null) {
   modalBackdrop.classList.add("hidden");
   modalForm.reset();
-  modalFileName.textContent = "Optional";
-  if (modalResolver) modalResolver(result);
+  modalFileName.textContent = "OPTIONAL";
+  modalResolver?.(result);
   modalResolver = null;
-  modalMode = null;
 }
 
-modalForm.addEventListener("submit", (event) => {
+modalForm.addEventListener("submit", event => {
   event.preventDefault();
   const value = modalInput.value.trim();
   if (!value) return;
-  closeModal({ value, file: modalFile.files[0] || null, mode: modalMode });
+  closeModal({ value, file: modalFile.files[0] || null });
 });
 $("#modalCancel").addEventListener("click", () => closeModal());
 $("#modalClose").addEventListener("click", () => closeModal());
-modalBackdrop.addEventListener("click", (event) => {
-  if (event.target === modalBackdrop) closeModal();
-});
+modalBackdrop.addEventListener("click", event => { if (event.target === modalBackdrop) closeModal(); });
 modalFile.addEventListener("change", () => {
-  modalFileName.textContent = modalFile.files[0]?.name || "Optional";
+  modalFileName.textContent = modalFile.files[0]?.name || "OPTIONAL";
 });
-
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", event => {
   if (event.key === "Escape" && !modalBackdrop.classList.contains("hidden")) closeModal();
 });
 
@@ -170,26 +169,33 @@ function renderStories() {
   });
 
   storyGrid.innerHTML = filtered.map(story => {
-    const coverStyle = story.coverUrl ? `style="background-image:url('${escapeHtml(story.coverUrl)}')"` : "";
+    const cover = story.coverData || story.coverUrl || "";
+    const coverStyle = cover ? `style="background-image:url('${escapeHtml(cover)}')"` : "";
     const created = story.createdAt?.toDate?.();
-    const dateText = created ? created.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "Just now";
+    const dateText = created
+      ? created.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })
+      : "NEW FILE";
+
     return `
-      <button class="story-card ${story.coverUrl ? "" : "no-cover"}" data-story-id="${story.id}">
+      <button class="story-card ${cover ? "" : "no-cover"}" type="button" data-story-id="${story.id}">
         <div class="story-card-cover" ${coverStyle}></div>
         <div class="story-card-arrow">↗</div>
         <div class="story-card-content">
-          <span class="story-card-kicker">STORY</span>
+          <span class="story-card-kicker">// STORY FILE</span>
           <h3>${escapeHtml(story.title || "Untitled Story")}</h3>
-          <div class="story-card-meta">Created ${escapeHtml(dateText)}</div>
+          <div class="story-card-meta">ARCHIVED ${escapeHtml(dateText.toUpperCase())}</div>
         </div>
       </button>`;
   }).join("");
 
   emptyStories.classList.toggle("hidden", stories.length > 0 || search.length > 0);
   storyGrid.classList.toggle("hidden", filtered.length === 0);
-
-  $$(".story-card").forEach(card => card.addEventListener("click", () => openStory(card.dataset.storyId)));
 }
+
+storyGrid.addEventListener("click", event => {
+  const card = event.target.closest(".story-card");
+  if (card) openStory(card.dataset.storyId);
+});
 
 function subscribeToStories() {
   unsubscribeStories?.();
@@ -200,75 +206,134 @@ function subscribeToStories() {
   }, error => {
     console.error(error);
     setSync("error", "Sync error");
-    toast("Could not load stories. Check Firebase setup and rules.", "error");
+    toast("Firestore denied access. Publish the included firestore.rules file.", "error");
   });
 }
 
+function dataUrlBytes(dataUrl) {
+  const base64 = String(dataUrl).split(",")[1] || "";
+  return Math.ceil(base64.length * 0.75);
+}
+
+async function fileToCompressedDataUrl(file, options = {}) {
+  if (!file?.type?.startsWith("image/")) throw new Error("Please choose an image file.");
+
+  const maxWidth = options.maxWidth || 1100;
+  const maxHeight = options.maxHeight || 1100;
+  const maxBytes = options.maxBytes || 360000;
+
+  const inputUrl = URL.createObjectURL(file);
+  const image = new Image();
+  image.decoding = "async";
+
+  try {
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = () => reject(new Error("The image could not be opened."));
+      image.src = inputUrl;
+    });
+
+    let scale = Math.min(1, maxWidth / image.naturalWidth, maxHeight / image.naturalHeight);
+    let quality = 0.86;
+    let dataUrl = "";
+
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const width = Math.max(1, Math.round(image.naturalWidth * scale));
+      const height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d", { alpha: false });
+      ctx.fillStyle = "#11100d";
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(image, 0, 0, width, height);
+      dataUrl = canvas.toDataURL("image/jpeg", quality);
+
+      if (dataUrlBytes(dataUrl) <= maxBytes) return dataUrl;
+      quality = Math.max(0.54, quality - 0.07);
+      scale *= 0.86;
+    }
+
+    if (dataUrlBytes(dataUrl) > maxBytes) throw new Error("Image is still too large after compression.");
+    return dataUrl;
+  } finally {
+    URL.revokeObjectURL(inputUrl);
+  }
+}
+
 async function createStory() {
-  const result = await openModal("new-story", {
-    eyebrow: "NEW UNIVERSE",
-    title: "Create a story",
-    description: "This becomes a card on your shared story index.",
-    label: "Story title",
-    placeholder: "The Last Kingdom",
-    submit: "Create story",
+  const result = await openModal({
+    eyebrow: "// NEW STORY FILE",
+    title: "CREATE STORY",
+    description: "The story file name is independent from every character name inside it.",
+    label: "STORY / FILE NAME",
+    placeholder: "Jumping Through Mysteries",
+    submit: "CREATE STORY",
     showUpload: true,
-    uploadText: "Optional cover image"
+    uploadText: "OPTIONAL COVER IMAGE"
   });
   if (!result) return;
 
   try {
-    setSync("", "Saving…");
+    setSync("", "Saving");
+    let coverData = "";
+    if (result.file) {
+      coverData = await fileToCompressedDataUrl(result.file, { maxWidth: 1500, maxHeight: 900, maxBytes: 470000 });
+    }
+
     const refDoc = await addDoc(collection(db, "stories"), {
       title: result.value,
-      coverUrl: "",
+      coverData,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
 
-    if (result.file) {
-      const imageRef = ref(storage, `stories/${refDoc.id}/cover-${Date.now()}-${safeFileName(result.file.name)}`);
-      await uploadBytes(imageRef, result.file);
-      const coverUrl = await getDownloadURL(imageRef);
-      await updateDoc(refDoc, { coverUrl, updatedAt: serverTimestamp() });
-    }
-
-    toast("Story created.");
+    toast("Story file created.");
     openStory(refDoc.id);
   } catch (error) {
     console.error(error);
-    toast("Could not create the story.", "error");
     setSync("error", "Save failed");
+    toast(error.message || "Could not create the story.", "error");
   }
 }
 
 function openStory(storyId) {
+  flushPendingSave();
   currentStoryId = storyId;
+  currentStory = null;
+  characters = [];
   activeCharacterId = null;
   activeSectionId = null;
+  lastRenderedSectionId = null;
   showView("editor");
 
   unsubscribeStory?.();
   unsubscribeCharacters?.();
 
   unsubscribeStory = onSnapshot(doc(db, "stories", storyId), snap => {
-    if (!snap.exists()) {
-      goHome();
-      return;
-    }
+    if (!snap.exists()) return goHome();
     currentStory = { id: snap.id, ...snap.data() };
     storyTitle.textContent = currentStory.title || "Untitled Story";
+  }, error => {
+    console.error(error);
+    toast("Could not load this story file.", "error");
   });
 
   unsubscribeCharacters = onSnapshot(collection(db, "stories", storyId, "characters"), snapshot => {
-    characters = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
+    const previousId = activeCharacterId;
+    characters = snapshot.docs
+      .map(d => ({ id: d.id, ...d.data() }))
       .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 
     if (!activeCharacterId || !characters.some(c => c.id === activeCharacterId)) {
       activeCharacterId = characters[0]?.id || null;
+      activeSectionId = null;
+      lastRenderedSectionId = null;
     }
+
     renderCharacterSwitcher();
-    renderCharacter();
+    renderCharacter(previousId !== activeCharacterId);
+    setSync("online", "Synced");
   }, error => {
     console.error(error);
     toast("Could not load characters.", "error");
@@ -276,6 +341,7 @@ function openStory(storyId) {
 }
 
 function goHome() {
+  flushPendingSave();
   unsubscribeStory?.();
   unsubscribeCharacters?.();
   unsubscribeStory = null;
@@ -285,30 +351,34 @@ function goHome() {
   characters = [];
   activeCharacterId = null;
   activeSectionId = null;
+  lastRenderedSectionId = null;
   showView("dashboard");
 }
 
 function renderCharacterSwitcher() {
   characterSelect.innerHTML = characters.length
     ? characters.map(c => `<option value="${c.id}" ${c.id === activeCharacterId ? "selected" : ""}>${escapeHtml(c.name || "Unnamed Character")}</option>`).join("")
-    : `<option>No characters yet</option>`;
+    : `<option value="">NO CHARACTERS</option>`;
   characterSelect.disabled = characters.length === 0;
   $("#deleteCharacterBtn").disabled = characters.length === 0;
 }
 
-function renderCharacter() {
+function renderCharacter(force = false) {
   const character = currentCharacter();
-  const hasCharacter = !!character;
-  noCharacters.classList.toggle("hidden", hasCharacter);
-  characterWorkspace.classList.toggle("hidden", !hasCharacter);
+  const exists = !!character;
+  noCharacters.classList.toggle("hidden", exists);
+  characterWorkspace.classList.toggle("hidden", !exists);
   if (!character) return;
 
-  charName.value = character.name || "";
-  charAge.value = character.age || "";
-  charHeight.value = character.height || "";
+  characterSerial.textContent = `FILE ${character.id.slice(0, 4).toUpperCase()}`;
 
-  if (character.profileUrl) {
-    portraitImage.src = character.profileUrl;
+  if (force || document.activeElement !== charName) charName.value = character.name || "";
+  if (force || document.activeElement !== charAge) charAge.value = character.age || "";
+  if (force || document.activeElement !== charHeight) charHeight.value = character.height || "";
+
+  const portrait = character.profileData || character.profileUrl || "";
+  if (portrait) {
+    portraitImage.src = portrait;
     portraitFrame.classList.add("has-image");
   } else {
     portraitImage.removeAttribute("src");
@@ -316,68 +386,103 @@ function renderCharacter() {
   }
 
   renderCustomFields(character);
-  renderSections(character);
+  renderSections(character, force);
 }
 
 function renderCustomFields(character) {
   const fields = Array.isArray(character.fields) ? character.fields : [];
   if (!fields.length) {
-    customFields.innerHTML = `<div style="color:#6f788c;font-size:11px;padding:5px 2px 8px;">Use ＋ to add World, Powers, Species, Occupation, or anything else.</div>`;
+    customFields.innerHTML = `<div class="custom-empty">ADD WORLD, POWER, SPECIES, OCCUPATION, WEAPON, AFFILIATION — ANYTHING.</div>`;
     return;
   }
 
   customFields.innerHTML = fields.map(field => `
     <div class="custom-field" data-field-id="${field.id}">
-      <input class="field-label" value="${escapeHtml(field.label || "")}" placeholder="Label" />
-      <input class="field-value" value="${escapeHtml(field.value || "")}" placeholder="Value" />
+      <input class="field-label" value="${escapeHtml(field.label || "")}" placeholder="LABEL" />
+      <input class="field-value" value="${escapeHtml(field.value || "")}" placeholder="VALUE" />
       <button class="remove-mini" type="button" title="Remove field">×</button>
     </div>`).join("");
-
-  $$(".custom-field").forEach(row => {
-    const id = row.dataset.fieldId;
-    row.querySelector(".field-label").addEventListener("input", e => updateCustomField(id, "label", e.target.value));
-    row.querySelector(".field-value").addEventListener("input", e => updateCustomField(id, "value", e.target.value));
-    row.querySelector(".remove-mini").addEventListener("click", () => removeCustomField(id));
-  });
 }
 
-function renderSections(character) {
-  let sections = Array.isArray(character.sections) ? character.sections : [];
+customFields.addEventListener("input", event => {
+  const row = event.target.closest(".custom-field");
+  if (!row) return;
+  if (event.target.classList.contains("field-label")) updateCustomField(row.dataset.fieldId, "label", event.target.value);
+  if (event.target.classList.contains("field-value")) updateCustomField(row.dataset.fieldId, "value", event.target.value);
+});
+customFields.addEventListener("click", event => {
+  const button = event.target.closest(".remove-mini");
+  const row = button?.closest(".custom-field");
+  if (row) removeCustomField(row.dataset.fieldId);
+});
+
+function normaliseSections(character) {
+  const raw = Array.isArray(character.sections) ? character.sections : [];
+  return raw.map(section => ({
+    ...section,
+    id: section.id || uid(),
+    title: section.title || "Untitled Section",
+    contentHtml: section.contentHtml ?? plainTextToHtml(section.content || "")
+  }));
+}
+
+function plainTextToHtml(text) {
+  return escapeHtml(text).replace(/\n/g, "<br>");
+}
+
+function renderSections(character, force = false) {
+  let sections = normaliseSections(character);
   if (!sections.length) {
-    sections = [{ id: uid(), title: "Overview", content: "" }];
-    updateCharacter({ sections });
+    sections = [
+      { id: uid(), title: "Personality", contentHtml: "" },
+      { id: uid(), title: "Backstory", contentHtml: "" }
+    ];
+    character.sections = sections;
+    scheduleCharacterSave({ sections });
   }
 
   if (!activeSectionId || !sections.some(s => s.id === activeSectionId)) {
-    activeSectionId = sections[0]?.id || null;
+    activeSectionId = sections[0].id;
+    lastRenderedSectionId = null;
   }
 
-  sectionList.innerHTML = sections.map((section, index) => `
-    <button class="section-link ${section.id === activeSectionId ? "active" : ""}" data-section-id="${section.id}">
-      <span>${escapeHtml(section.title || "Untitled Section")}</span>
-      <span class="section-index">${String(index + 1).padStart(2, "0")}</span>
+  sectionList.innerHTML = sections.map(section => `
+    <button class="section-tab ${section.id === activeSectionId ? "active" : ""}" type="button" data-section-id="${section.id}">
+      ${escapeHtml(section.title || "Untitled Section")}
     </button>`).join("");
 
-  $$(".section-link").forEach(button => button.addEventListener("click", () => {
-    activeSectionId = button.dataset.sectionId;
-    renderSections(currentCharacter());
-  }));
+  const active = sections.find(section => section.id === activeSectionId);
+  if (!active) return;
 
-  const active = sections.find(s => s.id === activeSectionId);
-  sectionTitleInput.value = active?.title || "";
-  sectionContent.value = active?.content || "";
+  if (force || document.activeElement !== sectionTitleInput) sectionTitleInput.value = active.title || "";
+
+  const sectionChanged = lastRenderedSectionId !== activeSectionId;
+  if (force || sectionChanged || document.activeElement !== sectionContent) {
+    sectionContent.innerHTML = sanitiseHtml(active.contentHtml || "");
+    lastRenderedSectionId = activeSectionId;
+  }
+
   $("#deleteSectionBtn").disabled = sections.length <= 1;
 }
 
+sectionList.addEventListener("click", event => {
+  const tab = event.target.closest(".section-tab");
+  if (!tab) return;
+  flushPendingSave();
+  activeSectionId = tab.dataset.sectionId;
+  lastRenderedSectionId = null;
+  renderSections(currentCharacter(), true);
+});
+
 async function createCharacter() {
   if (!currentStoryId) return;
-  const result = await openModal("new-character", {
-    eyebrow: "NEW CHARACTER",
-    title: "Add someone to the cast",
-    description: "You can fill in everything else after creating them.",
-    label: "Character name",
-    placeholder: "Aria Vale",
-    submit: "Add character"
+  const result = await openModal({
+    eyebrow: "// NEW CHARACTER FILE",
+    title: "ADD CHARACTER",
+    description: "This name belongs only to the character. It will not rename the story file.",
+    label: "CHARACTER NAME",
+    placeholder: "Robert Storm",
+    submit: "ADD CHARACTER"
   });
   if (!result) return;
 
@@ -386,18 +491,20 @@ async function createCharacter() {
       name: result.value,
       age: "",
       height: "",
-      profileUrl: "",
+      profileData: "",
       fields: [],
       sections: [
-        { id: uid(), title: "Personality", content: "" },
-        { id: uid(), title: "Backstory", content: "" }
+        { id: uid(), title: "Personality", contentHtml: "" },
+        { id: uid(), title: "Backstory", contentHtml: "" },
+        { id: uid(), title: "Abilities", contentHtml: "" }
       ],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
     activeCharacterId = created.id;
     activeSectionId = null;
-    toast("Character added.");
+    lastRenderedSectionId = null;
+    toast("Character file created.");
   } catch (error) {
     console.error(error);
     toast("Could not add the character.", "error");
@@ -406,21 +513,58 @@ async function createCharacter() {
 
 function scheduleCharacterSave(patch) {
   const character = currentCharacter();
-  if (!character) return;
+  if (!character || !currentStoryId || !activeCharacterId) return;
   Object.assign(character, patch);
+
+  if (pendingSave && (pendingSave.storyId !== currentStoryId || pendingSave.characterId !== activeCharacterId)) {
+    flushPendingSave();
+  }
+
+  pendingSave = {
+    storyId: currentStoryId,
+    characterId: activeCharacterId,
+    patch: { ...(pendingSave?.patch || {}), ...patch }
+  };
+
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => updateCharacter(patch), 550);
+  setSaveState("saving", "SAVING…");
+  saveTimer = setTimeout(flushPendingSave, 600);
 }
 
-async function updateCharacter(patch) {
-  if (!currentStoryId || !activeCharacterId) return;
+async function flushPendingSave() {
+  clearTimeout(saveTimer);
+  if (!pendingSave) return;
+
+  const payload = pendingSave;
+  pendingSave = null;
+
   try {
+    await updateDoc(doc(db, "stories", payload.storyId, "characters", payload.characterId), {
+      ...payload.patch,
+      updatedAt: serverTimestamp()
+    });
+    setSaveState("saved", "SAVED");
+  } catch (error) {
+    console.error(error);
+    setSaveState("error", "SAVE FAILED");
+    toast("A change could not be saved.", "error");
+  }
+}
+
+async function updateCharacterNow(patch) {
+  const character = currentCharacter();
+  if (!character || !currentStoryId || !activeCharacterId) return;
+  Object.assign(character, patch);
+  try {
+    setSaveState("saving", "SAVING…");
     await updateDoc(doc(db, "stories", currentStoryId, "characters", activeCharacterId), {
       ...patch,
       updatedAt: serverTimestamp()
     });
+    setSaveState("saved", "SAVED");
   } catch (error) {
     console.error(error);
+    setSaveState("error", "SAVE FAILED");
     toast("A change could not be saved.", "error");
   }
 }
@@ -436,81 +580,93 @@ function updateCustomField(fieldId, key, value) {
 async function addCustomField() {
   const character = currentCharacter();
   if (!character) return;
-  const result = await openModal("new-field", {
-    eyebrow: "CUSTOM INFO",
-    title: "Add a profile field",
-    description: "Examples: World, Power, Species, Occupation, Weapon.",
-    label: "Field name",
+  const result = await openModal({
+    eyebrow: "// EXTRA DATA",
+    title: "ADD FIELD",
+    description: "Create any extra character property you need.",
+    label: "FIELD NAME",
     placeholder: "Power",
-    submit: "Add field"
+    submit: "ADD FIELD"
   });
   if (!result) return;
 
   const fields = [...(character.fields || []), { id: uid(), label: result.value, value: "" }];
-  await updateCharacter({ fields });
+  await updateCharacterNow({ fields });
 }
 
 async function removeCustomField(fieldId) {
   const character = currentCharacter();
   if (!character) return;
   const fields = (character.fields || []).filter(field => field.id !== fieldId);
-  await updateCharacter({ fields });
+  await updateCharacterNow({ fields });
 }
 
 async function addSection() {
   const character = currentCharacter();
   if (!character) return;
-  const result = await openModal("new-section", {
-    eyebrow: "NAVIGATION",
-    title: "Add a new section",
-    description: "This will appear in the character navbar on the right.",
-    label: "Section title",
+  const result = await openModal({
+    eyebrow: "// FILE NAVIGATION",
+    title: "ADD SECTION",
+    description: "The new section becomes a tab in the navigation bar above the character file.",
+    label: "SECTION TITLE",
     placeholder: "Relationships",
-    submit: "Add section"
+    submit: "ADD SECTION"
   });
   if (!result) return;
 
-  const section = { id: uid(), title: result.value, content: "" };
-  const sections = [...(character.sections || []), section];
+  const sections = normaliseSections(character);
+  const section = { id: uid(), title: result.value, contentHtml: "" };
+  sections.push(section);
   activeSectionId = section.id;
-  await updateCharacter({ sections });
+  lastRenderedSectionId = null;
+  await updateCharacterNow({ sections });
+  renderSections(character, true);
 }
 
 async function deleteActiveSection() {
   const character = currentCharacter();
-  if (!character || (character.sections || []).length <= 1) return;
-  if (!confirm("Delete this section and its text?")) return;
-  const sections = character.sections.filter(section => section.id !== activeSectionId);
-  activeSectionId = sections[0]?.id || null;
-  await updateCharacter({ sections });
+  if (!character) return;
+  const sections = normaliseSections(character);
+  if (sections.length <= 1) return;
+  if (!confirm("Delete this section and all of its text?")) return;
+
+  const next = sections.filter(section => section.id !== activeSectionId);
+  activeSectionId = next[0]?.id || null;
+  lastRenderedSectionId = null;
+  await updateCharacterNow({ sections: next });
+  renderSections(character, true);
 }
 
 function updateActiveSection(key, value) {
   const character = currentCharacter();
   if (!character) return;
-  const sections = (character.sections || []).map(section => section.id === activeSectionId ? { ...section, [key]: value } : section);
+  const sections = normaliseSections(character).map(section =>
+    section.id === activeSectionId ? { ...section, [key]: value } : section
+  );
   character.sections = sections;
   scheduleCharacterSave({ sections });
+
   if (key === "title") {
-    const button = document.querySelector(`[data-section-id="${activeSectionId}"] span:first-child`);
-    if (button) button.textContent = value || "Untitled Section";
+    const tab = sectionList.querySelector(`[data-section-id="${CSS.escape(activeSectionId)}"]`);
+    if (tab) tab.textContent = value || "Untitled Section";
   }
 }
 
 async function uploadCharacterPortrait(file) {
   if (!file || !currentStoryId || !activeCharacterId) return;
   try {
-    setSync("", "Uploading image…");
-    const imageRef = ref(storage, `stories/${currentStoryId}/characters/${activeCharacterId}/profile-${Date.now()}-${safeFileName(file.name)}`);
-    await uploadBytes(imageRef, file);
-    const profileUrl = await getDownloadURL(imageRef);
-    await updateCharacter({ profileUrl });
+    setSync("", "Processing image");
+    setSaveState("saving", "PROCESSING IMAGE…");
+    const profileData = await fileToCompressedDataUrl(file, { maxWidth: 900, maxHeight: 1100, maxBytes: 300000 });
+    await updateCharacterNow({ profileData });
+    portraitImage.src = profileData;
+    portraitFrame.classList.add("has-image");
     setSync("online", "Synced");
-    toast("Portrait updated.");
+    toast("Portrait saved directly in Firestore.");
   } catch (error) {
     console.error(error);
-    setSync("error", "Upload failed");
-    toast("Could not upload the portrait.", "error");
+    setSync("error", "Image failed");
+    toast(error.message || "Could not process the portrait.", "error");
   } finally {
     portraitInput.value = "";
   }
@@ -518,32 +674,31 @@ async function uploadCharacterPortrait(file) {
 
 async function editStorySettings() {
   if (!currentStoryId || !currentStory) return;
-  const result = await openModal("story-settings", {
-    eyebrow: "STORY SETTINGS",
-    title: "Edit story",
-    description: "Rename the story or replace its cover image.",
-    label: "Story title",
+  const result = await openModal({
+    eyebrow: "// STORY FILE SETTINGS",
+    title: "EDIT STORY FILE",
+    description: "This changes the story/file name only. Character names stay untouched.",
+    label: "STORY / FILE NAME",
     placeholder: "Story title",
     value: currentStory.title || "",
-    submit: "Save changes",
+    submit: "SAVE STORY",
     showUpload: true,
-    uploadText: "Leave empty to keep current cover"
+    uploadText: "OPTIONAL REPLACEMENT COVER"
   });
   if (!result) return;
 
   try {
     const patch = { title: result.value, updatedAt: serverTimestamp() };
     if (result.file) {
-      setSync("", "Uploading cover…");
-      const imageRef = ref(storage, `stories/${currentStoryId}/cover-${Date.now()}-${safeFileName(result.file.name)}`);
-      await uploadBytes(imageRef, result.file);
-      patch.coverUrl = await getDownloadURL(imageRef);
+      setSync("", "Processing cover");
+      patch.coverData = await fileToCompressedDataUrl(result.file, { maxWidth: 1500, maxHeight: 900, maxBytes: 470000 });
     }
     await updateDoc(doc(db, "stories", currentStoryId), patch);
-    toast("Story updated.");
+    setSync("online", "Synced");
+    toast("Story file updated.");
   } catch (error) {
     console.error(error);
-    toast("Could not update the story.", "error");
+    toast(error.message || "Could not update the story.", "error");
   }
 }
 
@@ -552,10 +707,12 @@ async function deleteCurrentCharacter() {
   const character = currentCharacter();
   if (!confirm(`Delete ${character?.name || "this character"}? This cannot be undone.`)) return;
   try {
+    flushPendingSave();
     await deleteDoc(doc(db, "stories", currentStoryId, "characters", activeCharacterId));
     activeCharacterId = null;
     activeSectionId = null;
-    toast("Character deleted.");
+    lastRenderedSectionId = null;
+    toast("Character file deleted.");
   } catch (error) {
     console.error(error);
     toast("Could not delete the character.", "error");
@@ -564,20 +721,136 @@ async function deleteCurrentCharacter() {
 
 async function deleteCurrentStory() {
   if (!currentStoryId) return;
-  if (!confirm("Delete this story and all currently loaded character profiles? This cannot be undone.")) return;
+  if (!confirm("Delete this story file and all currently loaded character files? This cannot be undone.")) return;
   try {
-    // Firestore does not automatically remove subcollections, so remove character docs first.
+    flushPendingSave();
     await Promise.all(characters.map(character =>
       deleteDoc(doc(db, "stories", currentStoryId, "characters", character.id))
     ));
     await deleteDoc(doc(db, "stories", currentStoryId));
-    toast("Story deleted.");
+    toast("Story file deleted.");
     goHome();
   } catch (error) {
     console.error(error);
     toast("Could not delete the story.", "error");
   }
 }
+
+function sanitiseHtml(html) {
+  const template = document.createElement("template");
+  template.innerHTML = String(html || "");
+  const blocked = ["script", "style", "iframe", "object", "embed", "link", "meta", "form", "input", "button", "textarea", "select"];
+  blocked.forEach(selector => template.content.querySelectorAll(selector).forEach(el => el.remove()));
+
+  template.content.querySelectorAll("*").forEach(el => {
+    [...el.attributes].forEach(attr => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+      if (name.startsWith("on") || value.startsWith("javascript:")) el.removeAttribute(attr.name);
+      if (name === "style") {
+        const safeStyles = attr.value.split(";").map(rule => rule.trim()).filter(rule => {
+          const prop = rule.split(":")[0]?.trim().toLowerCase();
+          return ["background-color", "font-weight", "font-style", "text-decoration"].includes(prop);
+        });
+        if (safeStyles.length) el.setAttribute("style", safeStyles.join("; "));
+        else el.removeAttribute("style");
+      }
+    });
+  });
+
+  return template.innerHTML;
+}
+
+function saveEditorSelection() {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) return;
+  const range = selection.getRangeAt(0);
+  if (sectionContent.contains(range.commonAncestorContainer)) savedSelection = range.cloneRange();
+}
+
+function restoreEditorSelection() {
+  if (!savedSelection) return;
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(savedSelection);
+}
+
+function applyFormat(command) {
+  sectionContent.focus();
+  restoreEditorSelection();
+  if (command === "highlight") {
+    document.execCommand("hiliteColor", false, "#7a5424");
+  } else if (command === "bullet") {
+    document.execCommand("insertUnorderedList", false, null);
+  } else {
+    document.execCommand(command, false, null);
+  }
+  saveEditorSelection();
+  updateActiveSection("contentHtml", sanitiseHtml(sectionContent.innerHTML));
+}
+
+function blockForNode(node) {
+  let el = node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
+  while (el && el !== sectionContent) {
+    if (["DIV", "P", "LI"].includes(el.tagName)) return el;
+    el = el.parentElement;
+  }
+  return sectionContent;
+}
+
+function textBeforeCaretWithin(block, range) {
+  const probe = document.createRange();
+  probe.selectNodeContents(block);
+  probe.setEnd(range.startContainer, range.startOffset);
+  return probe.toString();
+}
+
+function convertDashToBullet(event) {
+  if (event.key !== " " || event.ctrlKey || event.metaKey || event.altKey) return;
+  const selection = window.getSelection();
+  if (!selection?.rangeCount || !selection.isCollapsed) return;
+  const range = selection.getRangeAt(0);
+  if (!sectionContent.contains(range.startContainer)) return;
+
+  const block = blockForNode(range.startContainer);
+  if (!block || block.tagName === "LI") return;
+  const before = textBeforeCaretWithin(block, range);
+  if (before !== "-") return;
+
+  event.preventDefault();
+  const remove = document.createRange();
+  remove.selectNodeContents(block);
+  remove.setEnd(range.startContainer, range.startOffset);
+  remove.deleteContents();
+
+  const place = document.createRange();
+  place.selectNodeContents(block);
+  place.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(place);
+  document.execCommand("insertUnorderedList", false, null);
+  updateActiveSection("contentHtml", sanitiseHtml(sectionContent.innerHTML));
+}
+
+$$('.format-btn').forEach(button => {
+  button.addEventListener("mousedown", event => {
+    event.preventDefault();
+    applyFormat(button.dataset.command);
+  });
+});
+sectionContent.addEventListener("mouseup", saveEditorSelection);
+sectionContent.addEventListener("keyup", saveEditorSelection);
+sectionContent.addEventListener("keydown", convertDashToBullet);
+sectionContent.addEventListener("input", () => {
+  updateActiveSection("contentHtml", sanitiseHtml(sectionContent.innerHTML));
+  saveEditorSelection();
+});
+sectionContent.addEventListener("paste", event => {
+  // Paste as plain text so public collaborators cannot inject scripts/styles.
+  event.preventDefault();
+  const text = event.clipboardData?.getData("text/plain") || "";
+  document.execCommand("insertText", false, text);
+});
 
 storySearch.addEventListener("input", renderStories);
 sortSelect.addEventListener("change", renderStories);
@@ -595,19 +868,23 @@ $("#addSectionBtn").addEventListener("click", addSection);
 $("#deleteSectionBtn").addEventListener("click", deleteActiveSection);
 
 characterSelect.addEventListener("change", () => {
+  flushPendingSave();
   activeCharacterId = characterSelect.value;
   activeSectionId = null;
-  renderCharacter();
+  lastRenderedSectionId = null;
+  renderCharacter(true);
 });
 
 charName.addEventListener("input", () => scheduleCharacterSave({ name: charName.value }));
 charAge.addEventListener("input", () => scheduleCharacterSave({ age: charAge.value }));
 charHeight.addEventListener("input", () => scheduleCharacterSave({ height: charHeight.value }));
 sectionTitleInput.addEventListener("input", () => updateActiveSection("title", sectionTitleInput.value));
-sectionContent.addEventListener("input", () => updateActiveSection("content", sectionContent.value));
 portraitInput.addEventListener("change", () => uploadCharacterPortrait(portraitInput.files[0]));
 
-// Public mode: no login required.
-// Anyone who can open the site can load and edit the shared stories.
-setSync("", "Connecting…");
+window.addEventListener("beforeunload", () => {
+  if (pendingSave) flushPendingSave();
+});
+
+// Public mode: no Authentication required. Anyone with the site URL can read/edit.
+setSync("", "Connecting");
 subscribeToStories();

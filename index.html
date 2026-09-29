@@ -3,198 +3,217 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0a0d16" />
-  <title>Character Vault</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#090806" />
+  <title>Brass & Neon — Character Archive</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="grid-glow" aria-hidden="true"></div>
 
   <header class="topbar">
-    <button class="brand" id="homeBtn" aria-label="Go to story index">
-      <span class="brand-mark">CV</span>
-      <span>
-        <strong>Character Vault</strong>
-        <small>shared story workspace</small>
+    <button class="brand" id="homeBtn" type="button" aria-label="Open story archive">
+      <span class="brand-gear">⚙</span>
+      <span class="brand-copy">
+        <strong>BRASS//NEON</strong>
+        <small>CHARACTER ARCHIVE</small>
       </span>
     </button>
 
-    <div class="topbar-actions">
+    <div class="topbar-right">
+      <span class="public-badge">PUBLIC SHARED ARCHIVE</span>
       <span class="sync-pill" id="syncPill">
-        <span class="sync-dot"></span>
-        <span id="syncText">Connecting…</span>
+        <span class="sync-light"></span>
+        <span id="syncText">CONNECTING</span>
       </span>
     </div>
   </header>
 
   <main class="app-shell">
     <section id="dashboardView" class="view active">
-      <div class="hero-panel">
-        <div>
-          <span class="eyebrow">Stories</span>
-          <h1>Hello People<br><span>REMEMBER!.</span></h1>
-          <p>Its time for some dumb shit!.</p>
+      <section class="hero deck-panel">
+        <div class="hero-copy">
+          <div class="micro-label">// STORY VAULT 01</div>
+          <h1>BUILD WORLDS.<br><span>ARCHIVE LEGENDS.</span></h1>
+          <p>A shared character database for your stories. Every file is live, editable, and synchronized through Firebase.</p>
         </div>
-        <button class="primary-btn hero-btn" id="newStoryBtn">
-          <span class="btn-icon">＋</span>
-          New Story
-        </button>
-      </div>
+        <button class="primary-btn" id="newStoryBtn" type="button"><span>＋</span> NEW STORY FILE</button>
+      </section>
 
-      <div class="toolbar glass-card">
-        <label class="search-box">
+      <section class="archive-toolbar deck-panel">
+        <label class="search-field">
           <span>⌕</span>
-          <input id="storySearch" type="search" placeholder="Search stories…" autocomplete="off" />
+          <input id="storySearch" type="search" placeholder="SEARCH STORY ARCHIVE…" autocomplete="off" />
         </label>
-        <select id="sortSelect" class="select-control" aria-label="Sort stories">
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-          <option value="az">Title A–Z</option>
-          <option value="za">Title Z–A</option>
+        <select id="sortSelect" class="metal-select" aria-label="Sort story files">
+          <option value="newest">NEWEST FIRST</option>
+          <option value="oldest">OLDEST FIRST</option>
+          <option value="az">TITLE A–Z</option>
+          <option value="za">TITLE Z–A</option>
         </select>
-      </div>
+      </section>
 
       <div id="storyGrid" class="story-grid"></div>
 
-      <div id="emptyStories" class="empty-state hidden">
-        <div class="empty-icon">✦</div>
-        <h2>No stories yet</h2>
-        <p>Create your first world and start adding characters.</p>
-        <button class="primary-btn" id="emptyNewStoryBtn">Create a Story</button>
-      </div>
+      <section id="emptyStories" class="empty-state deck-panel hidden">
+        <div class="empty-mark">◇</div>
+        <h2>ARCHIVE EMPTY</h2>
+        <p>Create the first story file and begin cataloguing its cast.</p>
+        <button class="primary-btn" id="emptyNewStoryBtn" type="button">＋ CREATE STORY</button>
+      </section>
     </section>
 
     <section id="editorView" class="view">
-      <div class="editor-heading glass-card">
-        <button class="icon-btn" id="backBtn" title="Back to stories">←</button>
-        <div class="editor-title-wrap">
-          <span class="eyebrow">STORY WORKSPACE</span>
-          <h2 id="storyTitle">Untitled Story</h2>
+      <section class="story-head deck-panel">
+        <button class="square-btn" id="backBtn" type="button" title="Back to archive">←</button>
+        <div class="story-head-copy">
+          <span class="micro-label">// STORY FILE</span>
+          <h2 id="storyTitle">UNTITLED STORY</h2>
+          <small>The story/file title is separate from every character name.</small>
         </div>
-        <div class="editor-heading-actions">
-          <button class="secondary-btn" id="storySettingsBtn">Story settings</button>
-          <button class="danger-ghost-btn" id="deleteStoryBtn">Delete story</button>
+        <div class="head-actions">
+          <button class="secondary-btn" id="storySettingsBtn" type="button">EDIT STORY FILE</button>
+          <button class="danger-btn" id="deleteStoryBtn" type="button">DELETE</button>
         </div>
-      </div>
+      </section>
 
-      <div class="character-switcher glass-card">
-        <div>
-          <span class="label-mini">CHARACTER</span>
-          <select id="characterSelect" class="select-control character-select"></select>
+      <section class="character-bar deck-panel">
+        <div class="character-picker">
+          <span class="micro-label">// ACTIVE CHARACTER</span>
+          <select id="characterSelect" class="metal-select character-select"></select>
         </div>
-        <div class="switcher-actions">
-          <button class="secondary-btn" id="newCharacterBtn">＋ Add character</button>
-          <button class="danger-ghost-btn" id="deleteCharacterBtn">Delete</button>
+        <div class="head-actions">
+          <button class="secondary-btn" id="newCharacterBtn" type="button">＋ ADD CHARACTER</button>
+          <button class="danger-btn" id="deleteCharacterBtn" type="button">DELETE CHARACTER</button>
         </div>
-      </div>
+      </section>
 
-      <div id="noCharacters" class="empty-state editor-empty hidden">
-        <div class="empty-icon">◇</div>
-        <h2>This story needs a cast.</h2>
-        <p>Add your first character to begin building the profile.</p>
-        <button class="primary-btn" id="emptyNewCharacterBtn">＋ Add character</button>
-      </div>
+      <section id="noCharacters" class="empty-state deck-panel hidden">
+        <div class="empty-mark">⌁</div>
+        <h2>NO CHARACTER FILES</h2>
+        <p>Add a character. Their identity stays separate from the story file name.</p>
+        <button class="primary-btn" id="emptyNewCharacterBtn" type="button">＋ ADD CHARACTER</button>
+      </section>
 
-      <div id="characterWorkspace" class="editor-layout hidden">
-        <aside class="profile-panel glass-card">
-          <label class="portrait-frame" id="portraitFrame" title="Click to change profile picture">
-            <input id="portraitInput" type="file" accept="image/*" hidden />
-            <img id="portraitImage" alt="Character portrait" />
-            <div class="portrait-placeholder" id="portraitPlaceholder">
-              <span>＋</span>
-              <strong>Add portrait</strong>
-              <small>JPG, PNG or WEBP</small>
-            </div>
-            <span class="image-edit-badge">✎</span>
-          </label>
-
-          <div class="profile-fields">
-            <label class="field-block">
-              <span>Name</span>
-              <input id="charName" type="text" placeholder="Character name" />
-            </label>
-            <div class="field-row">
-              <label class="field-block">
-                <span>Age</span>
-                <input id="charAge" type="text" placeholder="24" />
-              </label>
-              <label class="field-block">
-                <span>Height</span>
-                <input id="charHeight" type="text" placeholder="172 cm" />
-              </label>
-            </div>
+      <div id="characterWorkspace" class="workspace hidden">
+        <nav class="section-nav deck-panel" aria-label="Character sections">
+          <div class="nav-label">
+            <span class="micro-label">// FILE SECTIONS</span>
           </div>
-
-          <div class="custom-field-header">
-            <div>
-              <span class="label-mini">EXTRA INFO</span>
-              <strong>Custom fields</strong>
-            </div>
-            <button class="round-add-btn" id="addFieldBtn" title="Add custom field">＋</button>
-          </div>
-
-          <div id="customFields" class="custom-fields"></div>
-        </aside>
-
-        <section class="content-panel glass-card">
-          <div class="content-header">
-            <div>
-              <span class="label-mini">CURRENT SECTION</span>
-              <input id="sectionTitleInput" class="section-title-input" type="text" placeholder="Section title" />
-            </div>
-            <button class="danger-ghost-btn" id="deleteSectionBtn">Delete section</button>
-          </div>
-          <textarea id="sectionContent" class="section-content" placeholder="Write everything you want to remember about this part of the character…"></textarea>
-          <div class="autosave-note">Changes save automatically.</div>
-        </section>
-
-        <nav class="section-nav glass-card" aria-label="Character sections">
-          <div class="section-nav-header">
-            <div>
-              <span class="label-mini">NAVIGATION</span>
-              <strong>Sections</strong>
-            </div>
-            <button class="round-add-btn" id="addSectionBtn" title="Add section">＋</button>
-          </div>
-          <div id="sectionList" class="section-list"></div>
-          <div class="nav-tip">
-            <span>✦</span>
-            <p>Add Personality, Backstory, Powers, Relationships, Notes — anything you want.</p>
-          </div>
+          <div id="sectionList" class="section-tabs"></div>
+          <button class="add-tab-btn" id="addSectionBtn" type="button" title="Add section">＋ SECTION</button>
         </nav>
+
+        <div class="workspace-grid">
+          <aside class="profile-panel deck-panel">
+            <div class="panel-title-line">
+              <span class="micro-label">// IDENTITY</span>
+              <span class="serial" id="characterSerial">FILE 0000</span>
+            </div>
+
+            <label class="portrait-frame" id="portraitFrame" title="Click to upload a portrait">
+              <input id="portraitInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+              <img id="portraitImage" alt="Character portrait" />
+              <span class="portrait-grid" aria-hidden="true"></span>
+              <span class="portrait-placeholder" id="portraitPlaceholder">
+                <b>＋</b>
+                <strong>INSERT PORTRAIT</strong>
+                <small>JPG · PNG · WEBP</small>
+              </span>
+              <span class="portrait-corner">IMG</span>
+            </label>
+
+            <div class="profile-fields">
+              <label class="field-block">
+                <span>CHARACTER NAME</span>
+                <input id="charName" type="text" placeholder="Robert Storm" autocomplete="off" />
+              </label>
+              <div class="field-row">
+                <label class="field-block">
+                  <span>AGE</span>
+                  <input id="charAge" type="text" placeholder="20" autocomplete="off" />
+                </label>
+                <label class="field-block">
+                  <span>HEIGHT</span>
+                  <input id="charHeight" type="text" placeholder="192 cm" autocomplete="off" />
+                </label>
+              </div>
+            </div>
+
+            <div class="custom-field-heading">
+              <div>
+                <span class="micro-label">// EXTRA DATA</span>
+                <strong>CUSTOM FIELDS</strong>
+              </div>
+              <button class="round-btn" id="addFieldBtn" type="button" title="Add custom field">＋</button>
+            </div>
+            <div id="customFields" class="custom-fields"></div>
+          </aside>
+
+          <section class="content-panel deck-panel">
+            <div class="content-heading">
+              <div class="section-name-wrap">
+                <span class="micro-label">// CURRENT SECTION</span>
+                <input id="sectionTitleInput" class="section-title-input" type="text" placeholder="SECTION TITLE" />
+              </div>
+              <button class="danger-btn" id="deleteSectionBtn" type="button">DELETE SECTION</button>
+            </div>
+
+            <div class="format-toolbar" role="toolbar" aria-label="Text formatting">
+              <button class="format-btn" type="button" data-command="bold" title="Bold"><b>B</b></button>
+              <button class="format-btn" type="button" data-command="italic" title="Italic"><i>I</i></button>
+              <button class="format-btn highlight-btn" type="button" data-command="highlight" title="Highlight">▰</button>
+              <span class="toolbar-divider"></span>
+              <button class="format-btn bullet-btn" type="button" data-command="bullet" title="Bullet list">• LIST</button>
+              <span class="format-hint">TYPE <kbd>-</kbd> + <kbd>SPACE</kbd> FOR A BULLET</span>
+            </div>
+
+            <div
+              id="sectionContent"
+              class="rich-editor"
+              contenteditable="true"
+              role="textbox"
+              aria-multiline="true"
+              data-placeholder="Write the character file here…"
+              spellcheck="true"
+            ></div>
+
+            <div class="editor-footer">
+              <span>HTML RICH TEXT // AUTO-SAVE ENABLED</span>
+              <span id="saveState">READY</span>
+            </div>
+          </section>
+        </div>
       </div>
     </section>
   </main>
 
   <div class="modal-backdrop hidden" id="modalBackdrop">
-    <div class="modal glass-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
-      <span class="eyebrow" id="modalEyebrow">CREATE</span>
-      <h2 id="modalTitle">New story</h2>
-      <p id="modalDescription">Give this story a name.</p>
+    <div class="modal deck-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-rivets" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button>
+      <span class="micro-label" id="modalEyebrow">// CREATE</span>
+      <h2 id="modalTitle">NEW FILE</h2>
+      <p id="modalDescription"></p>
 
       <form id="modalForm">
         <label class="field-block">
-          <span id="modalInputLabel">Title</span>
+          <span id="modalInputLabel">TITLE</span>
           <input id="modalInput" type="text" required autocomplete="off" />
         </label>
 
         <label class="upload-drop hidden" id="modalUploadWrap">
-          <input id="modalFile" type="file" accept="image/*" hidden />
-          <span class="upload-symbol">▧</span>
+          <input id="modalFile" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+          <span class="upload-icon">▣</span>
           <span>
-            <strong>Choose a cover image</strong>
-            <small id="modalFileName">Optional</small>
+            <strong>SELECT IMAGE</strong>
+            <small id="modalFileName">OPTIONAL</small>
           </span>
         </label>
 
         <div class="modal-actions">
-          <button type="button" class="secondary-btn" id="modalCancel">Cancel</button>
-          <button type="submit" class="primary-btn" id="modalSubmit">Create</button>
+          <button class="secondary-btn" id="modalCancel" type="button">CANCEL</button>
+          <button class="primary-btn" id="modalSubmit" type="submit">CREATE</button>
         </div>
       </form>
     </div>
