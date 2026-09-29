@@ -1208,6 +1208,269 @@ body::after { display:none; }
   .rich-editor { padding:30px 22px 60px; }
 }
 
+
+/* =========================================================
+   V10 — PROFILE HERO
+   The character itself is now the first and dominant element.
+   ========================================================= */
+
+#editorView { --profile-hero-max: 1440px; }
+
+#characterWorkspace.workspace {
+  width: min(var(--profile-hero-max), calc(100vw - 40px));
+  margin: 14px auto 0;
+}
+
+.workspace-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 14px !important;
+  width: 100%;
+  margin: 0 !important;
+  align-items: stretch;
+}
+
+/* Large profile hero */
+.profile-panel {
+  position: relative !important;
+  top: auto !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  border-radius: 26px !important;
+  background:
+    radial-gradient(circle at 14% 12%, rgba(97,232,255,.10), transparent 31%),
+    radial-gradient(circle at 88% 8%, rgba(124,108,255,.09), transparent 27%),
+    linear-gradient(180deg, rgba(16,24,38,.98), rgba(9,15,25,.99)) !important;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.profile-panel::before { display:none !important; }
+
+.profile-panel .panel-title-line {
+  min-height: 54px;
+  padding: 0 26px;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.profile-panel .panel-title-line .micro-label {
+  font-size:10px;
+  letter-spacing:.14em;
+}
+
+/* Big visual identity block */
+.identity-top {
+  display:grid !important;
+  grid-template-columns: clamp(300px, 26vw, 390px) minmax(0,1fr) !important;
+  gap: clamp(28px, 3.4vw, 52px) !important;
+  align-items:stretch !important;
+  padding: clamp(24px, 3vw, 40px) !important;
+  border:0 !important;
+}
+
+.identity-top .portrait-frame {
+  width:100% !important;
+  min-width:0 !important;
+  height:clamp(420px, 52vh, 560px) !important;
+  min-height:420px !important;
+  aspect-ratio:auto !important;
+  border-radius:24px !important;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(78,220,255,.10), transparent 34%),
+    linear-gradient(145deg, rgba(23,34,51,.96), rgba(11,18,29,.99)) !important;
+  border:1px solid rgba(125,225,255,.15) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.018),
+    0 20px 54px rgba(0,0,0,.22);
+}
+
+.identity-top .portrait-frame img { object-fit:cover; }
+
+.portrait-placeholder b {
+  width:56px;
+  height:56px;
+  font-size:28px;
+}
+
+.portrait-placeholder strong { font-size:15px; }
+.portrait-placeholder small { font-size:10px; }
+
+.profile-fields {
+  display:flex !important;
+  flex-direction:column;
+  justify-content:center;
+  gap:20px !important;
+  min-width:0;
+  padding: clamp(4px, 1vw, 16px) 0;
+}
+
+.profile-fields .field-block > span {
+  font-size:9px;
+  letter-spacing:.12em;
+  margin-bottom:9px;
+}
+
+#charName {
+  min-height:70px;
+  padding:0 20px !important;
+  border-radius:16px !important;
+  font-size:clamp(22px, 2.25vw, 34px) !important;
+  font-weight:740 !important;
+  letter-spacing:-.04em;
+}
+
+.profile-fields .field-row {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+#charAge, #charHeight {
+  min-height:54px;
+  padding:0 17px !important;
+  border-radius:14px !important;
+  font-size:15px !important;
+}
+
+/* Profile data belongs to the hero, not a tiny sidebar. */
+.custom-field-heading {
+  margin:0 !important;
+  padding:22px 34px 12px !important;
+  border-top:1px solid rgba(255,255,255,.055);
+}
+
+.quick-data {
+  margin:0 !important;
+  padding:0 34px 14px !important;
+  display:flex !important;
+  flex-wrap:wrap;
+  gap:7px !important;
+}
+
+.quick-data-btn {
+  min-height:30px;
+  padding:0 12px !important;
+  border-radius:999px !important;
+}
+
+.custom-fields {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:0 30px !important;
+  margin:0 !important;
+  padding:0 34px 22px !important;
+}
+
+.custom-field {
+  min-width:0;
+  padding:14px 0 17px !important;
+}
+
+.custom-field .field-label,
+.custom-field .field-value {
+  width:100% !important;
+  max-width:100%;
+  white-space:pre-wrap !important;
+  overflow-wrap:anywhere !important;
+  word-break:break-word !important;
+}
+
+.custom-field .field-value { line-height:1.65 !important; }
+.custom-empty { grid-column:1 / -1; }
+
+.dossier-stats {
+  margin:0 !important;
+  padding:14px 34px 18px !important;
+  border-top:1px solid rgba(255,255,255,.045);
+}
+
+/* Section navigation comes after profile. */
+.section-nav {
+  position:sticky;
+  top:10px;
+  z-index:15;
+  width:100% !important;
+  margin:0 !important;
+  border-radius:17px !important;
+  box-shadow:0 12px 34px rgba(0,0,0,.16);
+}
+
+.content-panel {
+  width:100% !important;
+  min-height:calc(100vh - 190px) !important;
+  border-radius:24px !important;
+}
+
+.rich-editor { min-height:650px !important; }
+
+#editorView.focus-mode .profile-panel { display:none !important; }
+#editorView.focus-mode .workspace-grid {
+  grid-template-columns:minmax(0,1fr) !important;
+}
+
+@media (max-width:1050px) {
+  #characterWorkspace.workspace {
+    width:min(100%, calc(100vw - 24px));
+  }
+
+  .identity-top {
+    grid-template-columns:280px minmax(0,1fr) !important;
+    gap:24px !important;
+    padding:24px !important;
+  }
+
+  .identity-top .portrait-frame {
+    height:410px !important;
+    min-height:410px !important;
+  }
+
+  .custom-fields { grid-template-columns:1fr !important; }
+}
+
+@media (max-width:760px) {
+  #characterWorkspace.workspace {
+    width:min(100%, calc(100vw - 16px));
+  }
+
+  .identity-top {
+    grid-template-columns:1fr !important;
+    padding:18px !important;
+  }
+
+  .identity-top .portrait-frame {
+    width:100% !important;
+    height:min(76vh,580px) !important;
+    min-height:430px !important;
+  }
+
+  .profile-fields { padding:4px 0 0; }
+  #charName { font-size:25px !important; }
+
+  .custom-field-heading,
+  .quick-data,
+  .custom-fields,
+  .dossier-stats {
+    padding-left:18px !important;
+    padding-right:18px !important;
+  }
+}
+
+@media (max-width:520px) {
+  .profile-fields .field-row { grid-template-columns:1fr; }
+
+  .identity-top .portrait-frame {
+    min-height:370px !important;
+    height:64vh !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1268,15 +1531,9 @@ body::after { display:none; }
       <section id="noCharacters" class="empty-state glass hidden"><div class="empty-mark">⌁</div><h2>No character dossiers</h2><p>Add the first character to this story.</p><button class="primary-btn" id="emptyNewCharacterBtn" type="button">＋ Add character</button></section>
 
       <div id="characterWorkspace" class="workspace hidden">
-        <nav class="section-nav glass" aria-label="Character dossier sections">
-          <div class="nav-label"><span class="micro-label">Dossier sections</span></div>
-          <div id="sectionList" class="section-tabs"></div>
-          <button class="add-tab-btn" id="addSectionBtn" type="button" title="Add section">＋ Section</button>
-        </nav>
-
         <div class="workspace-grid">
           <aside class="profile-panel glass">
-            <div class="panel-title-line"><span class="micro-label">Identity record</span><span class="serial" id="characterSerial">FILE 0000</span></div>
+            <div class="panel-title-line"><span class="micro-label">Character profile</span><span class="serial" id="characterSerial">FILE 0000</span></div>
             <div class="identity-top">
               <div class="portrait-frame" id="portraitFrame" title="Click or drop an image to upload" role="button" tabindex="0">
                 <input id="portraitInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
@@ -1298,7 +1555,7 @@ body::after { display:none; }
               </div>
             </div>
 
-            <div class="custom-field-heading"><div><span class="micro-label">Additional data</span><strong>Custom fields</strong></div><button class="round-btn" id="addFieldBtn" type="button" title="Add custom field">＋</button></div>
+            <div class="custom-field-heading"><div><span class="micro-label">Profile data</span><strong>Custom fields</strong></div><button class="round-btn" id="addFieldBtn" type="button" title="Add custom field">＋</button></div>
             <div class="quick-data" aria-label="Quick add data fields">
               <button class="quick-data-btn" type="button" data-field-preset="World">＋ World</button>
               <button class="quick-data-btn" type="button" data-field-preset="Species">＋ Species</button>
@@ -1310,6 +1567,12 @@ body::after { display:none; }
             <div id="customFields" class="custom-fields"></div>
             <div class="dossier-stats"><span id="dataPointCount">3 data points</span><span id="sectionCount">0 sections</span></div>
           </aside>
+
+        <nav class="section-nav glass" aria-label="Character dossier sections">
+          <div class="nav-label"><span class="micro-label">Dossier sections</span></div>
+          <div id="sectionList" class="section-tabs"></div>
+          <button class="add-tab-btn" id="addSectionBtn" type="button" title="Add section">＋ Section</button>
+        </nav>
 
           <section class="content-panel glass">
             <div class="content-heading">
@@ -2671,7 +2934,7 @@ if (deepStoryMatch) {
   try { openStory(decodeURIComponent(deepStoryMatch[1])); } catch {}
 }
 
-console.info("Stories With Friends — Ultra Dossier v9 loaded");
+console.info("Stories With Friends — Profile Hero v10 loaded");
 </script>
 </body>
 </html>
