@@ -15,13 +15,16 @@ import {
 // Paste the SAME config that already works on your current site.
 // Firebase Console → Project settings → Your apps → Web app → Config
 // =============================================================
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY_HERE",
-  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
-  messagingSenderId: "PASTE_YOUR_SENDER_ID",
-  appId: "PASTE_YOUR_APP_ID"
+    apiKey: "AIzaSyAAOVSAJ6C4l9GvvQB0_2ZNkAYt1UTrcnY",
+    authDomain: "storieswith.firebaseapp.com",
+    databaseURL: "https://storieswith-default-rtdb.firebaseio.com",
+    projectId: "storieswith",
+    storageBucket: "storieswith.firebasestorage.app",
+    messagingSenderId: "811341249061",
+    appId: "1:811341249061:web:282d5fa5ca99199ab3ddcc",
+    measurementId: "G-5RXTPT9XTZ"
 };
 
 const app = initializeApp(firebaseConfig);
