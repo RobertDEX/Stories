@@ -633,2862 +633,328 @@ input, select { color-scheme: dark; }
   .editor-footer { align-items:flex-start; flex-direction:column; justify-content:center; padding:12px 18px; }
 }
 
-/* ============================================================
-   V8 — ULTRA DOSSIER / BALANCED MODERN WORKSPACE
-   ============================================================ */
-:root {
-  --bg:#07090e;
-  --bg2:#0a0d14;
-  --surface:rgba(13,18,28,.86);
-  --surface-strong:rgba(15,21,33,.96);
-  --surface-soft:rgba(255,255,255,.035);
-  --surface-hover:rgba(255,255,255,.065);
-  --line:rgba(157,176,210,.11);
-  --line-strong:rgba(173,198,238,.20);
-  --text:#f6f8fc;
-  --muted:#8c98ab;
-  --muted2:#596579;
-  --accent:#6ee7ff;
-  --accent2:#8a7dff;
-  --accent3:#59f2bf;
-  --danger:#ff7187;
-  --warning:#ffd36a;
-  --shadow:0 28px 90px rgba(0,0,0,.42);
-  --shadow-soft:0 14px 50px rgba(0,0,0,.24);
-  --r-xl:24px;
-  --r-lg:18px;
-  --r-md:13px;
-  --r-sm:9px;
-}
-body {
-  background:
-    radial-gradient(900px 620px at 12% -12%, rgba(88,116,255,.13), transparent 62%),
-    radial-gradient(760px 540px at 88% 2%, rgba(74,220,255,.09), transparent 58%),
-    linear-gradient(180deg,#090c13 0,#06080c 70%);
-}
-body::before {
-  opacity:.58;
-  background-size:64px 64px;
-  background-image:
-    linear-gradient(rgba(143,170,211,.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(143,170,211,.018) 1px, transparent 1px);
-}
-body::after { display:none; }
 
-.topbar {
-  height:64px;
-  padding:0 clamp(18px,3vw,44px);
-  background:rgba(7,10,16,.82);
-  border-color:rgba(170,194,229,.09);
-  box-shadow:0 1px 0 rgba(255,255,255,.015);
-}
-.brand-mark { border-radius:11px; background:linear-gradient(145deg,rgba(110,231,255,.11),rgba(138,125,255,.11)); }
-.brand-copy strong { font-size:12px; letter-spacing:.12em; }
-.brand-copy small { opacity:.82; }
-
-.app-shell {
-  width:min(1720px,calc(100% - 40px));
-  margin:22px auto 68px;
-}
-.glass {
-  background:linear-gradient(180deg,rgba(15,20,31,.91),rgba(10,14,22,.87));
-  border-color:rgba(163,186,222,.105);
-  box-shadow:0 20px 60px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.025);
-}
-
-/* Dossier masthead */
-#editorView .story-head,
-#editorView .character-bar,
-#editorView .section-nav,
-#editorView .workspace-grid {
-  width:100%;
-  max-width:none;
-  margin-left:0;
-  margin-right:0;
-}
-.story-head {
-  min-height:104px;
-  padding:18px 20px;
-  border-radius:20px;
-  position:relative;
-  overflow:hidden;
-}
-.story-head::after {
-  content:"";
-  position:absolute;
-  right:-80px; top:-120px;
-  width:360px; height:260px;
-  background:radial-gradient(circle,rgba(110,231,255,.08),transparent 66%);
-  pointer-events:none;
-}
-.story-head-copy h2 { font-size:clamp(28px,2.5vw,40px); font-weight:760; letter-spacing:-.038em; }
-.story-head-copy small { font-size:11px; }
-.head-actions { position:relative; z-index:2; }
-.share-btn { color:var(--accent); }
-
-.character-bar {
-  margin-top:10px;
-  min-height:76px;
-  padding:12px 14px;
-  border-radius:16px;
-  align-items:center;
-}
-.character-picker { grid-template-columns:auto minmax(250px,440px); align-items:center; gap:12px; }
-.character-picker .micro-label { white-space:nowrap; }
-.character-select { width:100%; }
-.utility-actions { margin-left:auto; }
-.utility-btn, .secondary-btn, .danger-btn, .primary-btn { border-radius:10px; }
-.utility-btn { min-height:36px; }
-
-/* top section rail */
-.section-nav {
-  top:76px;
-  margin-top:10px;
-  min-height:58px;
-  border-radius:16px;
-  padding:7px 8px;
-  box-shadow:0 16px 40px rgba(0,0,0,.20);
-}
-.nav-label { min-width:122px; padding-left:10px; }
-.section-tabs { gap:7px; }
-.section-tab {
-  min-height:42px;
-  padding:0 15px;
-  border-radius:11px;
-  background:transparent;
-  color:#8e9bad;
-  border-color:transparent;
-}
-.section-tab:hover { color:#dbe6f5; background:rgba(255,255,255,.035); }
-.section-tab.active {
-  color:#effbff;
-  border-color:rgba(110,231,255,.21);
-  background:linear-gradient(180deg,rgba(110,231,255,.095),rgba(110,231,255,.035));
-  box-shadow:inset 0 -2px rgba(110,231,255,.9),0 8px 22px rgba(0,0,0,.12);
-}
-.add-tab-btn { border-radius:11px; background:rgba(110,231,255,.045); border-color:rgba(110,231,255,.12); }
-
-/* Core two-column dossier */
-#editorView { --profile-width: clamp(390px,25vw,445px); }
-.workspace-grid {
-  display:grid;
-  grid-template-columns:var(--profile-width) minmax(0,1fr);
-  gap:14px;
-  margin-top:14px;
-  align-items:start;
-}
-.profile-panel {
-  top:148px;
-  max-height:calc(100vh - 168px);
-  overflow:auto;
-  padding:0;
-  border-radius:18px;
-  background:linear-gradient(180deg,rgba(15,21,33,.98),rgba(9,13,21,.96));
-  box-shadow:0 26px 60px rgba(0,0,0,.30), inset 0 1px rgba(255,255,255,.025);
-}
-.profile-panel::before { display:none; }
-.panel-title-line {
-  position:sticky;
-  top:0;
-  z-index:5;
-  margin:0;
-  min-height:52px;
-  padding:0 16px;
-  background:rgba(13,18,28,.94);
-  border-bottom:1px solid var(--line);
-  backdrop-filter:blur(18px);
-}
-.identity-top {
-  display:grid;
-  grid-template-columns:148px minmax(0,1fr);
-  gap:15px;
-  align-items:start;
-  padding:16px;
-}
-.identity-top .portrait-frame {
-  width:148px;
-  aspect-ratio:3/4;
-  border-radius:14px;
-  background:
-    radial-gradient(circle at 50% 28%,rgba(110,231,255,.08),transparent 28%),
-    linear-gradient(145deg,#121929,#0a101a);
-  box-shadow:inset 0 0 38px rgba(110,231,255,.025);
-}
-.portrait-placeholder b { width:40px;height:40px;border-radius:12px; }
-.portrait-placeholder strong { font-size:11px; }
-.portrait-placeholder small { font-size:8px; }
-.identity-top .profile-fields { margin:0; gap:9px; }
-.identity-top .field-row { grid-template-columns:1fr 1fr; gap:8px; }
-.field-block > span { font-size:8px; letter-spacing:.13em; }
-.field-block input { min-height:42px; background:rgba(255,255,255,.025); }
-.custom-field-heading {
-  margin:0 16px;
-  padding:16px 0 10px;
-  border-top:1px solid var(--line);
-}
-.custom-field-heading strong { font-size:13px; }
-.quick-data { margin:0 16px 10px; gap:5px; }
-.quick-data-btn { min-height:28px; font-size:8px; padding:0 8px; }
-.custom-fields {
-  display:grid;
-  grid-template-columns:1fr;
-  gap:0;
-  margin:0 16px;
-  border-top:1px solid rgba(255,255,255,.045);
-}
-.custom-field {
-  display:grid;
-  grid-template-columns:116px minmax(0,1fr) 28px;
-  gap:8px;
-  align-items:start;
-  padding:9px 0;
-  border:0;
-  border-bottom:1px solid rgba(255,255,255,.045);
-  border-radius:0;
-  background:transparent;
-}
-.custom-field:focus-within { background:transparent; border-color:rgba(110,231,255,.12); }
-.custom-field input,
-.custom-field textarea {
-  width:100%;
-  min-height:36px;
-  border:1px solid transparent;
-  border-radius:9px;
-  background:transparent;
-  color:var(--text);
-  padding:9px 9px;
-  outline:0;
-  transition:.16s ease;
-}
-.custom-field textarea { resize:none; overflow-y:auto; line-height:1.45; font-size:11px; font-family:var(--sans); }
-.custom-field input:focus,
-.custom-field textarea:focus { border-color:rgba(110,231,255,.18); background:rgba(110,231,255,.025); }
-.custom-field .field-label {
-  min-width:0;
-  color:#8bdff0;
-  font:800 9px/1.3 var(--mono);
-  letter-spacing:.065em;
-  text-transform:uppercase;
-}
-.custom-field .field-value { color:#dbe4f1; }
-.custom-field .remove-mini { position:static; width:28px;height:34px; }
-.custom-empty { padding:14px 0 18px; }
-.dossier-stats {
-  position:sticky;
-  bottom:0;
-  margin:12px 0 0;
-  min-height:42px;
-  padding:0 16px;
-  align-items:center;
-  background:rgba(10,14,22,.95);
-  border-top:1px solid var(--line);
-  backdrop-filter:blur(16px);
-}
-
-/* Writer surface */
-.content-panel {
-  min-height:calc(100vh - 252px);
-  border-radius:18px;
-  overflow:hidden;
-  background:
-    radial-gradient(800px 360px at 50% 0,rgba(110,231,255,.025),transparent 62%),
-    linear-gradient(180deg,rgba(13,18,28,.96),rgba(8,12,19,.95));
-  box-shadow:0 26px 70px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.028);
-}
-.content-panel::before { display:none; }
-.content-heading {
-  min-height:86px;
-  padding:16px 20px;
-  border-color:rgba(255,255,255,.07);
-  background:linear-gradient(180deg,rgba(18,24,37,.72),rgba(13,18,28,.3));
-}
-.section-name-wrap { padding-left:2px; }
-.section-title-input { font-size:clamp(25px,2.15vw,34px); font-weight:750; }
-.content-actions { flex-wrap:wrap; justify-content:flex-end; }
-.section-mini-tools { opacity:.72; }
-.format-toggle { border-color:rgba(110,231,255,.15); background:rgba(110,231,255,.035); }
-.format-panel { top:46px; border-radius:12px; }
-
-.rich-editor {
-  width:min(940px,calc(100% - 64px));
-  min-height:max(610px,calc(100vh - 390px));
-  margin:26px auto 30px;
-  padding:56px clamp(40px,5vw,76px) 80px;
-  border:1px solid rgba(170,194,229,.095);
-  border-radius:16px;
-  background:
-    linear-gradient(180deg,rgba(19,25,38,.82),rgba(13,18,28,.77));
-  box-shadow:0 24px 70px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.025);
-  color:#dfe7f3;
-  font-size:16px;
-  line-height:1.86;
-}
-.rich-editor:focus {
-  border-color:rgba(110,231,255,.17);
-  box-shadow:0 28px 80px rgba(0,0,0,.30),0 0 0 1px rgba(110,231,255,.035),inset 0 1px rgba(255,255,255,.028);
-}
-.rich-editor:empty::before { color:#526075; }
-.rich-editor h1,.rich-editor h2,.rich-editor h3 { color:#f6f9ff; }
-.rich-editor blockquote { background:rgba(110,231,255,.025); border-radius:0 10px 10px 0; padding:.65em 1em; }
-.editor-footer {
-  min-height:48px;
-  padding:0 22px;
-  background:rgba(9,13,20,.52);
-}
-
-/* focus mode */
-#editorView.focus-mode .workspace-grid { grid-template-columns:minmax(0,1fr); }
-#editorView.focus-mode .content-panel { max-width:1280px; margin:0 auto; width:100%; }
-#editorView.focus-mode .rich-editor { width:min(980px,calc(100% - 64px)); }
-
-/* Dashboard refinement */
-.dashboard-hero { min-height:330px; border-radius:24px; }
-.hero-copy h1 { font-size:clamp(44px,5.7vw,78px); }
-.story-grid { grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
-.story-card { min-height:350px; }
-
-/* Modal polish */
-.modal { border-radius:20px; background:linear-gradient(180deg,#101622,#0b1019); }
-.upload-drop { background:rgba(110,231,255,.025); }
-
-@media (max-width:1350px) {
-  #editorView { --profile-width:380px; }
-  .identity-top { grid-template-columns:132px minmax(0,1fr); }
-  .identity-top .portrait-frame { width:132px; }
-  .custom-field { grid-template-columns:102px minmax(0,1fr) 28px; }
-}
-@media (max-width:1100px) {
-  .app-shell { width:min(100% - 24px,1720px); }
-  .character-picker { grid-template-columns:1fr; min-width:240px; gap:6px; }
-  .workspace-grid { grid-template-columns:330px minmax(0,1fr); }
-  .identity-top { grid-template-columns:1fr; }
-  .identity-top .portrait-frame { width:100%; aspect-ratio:16/10; }
-  .custom-field { grid-template-columns:1fr 28px; }
-  .custom-field .field-label { grid-column:1; }
-  .custom-field .field-value { grid-column:1; }
-  .custom-field .remove-mini { grid-column:2; grid-row:1; }
-}
-@media (max-width:860px) {
-  .app-shell { width:min(100% - 18px,1720px); margin-top:12px; }
-  .story-head,.character-bar { flex-direction:column; align-items:stretch; }
-  .head-actions,.utility-actions { margin-left:0; justify-content:flex-start; }
-  .workspace-grid { grid-template-columns:1fr; }
-  .profile-panel { position:static; max-height:none; overflow:visible; }
-  .panel-title-line,.dossier-stats { position:static; }
-  .identity-top { grid-template-columns:150px minmax(0,1fr); }
-  .identity-top .portrait-frame { width:150px; aspect-ratio:3/4; }
-  .custom-field { grid-template-columns:116px minmax(0,1fr) 28px; }
-  .custom-field .field-label,.custom-field .field-value,.custom-field .remove-mini { grid-column:auto; grid-row:auto; }
-  .rich-editor { width:calc(100% - 28px); margin:14px auto 18px; padding:34px 26px 64px; }
-}
-@media (max-width:560px) {
-  .topbar { height:58px; }
-  .public-badge { display:none; }
-  .story-head { border-radius:16px; }
-  .character-bar,.section-nav,.profile-panel,.content-panel { border-radius:14px; }
-  .identity-top { grid-template-columns:1fr; }
-  .identity-top .portrait-frame { width:100%; aspect-ratio:16/11; }
-  .identity-top .field-row { grid-template-columns:1fr 1fr; }
-  .custom-field { grid-template-columns:1fr 28px; }
-  .custom-field .field-label { grid-column:1; }
-  .custom-field .field-value { grid-column:1; }
-  .custom-field .remove-mini { grid-column:2; grid-row:1; }
-  .section-nav { top:66px; }
-  .nav-label { display:none; }
-  .content-heading { flex-direction:column; align-items:stretch; }
-  .content-actions { justify-content:flex-start; }
-  .rich-editor { width:calc(100% - 18px); padding:28px 20px 56px; min-height:520px; }
-  .shortcut-hint { display:none; }
-}
-
-
-/* =========================================================
-   V9 — CONTINUOUS DOSSIER LAYOUT
-   ========================================================= */
-#editorView { --profile-width: clamp(430px, 27vw, 490px); }
-
-.workspace-grid {
-  grid-template-columns: var(--profile-width) minmax(0, 1fr);
-  gap: 16px;
-  align-items: stretch;
-}
-
-.profile-panel {
-  min-height: calc(100vh - 270px);
-  max-height: calc(100vh - 166px);
-}
-
-.identity-top {
-  grid-template-columns: 178px minmax(0, 1fr);
-  gap: 16px;
-  padding: 18px;
-}
-
-.identity-top .portrait-frame {
-  width: 178px;
-  min-height: 270px;
-  aspect-ratio: auto;
-  border-radius: 16px;
-}
-
-.identity-top .profile-fields {
-  min-width: 0;
-}
-
-.field-block input {
-  width: 100%;
-  min-width: 0;
-}
-
-/* Additional data now reads line-by-line and expands indefinitely. */
-.custom-fields {
-  display: block;
-  margin: 0 18px;
-}
-
-.custom-field {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 30px;
-  grid-template-areas:
-    "label remove"
-    "value value";
-  gap: 6px 10px;
-  width: 100%;
-  padding: 13px 0 15px;
-  border-bottom: 1px solid rgba(255,255,255,.055);
-}
-
-.custom-field .field-label {
-  grid-area: label;
-  width: 100%;
-  min-width: 0;
-  min-height: 30px;
-  height: auto;
-  padding: 5px 6px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: #8be8f7;
-  font: 800 9px/1.45 var(--mono);
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  resize: none;
-  overflow: hidden;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.custom-field .field-value {
-  grid-area: value;
-  width: 100%;
-  min-width: 0;
-  min-height: 40px;
-  height: auto;
-  padding: 7px 6px 4px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: #e2e9f3;
-  font: 500 12px/1.55 var(--sans);
-  resize: none;
-  overflow: hidden;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.custom-field .field-label:focus,
-.custom-field .field-value:focus {
-  border: 0;
-  outline: none;
-  background: rgba(110,231,255,.025);
-  box-shadow: inset 2px 0 0 rgba(110,231,255,.42);
-}
-
-.custom-field .remove-mini {
-  grid-area: remove;
-  align-self: start;
-  justify-self: end;
-  width: 28px;
-  height: 28px;
-}
-
-.custom-empty {
-  padding: 18px 0 22px;
-  line-height: 1.65;
-}
-
-/* The dossier is one continuous surface — no "page inside a page". */
-.content-panel {
-  min-height: calc(100vh - 270px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.content-heading {
-  flex: 0 0 auto;
-}
-
-.rich-editor {
-  flex: 1 1 auto;
-  width: 100%;
-  min-height: max(640px, calc(100vh - 405px));
-  margin: 0;
-  padding: 42px clamp(34px, 4vw, 64px) 72px;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  color: #dfe7f3;
-  font-size: 16px;
-  line-height: 1.82;
-}
-
-.rich-editor:focus {
-  border: 0;
-  box-shadow: inset 0 1px 0 rgba(110,231,255,.06);
-  outline: none;
-}
-
-.editor-footer {
-  flex: 0 0 auto;
-}
-
-#editorView.focus-mode .rich-editor {
-  width: 100%;
-  margin: 0;
-}
-
-/* Make long core text fail gracefully instead of breaking the panel. */
-.section-title-input,
-#charName,
-#charAge,
-#charHeight {
-  min-width: 0;
-  text-overflow: ellipsis;
-}
-
-@media (max-width: 1350px) {
-  #editorView { --profile-width: 405px; }
-  .identity-top { grid-template-columns: 160px minmax(0,1fr); }
-  .identity-top .portrait-frame { width:160px; min-height:244px; }
-}
-
-@media (max-width: 1100px) {
-  .workspace-grid { grid-template-columns: 360px minmax(0,1fr); }
-  .identity-top { grid-template-columns: 1fr; }
-  .identity-top .portrait-frame {
-    width:100%;
-    min-height:300px;
-    aspect-ratio: 4 / 5;
-  }
-}
-
-@media (max-width: 860px) {
-  .workspace-grid { grid-template-columns:1fr; }
-  .profile-panel { min-height:0; max-height:none; }
-  .identity-top { grid-template-columns: 170px minmax(0,1fr); }
-  .identity-top .portrait-frame {
-    width:170px;
-    min-height:255px;
-    aspect-ratio:auto;
-  }
-  .content-panel { min-height:620px; }
-}
-
-@media (max-width: 560px) {
-  .identity-top { grid-template-columns:1fr; }
-  .identity-top .portrait-frame {
-    width:100%;
-    min-height:360px;
-    aspect-ratio: 4 / 5;
-  }
-  .rich-editor { padding:30px 22px 60px; }
-}
-
-
-/* =========================================================
-   V10 — PROFILE HERO
-   The character itself is now the first and dominant element.
-   ========================================================= */
-
-#editorView { --profile-hero-max: 1440px; }
-
-#characterWorkspace.workspace {
-  width: min(var(--profile-hero-max), calc(100vw - 40px));
-  margin: 14px auto 0;
-}
-
-.workspace-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 14px !important;
-  width: 100%;
-  margin: 0 !important;
-  align-items: stretch;
-}
-
-/* Large profile hero */
-.profile-panel {
-  position: relative !important;
-  top: auto !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  overflow: visible !important;
-  padding: 0 !important;
-  border-radius: 26px !important;
-  background:
-    radial-gradient(circle at 14% 12%, rgba(97,232,255,.10), transparent 31%),
-    radial-gradient(circle at 88% 8%, rgba(124,108,255,.09), transparent 27%),
-    linear-gradient(180deg, rgba(16,24,38,.98), rgba(9,15,25,.99)) !important;
-  box-shadow:
-    0 30px 80px rgba(0,0,0,.28),
-    inset 0 1px 0 rgba(255,255,255,.04);
-}
-
-.profile-panel::before { display:none !important; }
-
-.profile-panel .panel-title-line {
-  min-height: 54px;
-  padding: 0 26px;
-  border-bottom: 1px solid rgba(255,255,255,.055);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.profile-panel .panel-title-line .micro-label {
-  font-size:10px;
-  letter-spacing:.14em;
-}
-
-/* Big visual identity block */
-.identity-top {
-  display:grid !important;
-  grid-template-columns: clamp(300px, 26vw, 390px) minmax(0,1fr) !important;
-  gap: clamp(28px, 3.4vw, 52px) !important;
-  align-items:stretch !important;
-  padding: clamp(24px, 3vw, 40px) !important;
-  border:0 !important;
-}
-
-.identity-top .portrait-frame {
-  width:100% !important;
-  min-width:0 !important;
-  height:clamp(420px, 52vh, 560px) !important;
-  min-height:420px !important;
-  aspect-ratio:auto !important;
-  border-radius:24px !important;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(78,220,255,.10), transparent 34%),
-    linear-gradient(145deg, rgba(23,34,51,.96), rgba(11,18,29,.99)) !important;
-  border:1px solid rgba(125,225,255,.15) !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.018),
-    0 20px 54px rgba(0,0,0,.22);
-}
-
-.identity-top .portrait-frame img { object-fit:cover; }
-
-.portrait-placeholder b {
-  width:56px;
-  height:56px;
-  font-size:28px;
-}
-
-.portrait-placeholder strong { font-size:15px; }
-.portrait-placeholder small { font-size:10px; }
-
-.profile-fields {
-  display:flex !important;
-  flex-direction:column;
-  justify-content:center;
-  gap:20px !important;
-  min-width:0;
-  padding: clamp(4px, 1vw, 16px) 0;
-}
-
-.profile-fields .field-block > span {
-  font-size:9px;
-  letter-spacing:.12em;
-  margin-bottom:9px;
-}
-
-#charName {
-  min-height:70px;
-  padding:0 20px !important;
-  border-radius:16px !important;
-  font-size:clamp(22px, 2.25vw, 34px) !important;
-  font-weight:740 !important;
-  letter-spacing:-.04em;
-}
-
-.profile-fields .field-row {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-}
-
-#charAge, #charHeight {
-  min-height:54px;
-  padding:0 17px !important;
-  border-radius:14px !important;
-  font-size:15px !important;
-}
-
-/* Profile data belongs to the hero, not a tiny sidebar. */
-.custom-field-heading {
-  margin:0 !important;
-  padding:22px 34px 12px !important;
-  border-top:1px solid rgba(255,255,255,.055);
-}
-
-.quick-data {
-  margin:0 !important;
-  padding:0 34px 14px !important;
-  display:flex !important;
-  flex-wrap:wrap;
-  gap:7px !important;
-}
-
-.quick-data-btn {
-  min-height:30px;
-  padding:0 12px !important;
-  border-radius:999px !important;
-}
-
-.custom-fields {
-  display:grid !important;
-  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-  gap:0 30px !important;
-  margin:0 !important;
-  padding:0 34px 22px !important;
-}
-
-.custom-field {
-  min-width:0;
-  padding:14px 0 17px !important;
-}
-
-.custom-field .field-label,
-.custom-field .field-value {
-  width:100% !important;
-  max-width:100%;
-  white-space:pre-wrap !important;
-  overflow-wrap:anywhere !important;
-  word-break:break-word !important;
-}
-
-.custom-field .field-value { line-height:1.65 !important; }
-.custom-empty { grid-column:1 / -1; }
-
-.dossier-stats {
-  margin:0 !important;
-  padding:14px 34px 18px !important;
-  border-top:1px solid rgba(255,255,255,.045);
-}
-
-/* Section navigation comes after profile. */
-.section-nav {
-  position:sticky;
-  top:10px;
-  z-index:15;
-  width:100% !important;
-  margin:0 !important;
-  border-radius:17px !important;
-  box-shadow:0 12px 34px rgba(0,0,0,.16);
-}
-
-.content-panel {
-  width:100% !important;
-  min-height:calc(100vh - 190px) !important;
-  border-radius:24px !important;
-}
-
-.rich-editor { min-height:650px !important; }
-
-#editorView.focus-mode .profile-panel { display:none !important; }
-#editorView.focus-mode .workspace-grid {
-  grid-template-columns:minmax(0,1fr) !important;
-}
-
-@media (max-width:1050px) {
-  #characterWorkspace.workspace {
-    width:min(100%, calc(100vw - 24px));
-  }
-
-  .identity-top {
-    grid-template-columns:280px minmax(0,1fr) !important;
-    gap:24px !important;
-    padding:24px !important;
-  }
-
-  .identity-top .portrait-frame {
-    height:410px !important;
-    min-height:410px !important;
-  }
-
-  .custom-fields { grid-template-columns:1fr !important; }
-}
-
-@media (max-width:760px) {
-  #characterWorkspace.workspace {
-    width:min(100%, calc(100vw - 16px));
-  }
-
-  .identity-top {
-    grid-template-columns:1fr !important;
-    padding:18px !important;
-  }
-
-  .identity-top .portrait-frame {
-    width:100% !important;
-    height:min(76vh,580px) !important;
-    min-height:430px !important;
-  }
-
-  .profile-fields { padding:4px 0 0; }
-  #charName { font-size:25px !important; }
-
-  .custom-field-heading,
-  .quick-data,
-  .custom-fields,
-  .dossier-stats {
-    padding-left:18px !important;
-    padding-right:18px !important;
-  }
-}
-
-@media (max-width:520px) {
-  .profile-fields .field-row { grid-template-columns:1fr; }
-
-  .identity-top .portrait-frame {
-    min-height:370px !important;
-    height:64vh !important;
-  }
-}
-
-
-/* ================================================================
-   V11 — RESEARCH-INFORMED CHARACTER WIKI
-   Dense identity summary + facts, then readable long-form article.
-   ================================================================ */
-
-:root {
-  --wiki-frame: 1280px;
-  --wiki-reading: 72ch;
-  --wiki-card: rgba(12, 18, 29, .92);
-  --wiki-card-2: rgba(15, 22, 35, .96);
-  --wiki-hairline: rgba(255,255,255,.072);
-}
-
-/* One consistent frame throughout the character view. */
-#editorView .app-shell,
-#characterWorkspace.workspace {
-  width: min(var(--wiki-frame), calc(100vw - 40px)) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-#characterWorkspace.workspace {
-  margin-top: 14px !important;
-}
-
-.workspace-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0,1fr) !important;
-  gap: 14px !important;
-  width: 100% !important;
-}
-
-/* ---------------------------------------------------------------
-   Character control bar — keep primary action visible, hide rare
-   actions behind one menu.
-   --------------------------------------------------------------- */
-.character-bar {
-  align-items: center;
-}
-
-.character-picker {
-  flex: 1 1 520px;
-}
-
-.character-select {
-  width: min(620px, 100%);
-}
-
-.compact-primary {
-  min-height: 40px;
-  white-space: nowrap;
-}
-
-.file-actions-menu,
-.quick-add-menu {
-  position: relative;
-}
-
-.file-actions-menu > summary,
-.quick-add-menu > summary {
-  list-style: none;
-}
-.file-actions-menu > summary::-webkit-details-marker,
-.quick-add-menu > summary::-webkit-details-marker { display:none; }
-
-.more-actions-btn {
-  min-width: 46px;
-  padding: 0 13px;
-  letter-spacing: .12em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.file-actions-popover,
-.quick-add-popover {
-  position: absolute;
-  top: calc(100% + 9px);
-  right: 0;
-  z-index: 75;
-  width: 290px;
-  padding: 8px;
-  border: 1px solid var(--line-strong);
-  border-radius: 15px;
-  background: rgba(10,15,24,.98);
-  box-shadow: 0 24px 70px rgba(0,0,0,.48);
-  backdrop-filter: blur(22px);
-}
-
-.menu-action {
-  width: 100%;
-  min-height: 58px;
-  border: 0;
-  border-radius: 10px;
-  padding: 9px 10px;
-  color: var(--text);
-  background: transparent;
-  display: grid;
-  grid-template-columns: 26px minmax(0,1fr);
-  gap: 9px;
-  align-items: center;
-  text-align: left;
-}
-.menu-action:hover { background: rgba(255,255,255,.055); }
-.menu-action > span:first-child {
-  color: var(--accent);
-  font: 800 16px/1 var(--mono);
-  text-align: center;
-}
-.menu-action > span:last-child { display:grid; gap:3px; }
-.menu-action b { font-size: 11px; }
-.menu-action small { color: var(--muted); font-size: 9px; line-height:1.35; }
-.menu-action.destructive b,
-.menu-action.destructive > span:first-child { color: var(--danger); }
-.menu-rule { height:1px; background:var(--line); margin:5px 4px; }
-
-/* ---------------------------------------------------------------
-   Profile: large enough to feel important, dense enough to avoid
-   dead space. Portrait + all useful facts share the same hero.
-   --------------------------------------------------------------- */
-.profile-panel {
-  position: relative !important;
-  top: auto !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  overflow: visible !important;
-  padding: 0 !important;
-  border-radius: 24px !important;
-  background:
-    radial-gradient(620px 360px at 9% 20%, rgba(118,233,255,.07), transparent 66%),
-    radial-gradient(660px 340px at 94% 5%, rgba(139,124,255,.065), transparent 68%),
-    linear-gradient(180deg, rgba(15,22,34,.965), rgba(9,14,23,.975)) !important;
-  box-shadow: 0 22px 70px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.035);
-}
-
-.profile-panel::before { display:none !important; }
-
-.profile-header {
-  min-height: 58px;
-  padding: 0 24px;
-  border-bottom: 1px solid var(--wiki-hairline);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.profile-header > div { display:flex; align-items:baseline; gap:12px; }
-.profile-subtitle {
-  color: var(--muted2);
-  font: 600 9px/1 var(--sans);
-}
-
-.profile-hero-grid {
-  display:grid;
-  grid-template-columns: clamp(260px, 26vw, 330px) minmax(0,1fr);
-  gap: clamp(26px, 3.2vw, 48px);
-  padding: clamp(24px, 3vw, 38px);
-  align-items:start;
-}
-
-.portrait-column {
-  position: relative;
-}
-
-.portrait-frame,
-.identity-top .portrait-frame {
-  width:100% !important;
-  height:auto !important;
-  min-height:0 !important;
-  aspect-ratio: 4 / 5 !important;
-  border-radius: 20px !important;
-  border:1px solid rgba(135,225,255,.13) !important;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(118,233,255,.08), transparent 34%),
-    linear-gradient(145deg, rgba(22,31,45,.98), rgba(10,15,24,.99)) !important;
-  box-shadow: 0 16px 44px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.035);
-  overflow:hidden;
-}
-
-.portrait-frame img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.portrait-placeholder strong { font-size: 13px; }
-.portrait-placeholder small { color:var(--muted2); }
-
-.profile-information {
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-}
-
-.identity-fields {
-  display:grid;
-  gap:14px;
-}
-
-.character-name-field > span,
-.identity-fields .field-block > span {
-  margin-bottom:7px;
-}
-
-#charName {
-  width:100%;
-  min-width:0;
-  min-height:64px;
-  padding:0 18px !important;
-  border-radius:14px !important;
-  font-size:clamp(23px, 2.1vw, 31px) !important;
-  font-weight:750 !important;
-  letter-spacing:-.035em;
-}
-
-.core-facts {
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 220px));
-  gap:12px;
-}
-
-#charAge, #charHeight {
-  width:100%;
-  min-height:48px;
-  padding:0 15px !important;
-  border-radius:12px !important;
-  font-size:14px !important;
-}
-
-.profile-divider {
-  height:1px;
-  background:var(--wiki-hairline);
-  margin:22px 0 18px;
-}
-
-.profile-data-head {
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:18px;
-  margin-bottom:8px;
-}
-
-.profile-data-head > div:first-child {
-  min-width:0;
-}
-
-.profile-data-head p {
-  max-width: 64ch;
-  margin:7px 0 0;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.55;
-}
-
-.profile-data-actions {
-  display:flex;
-  align-items:center;
-  gap:7px;
-  flex:0 0 auto;
-}
-
-.add-data-btn {
-  min-height:36px;
-  padding:0 12px;
-  font-size:10px;
-}
-
-.quick-add-trigger {
-  width:36px;
-  height:36px;
-  border-radius:10px;
-}
-
-.quick-add-popover {
-  width: 220px;
-}
-
-.quick-add-title {
-  display:block;
-  padding:6px 7px 8px;
-  color:var(--muted);
-  font:700 9px/1 var(--mono);
-  letter-spacing:.09em;
-  text-transform:uppercase;
-}
-
-.quick-data {
-  display:grid !important;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:5px !important;
-  margin:0 !important;
-  padding:0 !important;
-}
-
-.quick-data-btn {
-  min-height:34px;
-  border-radius:8px !important;
-  justify-content:flex-start;
-  padding:0 9px !important;
-  font-size:9px !important;
-}
-
-/* Facts are one row each: familiar wiki-infobox rhythm. */
-.custom-fields {
-  display:block !important;
-  margin:4px 0 0 !important;
-  padding:0 !important;
-}
-
-.custom-field {
-  display:grid !important;
-  grid-template-columns: minmax(112px, 150px) minmax(0,1fr) 28px !important;
-  grid-template-areas: "label value remove" !important;
-  gap:14px !important;
-  align-items:start;
-  width:100%;
-  min-width:0;
-  padding:11px 0 !important;
-  border-bottom:1px solid rgba(255,255,255,.047);
-}
-
-.custom-field:first-child {
-  border-top:1px solid rgba(255,255,255,.047);
-}
-
-.custom-field .field-label {
-  grid-area:label;
-  width:100%;
-  min-width:0;
-  min-height:34px;
-  padding:8px 5px !important;
-  color:#91eafa;
-  font:800 9px/1.45 var(--mono);
-  letter-spacing:.065em;
-  text-transform:uppercase;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  word-break:break-word;
-}
-
-.custom-field .field-value {
-  grid-area:value;
-  width:100%;
-  min-width:0;
-  min-height:34px;
-  padding:7px 8px !important;
-  color:#dce5f1;
-  font:500 12px/1.55 var(--sans);
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  word-break:break-word;
-}
-
-.custom-field .remove-mini {
-  grid-area:remove;
-  margin-top:2px;
-}
-
-.custom-empty {
-  padding:18px 0 8px;
-  color:var(--muted2);
-  font-size:10px;
-  line-height:1.6;
-}
-
-.dossier-stats {
-  margin:14px 0 0 !important;
-  padding:11px 0 0 !important;
-  border-top:1px solid rgba(255,255,255,.047);
-  color:var(--muted2);
-}
-
-/* ---------------------------------------------------------------
-   Section navigation: compact and sticky; article is the star.
-   --------------------------------------------------------------- */
-.section-nav {
-  position:sticky;
-  top:78px;
-  z-index:20;
-  width:100% !important;
-  margin:0 !important;
-  min-height:54px;
-  border-radius:16px !important;
-  background:rgba(9,14,22,.92) !important;
-  backdrop-filter:blur(18px);
-  box-shadow:0 12px 34px rgba(0,0,0,.16);
-}
-
-.section-tabs {
-  scrollbar-width:thin;
-}
-
-.section-tab {
-  min-height:36px;
-  padding:0 13px;
-}
-
-.content-panel {
-  width:100% !important;
-  min-height:720px !important;
-  border-radius:22px !important;
-  overflow:visible !important;
-}
-
-.content-heading {
-  min-height:84px;
-  padding:18px 22px !important;
-  border-bottom:1px solid var(--wiki-hairline);
-}
-
-.section-title-input {
-  font-size:clamp(24px, 2.1vw, 31px) !important;
-}
-
-/* The editor surface stays full-width as a container, but the readable
-   text column follows the empirically supported ~50–75 char range. */
-.rich-editor {
-  width:min(var(--wiki-reading), calc(100% - 64px)) !important;
-  max-width:var(--wiki-reading) !important;
-  min-height:680px !important;
-  margin:0 auto !important;
-  padding:46px 0 80px !important;
-  border:0 !important;
-  border-radius:0 !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  color:#dde6f1 !important;
-  font-size:16.5px !important;
-  line-height:1.72 !important;
-  letter-spacing:.002em;
-}
-
-.rich-editor p { margin:0 0 1.05em !important; }
-.rich-editor h2 { margin:1.65em 0 .55em !important; line-height:1.25 !important; }
-.rich-editor blockquote {
-  margin:1.4em 0 !important;
-  padding:.5em 1.05em !important;
-}
-
-.editor-footer {
-  padding:12px 22px !important;
-  border-top:1px solid rgba(255,255,255,.045);
-}
-
-/* Formatting stays progressive-disclosure only. */
-.format-panel {
-  z-index:90;
-  max-width:min(720px, calc(100vw - 32px));
-}
-
-/* Don't let the previous hero overrides win. */
-.identity-top,
-.custom-field-heading {
-  all:unset;
-}
-
-/* ---------------------------------------------------------------
-   Responsive behavior.
-   --------------------------------------------------------------- */
-@media (max-width: 980px) {
-  #editorView .app-shell,
-  #characterWorkspace.workspace {
-    width:min(100% - 24px, var(--wiki-frame)) !important;
-  }
-
-  .profile-hero-grid {
-    grid-template-columns:240px minmax(0,1fr);
-    gap:24px;
-    padding:24px;
-  }
-
-  .core-facts {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-}
-
-@media (max-width: 760px) {
-  #editorView .app-shell,
-  #characterWorkspace.workspace {
-    width:min(100% - 16px, var(--wiki-frame)) !important;
-  }
-
-  .character-bar {
-    align-items:stretch;
-  }
-
-  .profile-hero-grid {
-    grid-template-columns:1fr;
-    gap:20px;
-    padding:18px;
-  }
-
-  .portrait-column {
-    width:min(360px, 100%);
-    margin:0 auto;
-  }
-
-  .profile-header {
-    padding:0 18px;
-  }
-
-  .profile-subtitle { display:none; }
-
-  .profile-data-head {
-    align-items:center;
-  }
-
-  .custom-field {
-    grid-template-columns:minmax(95px, 122px) minmax(0,1fr) 28px !important;
-    gap:10px !important;
-  }
-
-  .section-nav { top:68px; }
-  .rich-editor {
-    width:calc(100% - 38px) !important;
-    padding-top:34px !important;
-  }
-}
-
-@media (max-width: 520px) {
-  .core-facts { grid-template-columns:1fr; }
-
-  .profile-data-head {
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .profile-data-actions {
-    justify-content:flex-start;
-  }
-
-  .custom-field {
-    grid-template-columns:minmax(0,1fr) 28px !important;
-    grid-template-areas:
-      "label remove"
-      "value value" !important;
-    gap:3px 8px !important;
-  }
-
-  .custom-field .field-value {
-    padding-left:5px !important;
-  }
-
-  .file-actions-popover {
-    right:-4px;
-    width:min(290px, calc(100vw - 32px));
-  }
-
-  .content-heading {
-    align-items:flex-start;
-  }
-}
-
-
-/* ================================================================
-   V12 — WIKI SIDEBAR LAYOUT
-   Character Profile lives on the left; sections/article on the right.
-   ================================================================ */
-
-:root {
-  --wiki-frame: 1500px;
-  --wiki-sidebar: clamp(330px, 25vw, 390px);
-}
-
-#editorView .app-shell,
-#characterWorkspace.workspace {
-  width: min(var(--wiki-frame), calc(100vw - 32px)) !important;
-}
-
-.workspace-grid {
-  display: grid !important;
-  grid-template-columns: var(--wiki-sidebar) minmax(0, 1fr) !important;
-  grid-template-areas:
-    "profile nav"
-    "profile content" !important;
-  gap: 14px 16px !important;
-  align-items: start !important;
-}
-
-.profile-panel {
-  grid-area: profile !important;
-  position: sticky !important;
-  top: 82px !important;
-  width: 100% !important;
-  max-height: calc(100vh - 98px) !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  border-radius: 22px !important;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(118,233,255,.20) transparent;
-}
-
-.profile-panel::-webkit-scrollbar { width: 8px; }
-.profile-panel::-webkit-scrollbar-thumb {
-  background: rgba(118,233,255,.16);
-  border-radius: 999px;
-}
-
-.section-nav {
-  grid-area: nav !important;
-  position: sticky !important;
-  top: 82px !important;
-  z-index: 24 !important;
-  margin: 0 !important;
-}
-
-.content-panel {
-  grid-area: content !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-}
-
-/* Sidebar profile becomes an actual wiki infobox. */
-.profile-header {
-  min-height: 54px !important;
-  padding: 0 18px !important;
-}
-
-.profile-header > div {
-  min-width: 0;
-  gap: 8px !important;
-}
-
-.profile-subtitle {
-  display: none !important;
-}
-
-.profile-hero-grid {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  padding: 16px !important;
-}
-
-.portrait-column {
-  width: 100% !important;
-  margin: 0 !important;
-}
-
-.portrait-frame,
-.identity-top .portrait-frame {
-  width: 100% !important;
-  aspect-ratio: 4 / 5 !important;
-  min-height: 0 !important;
-  border-radius: 18px !important;
-}
-
-.profile-information {
-  width: 100% !important;
-  min-width: 0 !important;
-  padding-top: 18px !important;
-}
-
-.identity-fields {
-  gap: 11px !important;
-}
-
-#charName {
-  min-height: 54px !important;
-  padding: 0 14px !important;
-  font-size: 21px !important;
-  line-height: 1.15 !important;
-}
-
-.core-facts {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 10px !important;
-}
-
-#charAge,
-#charHeight {
-  min-height: 44px !important;
-  padding: 0 12px !important;
-}
-
-.profile-divider {
-  margin: 18px 0 16px !important;
-}
-
-.profile-data-head {
-  gap: 10px !important;
-  align-items: center !important;
-}
-
-.profile-data-head p {
-  display: none !important;
-}
-
-.profile-data-actions {
-  gap: 6px !important;
-}
-
-.add-data-btn {
-  min-height: 34px !important;
-  padding: 0 10px !important;
-}
-
-.quick-add-trigger {
-  width: 34px !important;
-  height: 34px !important;
-}
-
-/* Each profile detail is a clean stacked wiki row that can wrap forever. */
-.custom-fields {
-  display: block !important;
-  margin: 8px 0 0 !important;
-}
-
-.custom-field {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 28px !important;
-  grid-template-areas:
-    "label remove"
-    "value value" !important;
-  gap: 4px 8px !important;
-  padding: 12px 0 14px !important;
-}
-
-.custom-field .field-label {
-  grid-area: label !important;
-  min-width: 0 !important;
-  min-height: 28px !important;
-  padding: 4px 2px !important;
-  line-height: 1.45 !important;
-  white-space: pre-wrap !important;
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-}
-
-.custom-field .field-value {
-  grid-area: value !important;
-  min-width: 0 !important;
-  min-height: 34px !important;
-  padding: 5px 2px !important;
-  line-height: 1.6 !important;
-  white-space: pre-wrap !important;
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-}
-
-.custom-field .remove-mini {
-  grid-area: remove !important;
-  justify-self: end !important;
-}
-
-.dossier-stats {
-  padding-bottom: 2px !important;
-}
-
-/* Article area gets the visual priority. */
-.content-panel {
-  border-radius: 22px !important;
-  min-height: calc(100vh - 150px) !important;
-}
-
-.content-heading {
-  padding: 18px 22px !important;
-}
-
-.rich-editor {
-  width: min(74ch, calc(100% - 64px)) !important;
-  max-width: 74ch !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding-top: 42px !important;
-  min-height: calc(100vh - 320px) !important;
-}
-
-/* Focus mode makes the right side full-width. */
-#editorView.focus-mode .workspace-grid {
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-areas:
-    "nav"
-    "content" !important;
-}
-
-#editorView.focus-mode .profile-panel {
-  display: none !important;
-}
-
-/* Responsive: the infobox moves above the article only when space is tight. */
-@media (max-width: 1050px) {
-  :root { --wiki-sidebar: 330px; }
-
-  .workspace-grid {
-    grid-template-columns: var(--wiki-sidebar) minmax(0, 1fr) !important;
-  }
-
-  .content-actions {
-    gap: 5px !important;
-  }
-
-  .section-mini-tools {
-    display: none !important;
-  }
-}
-
-@media (max-width: 820px) {
-  .workspace-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-areas:
-      "profile"
-      "nav"
-      "content" !important;
-  }
-
-  .profile-panel,
-  .section-nav {
-    position: static !important;
-    top: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  .profile-hero-grid {
-    display: grid !important;
-    grid-template-columns: minmax(190px, 280px) minmax(0,1fr) !important;
-    gap: 22px !important;
-  }
-
-  .profile-information {
-    padding-top: 0 !important;
-  }
-}
-
-@media (max-width: 580px) {
-  .profile-hero-grid {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .portrait-column {
-    width: min(100%, 360px) !important;
-    margin: 0 auto !important;
-  }
-
-  .rich-editor {
-    width: calc(100% - 36px) !important;
-  }
-}
-
-
-/* ================================================================
-   V13 — BALANCED DESKTOP + MOBILE WIKI LAYOUT
-   Larger infobox, less dead space, deliberate phone layout.
-   ================================================================ */
-
-:root {
-  --wiki-frame: 1680px;
-  --wiki-sidebar: clamp(410px, 30vw, 470px);
-}
-
-/* Use more of the monitor instead of leaving unused gutters. */
-#editorView .app-shell,
-#characterWorkspace.workspace {
-  width: min(var(--wiki-frame), calc(100vw - 24px)) !important;
-}
-
-/* More visual weight for the character profile. */
-.workspace-grid {
-  grid-template-columns: var(--wiki-sidebar) minmax(0, 1fr) !important;
-  gap: 16px 18px !important;
-}
-
-.profile-panel {
-  border-radius: 24px !important;
-  top: 76px !important;
-  max-height: calc(100vh - 92px) !important;
-  box-shadow:
-    0 24px 64px rgba(0,0,0,.20),
-    inset 0 1px 0 rgba(255,255,255,.025);
-}
-
-.profile-header {
-  min-height: 60px !important;
-  padding: 0 20px !important;
-}
-
-.profile-header .micro-label {
-  font-size: 9px !important;
-  letter-spacing: .13em !important;
-}
-
-/* The portrait is intentionally larger and feels like the anchor of the page. */
-.profile-hero-grid {
-  padding: 18px !important;
-}
-
-.portrait-frame,
-.identity-top .portrait-frame {
-  aspect-ratio: 4 / 4.85 !important;
-  border-radius: 20px !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.018),
-    0 18px 44px rgba(0,0,0,.18);
-}
-
-.profile-information {
-  padding-top: 20px !important;
-}
-
-#charName {
-  min-height: 60px !important;
-  padding: 0 16px !important;
-  font-size: 24px !important;
-  border-radius: 14px !important;
-}
-
-#charAge,
-#charHeight {
-  min-height: 48px !important;
-  font-size: 14px !important;
-  border-radius: 12px !important;
-}
-
-.core-facts {
-  gap: 12px !important;
-}
-
-.profile-divider {
-  margin: 20px 0 18px !important;
-}
-
-/* Profile details remain one-per-line and are easier to scan. */
-.custom-field {
-  padding: 14px 0 16px !important;
-  border-bottom: 1px solid rgba(255,255,255,.045) !important;
-}
-
-.custom-field .field-label {
-  font-size: 9px !important;
-  letter-spacing: .09em !important;
-}
-
-.custom-field .field-value {
-  font-size: 13px !important;
-  line-height: 1.62 !important;
-  color: #e5edf8 !important;
-}
-
-/* Give the right column a cleaner rhythm. */
-.section-nav {
-  top: 76px !important;
-  min-height: 62px !important;
-  border-radius: 20px !important;
-  padding: 9px !important;
-}
-
-.section-tab,
-.add-tab-btn {
-  min-height: 42px !important;
-}
-
-.content-panel {
-  min-height: 0 !important;
-  border-radius: 24px !important;
-  overflow: visible !important;
-}
-
-.content-heading {
-  padding: 20px 22px !important;
-  min-height: 84px !important;
-}
-
-/* Do not fill the entire screen with an empty editor.
-   It grows naturally as content is added. */
-.rich-editor {
-  width: min(76ch, calc(100% - 72px)) !important;
-  max-width: 76ch !important;
-  min-height: clamp(460px, 56vh, 640px) !important;
-  margin: 0 auto !important;
-  padding: 42px 0 64px !important;
-  font-size: 16px !important;
-  line-height: 1.78 !important;
-}
-
-/* A little more intention when the article is empty. */
-.rich-editor:empty::before {
-  display: block;
-  max-width: 38ch;
-  line-height: 1.7;
-  color: #58657a !important;
-}
-
-/* Keep the footer compact instead of adding another large strip. */
-.editor-footer {
-  min-height: 46px !important;
-  padding: 0 18px !important;
-}
-
-/* Better medium-screen balance. */
-@media (max-width: 1260px) {
-  :root {
-    --wiki-sidebar: clamp(370px, 32vw, 420px);
-  }
-
-  .rich-editor {
-    width: min(72ch, calc(100% - 54px)) !important;
-  }
-
-  .content-heading {
-    gap: 10px !important;
-  }
-
-  .section-mini-tools {
-    display: none !important;
-  }
-}
-
-/* Tablet: profile becomes a strong top card instead of a cramped sidebar. */
-@media (max-width: 900px) {
-  #editorView .app-shell,
-  #characterWorkspace.workspace {
-    width: calc(100vw - 18px) !important;
-  }
-
-  .workspace-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-areas:
-      "profile"
-      "nav"
-      "content" !important;
-    gap: 12px !important;
-  }
-
-  .profile-panel {
-    position: static !important;
-    top: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  .profile-hero-grid {
-    display: grid !important;
-    grid-template-columns: minmax(240px, 36%) minmax(0, 1fr) !important;
-    gap: 22px !important;
-    align-items: start !important;
-  }
-
-  .portrait-column {
-    width: 100% !important;
-    margin: 0 !important;
-  }
-
-  .portrait-frame,
-  .identity-top .portrait-frame {
-    aspect-ratio: 4 / 5 !important;
-  }
-
-  .profile-information {
-    padding-top: 0 !important;
-  }
-
-  .section-nav {
-    position: sticky !important;
-    top: 62px !important;
-  }
-
-  .rich-editor {
-    width: min(74ch, calc(100% - 48px)) !important;
-    min-height: 460px !important;
-  }
-}
-
-/* Phone layout: intentionally redesigned rather than merely stacked. */
-@media (max-width: 640px) {
-  body {
-    overflow-x: hidden;
-  }
-
-  .topbar {
-    height: 58px !important;
-    padding: 0 12px !important;
-  }
-
-  .brand-copy strong {
-    font-size: 11px !important;
-  }
-
-  .brand-copy small,
-  .public-badge {
-    display: none !important;
-  }
-
-  #editorView .app-shell,
-  #characterWorkspace.workspace {
-    width: calc(100vw - 12px) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  .story-head {
-    min-height: 0 !important;
-    padding: 14px !important;
-    border-radius: 18px !important;
-    display: grid !important;
-    grid-template-columns: 38px minmax(0,1fr) !important;
-    align-items: start !important;
-    gap: 10px !important;
-  }
-
-  .story-head-copy h2 {
-    margin-top: 4px !important;
-    font-size: clamp(24px, 8vw, 32px) !important;
-    white-space: normal !important;
-    overflow: visible !important;
-  }
-
-  .story-head-copy small {
-    display: none !important;
-  }
-
-  .head-actions {
-    grid-column: 1 / -1;
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0,1fr));
-    gap: 7px !important;
-    width: 100%;
-  }
-
-  .head-actions button {
-    min-width: 0 !important;
-    padding: 0 7px !important;
-    font-size: 9px !important;
-  }
-
-  .character-bar {
-    padding: 10px !important;
-    border-radius: 16px !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 9px !important;
-  }
-
-  .character-picker {
-    min-width: 0 !important;
-    width: 100% !important;
-  }
-
-  .character-select {
-    width: 100% !important;
-  }
-
-  .utility-actions {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0,1fr) 44px !important;
-    gap: 8px !important;
-  }
-
-  .utility-actions > .primary-btn {
-    width: 100%;
-  }
-
-  /* Profile card */
-  .profile-panel {
-    border-radius: 18px !important;
-  }
-
-  .profile-header {
-    min-height: 50px !important;
-    padding: 0 14px !important;
-  }
-
-  .serial {
-    display: none !important;
-  }
-
-  .profile-hero-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0 !important;
-    padding: 12px !important;
-  }
-
-  .portrait-column {
-    width: 100% !important;
-    margin: 0 !important;
-  }
-
-  .portrait-frame,
-  .identity-top .portrait-frame {
-    width: 100% !important;
-    max-height: none !important;
-    aspect-ratio: 4 / 5 !important;
-    border-radius: 16px !important;
-  }
-
-  .profile-information {
-    padding-top: 16px !important;
-  }
-
-  #charName {
-    min-height: 54px !important;
-    font-size: 21px !important;
-  }
-
-  .core-facts {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 9px !important;
-  }
-
-  .profile-data-head {
-    align-items: center !important;
-  }
-
-  .profile-data-actions {
-    flex-shrink: 0;
-  }
-
-  .add-data-btn {
-    min-height: 36px !important;
-  }
-
-  /* Swipeable section bar */
-  .section-nav {
-    top: 58px !important;
-    min-height: 54px !important;
-    padding: 6px !important;
-    border-radius: 15px !important;
-    gap: 4px !important;
-  }
-
-  .nav-label {
-    display: none !important;
-  }
-
-  .section-tabs {
-    scroll-snap-type: x proximity;
-    overscroll-behavior-x: contain;
-  }
-
-  .section-tab {
-    scroll-snap-align: start;
-    min-height: 40px !important;
-    padding: 0 12px !important;
-    font-size: 11px !important;
-  }
-
-  .add-tab-btn {
-    min-height: 40px !important;
-    padding: 0 10px !important;
-  }
-
-  /* Article */
-  .content-panel {
-    border-radius: 18px !important;
-  }
-
-  .content-heading {
-    min-height: 0 !important;
-    padding: 14px !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-
-  .section-title-input {
-    font-size: 26px !important;
-  }
-
-  .content-actions {
-    width: 100% !important;
-    overflow-x: auto;
-    flex-wrap: nowrap !important;
-    justify-content: flex-start !important;
-    padding-bottom: 2px;
-    scrollbar-width: none;
-  }
-
-  .content-actions::-webkit-scrollbar {
-    display: none;
-  }
-
-  .content-actions > * {
-    flex: 0 0 auto;
-  }
-
-  .section-mini-tools {
-    display: none !important;
-  }
-
-  .format-panel {
-    position: fixed !important;
-    left: 8px !important;
-    right: 8px !important;
-    top: auto !important;
-    bottom: max(10px, env(safe-area-inset-bottom)) !important;
-    width: auto !important;
-    max-width: none !important;
-    max-height: 45vh;
-    overflow-y: auto;
-    flex-wrap: wrap !important;
-    justify-content: center;
-    border-radius: 18px !important;
-    padding: 10px !important;
-    z-index: 1000 !important;
-  }
-
-  .rich-editor {
-    width: 100% !important;
-    max-width: none !important;
-    min-height: 380px !important;
-    padding: 26px 18px 48px !important;
-    font-size: 16px !important;
-    line-height: 1.72 !important;
-  }
-
-  .editor-footer {
-    min-height: 42px !important;
-    padding: 0 12px !important;
-  }
-
-  .shortcut-hint {
-    display: none !important;
-  }
-}
-
-/* Very narrow phones */
-@media (max-width: 390px) {
-  .head-actions {
-    grid-template-columns: 1fr 1fr !important;
-  }
-
-  #deleteStoryBtn {
-    grid-column: 1 / -1;
-  }
-
-  .core-facts {
-    grid-template-columns: 1fr !important;
-  }
-
-  .profile-data-head {
-    align-items: flex-start !important;
-  }
-
-  .content-heading {
-    padding: 12px !important;
-  }
-
-  .rich-editor {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
-  }
-}
-
-
-/* ================================================================
-   V14 — LARGE INFO FIELDS + FULL ARTICLE WORKSPACE
-   ================================================================ */
+/* =====================================================================
+   V16 — CHARACTER THEMES / AMBIENT MARKS / CLEAN WIKI LAYOUT
+   This is the only modern layout layer. V8–V15 legacy overrides were
+   removed to prevent cascade conflicts.
+   ===================================================================== */
 
 :root {
   --wiki-frame: 1760px;
-  --wiki-sidebar: clamp(460px, 31vw, 520px);
+  --wiki-sidebar: 500px;
 }
 
-/* Fill the available screen more confidently. */
+#editorView {
+  --char-bg: #070b12;
+  --char-accent-rgb: 118,233,255;
+  --char-accent2-rgb: 139,124,255;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  --accent: #76e9ff;
+  --accent2: #8b7cff;
+}
+#editorView > *:not(.character-atmosphere) { position:relative; z-index:1; }
+
+.character-atmosphere {
+  position:fixed;
+  inset:68px 0 0;
+  z-index:-1;
+  pointer-events:none;
+  overflow:hidden;
+  background:
+    radial-gradient(900px 560px at 12% 10%, rgba(var(--char-accent-rgb),.075), transparent 66%),
+    radial-gradient(840px 600px at 90% 22%, rgba(var(--char-accent2-rgb),.07), transparent 68%),
+    linear-gradient(180deg, color-mix(in srgb, var(--char-bg) 90%, #000 10%), var(--char-bg));
+  transition:background .35s ease;
+}
+.ambient-logo-layer { position:absolute; inset:0; }
+.ambient-logo {
+  position:absolute;
+  left:var(--logo-x);
+  top:var(--logo-y);
+  width:var(--logo-size);
+  max-width:34vw;
+  aspect-ratio:1;
+  object-fit:contain;
+  opacity:var(--logo-opacity);
+  filter:
+    saturate(.9)
+    brightness(1.05)
+    drop-shadow(0 0 24px rgba(var(--char-accent-rgb),.30))
+    drop-shadow(0 0 58px rgba(var(--char-accent2-rgb),.11));
+  mix-blend-mode:screen;
+  transform:translate(-50%,-50%);
+  animation:ambientMarkFloat var(--logo-duration) ease-in-out var(--logo-delay) infinite alternate;
+  will-change:transform,opacity,filter;
+  user-select:none;
+}
+@keyframes ambientMarkFloat {
+  0%   { transform:translate(-50%,-50%) translate3d(-10px,8px,0) rotate(-2deg) scale(.965); opacity:calc(var(--logo-opacity) * .72); }
+  45%  { transform:translate(-50%,-50%) translate3d(8px,-9px,0) rotate(1.3deg) scale(1.015); opacity:var(--logo-opacity); }
+  100% { transform:translate(-50%,-50%) translate3d(15px,10px,0) rotate(2.5deg) scale(.985); opacity:calc(var(--logo-opacity) * .82); }
+}
+@media (prefers-reduced-motion:reduce) { .ambient-logo { animation:none; } }
+
+/* ---------- shared application frame ---------- */
 #editorView .app-shell,
-#characterWorkspace.workspace {
-  width: min(var(--wiki-frame), calc(100vw - 20px)) !important;
-}
+#characterWorkspace.workspace { width:min(var(--wiki-frame),calc(100vw - 24px)); margin-left:auto; margin-right:auto; }
+#characterWorkspace.workspace { margin-top:12px; }
+.glass { border-color:rgba(164,188,222,.11); }
 
-/* ---------- Profile / Infobox ---------- */
+.story-head {
+  min-height:104px; padding:18px 20px; border-radius:22px; position:relative; overflow:hidden;
+  background:linear-gradient(180deg,rgba(16,22,34,.93),rgba(9,14,22,.91));
+}
+.story-head::after { content:""; position:absolute; inset:auto -120px -160px auto; width:420px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(var(--char-accent-rgb),.10),transparent 68%); pointer-events:none; }
+.story-head-copy h2 { font-size:clamp(29px,2.6vw,43px); font-weight:780; letter-spacing:-.045em; }
+.story-head-copy small { font-size:11px; }
+.share-btn { color:var(--accent); }
+
+.character-bar { margin-top:10px; min-height:72px; padding:11px 13px; border-radius:18px; align-items:center; }
+.character-picker { display:grid; grid-template-columns:auto minmax(280px,520px); align-items:center; gap:12px; flex:1; }
+.character-select { width:100%; }
+.utility-actions { margin-left:auto; }
+.compact-primary { min-height:40px; white-space:nowrap; }
+
+/* ---------- menus ---------- */
+.file-actions-menu,.quick-add-menu { position:relative; }
+.file-actions-menu > summary,.quick-add-menu > summary { list-style:none; }
+.file-actions-menu > summary::-webkit-details-marker,.quick-add-menu > summary::-webkit-details-marker { display:none; }
+.more-actions-btn { min-width:46px; padding:0 13px; letter-spacing:.12em; display:inline-flex; align-items:center; justify-content:center; }
+.file-actions-popover,.quick-add-popover {
+  position:absolute; top:calc(100% + 9px); right:0; z-index:75; width:294px; padding:8px;
+  border:1px solid var(--line-strong); border-radius:15px; background:rgba(9,14,22,.985);
+  box-shadow:0 24px 70px rgba(0,0,0,.48); backdrop-filter:blur(22px);
+}
+.menu-action { width:100%; min-height:58px; border:0; border-radius:10px; padding:9px 10px; color:var(--text); background:transparent; display:grid; grid-template-columns:26px minmax(0,1fr); gap:9px; align-items:center; text-align:left; }
+.menu-action:hover { background:rgba(255,255,255,.055); }
+.menu-action > span:first-child { color:var(--accent); font:800 16px/1 var(--mono); text-align:center; }
+.menu-action > span:last-child { display:grid; gap:3px; }
+.menu-action b { font-size:11px; }
+.menu-action small { color:var(--muted); font-size:9px; line-height:1.35; }
+.menu-action.destructive b,.menu-action.destructive > span:first-child { color:var(--danger); }
+.menu-rule { height:1px; background:var(--line); margin:5px 4px; }
+.quick-add-popover { width:280px; }
+.quick-add-title { display:block; padding:5px 7px 7px; color:var(--muted); font:800 9px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; }
+.quick-data { display:flex; flex-wrap:wrap; gap:6px; margin:0; }
+.quick-data-btn { min-height:31px; padding:0 10px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.025); color:var(--muted); font:700 9px/1 var(--mono); }
+.quick-data-btn:hover { color:var(--accent); border-color:rgba(var(--char-accent-rgb),.25); background:rgba(var(--char-accent-rgb),.05); }
+
+/* ---------- wiki layout ---------- */
 .workspace-grid {
-  grid-template-columns: var(--wiki-sidebar) minmax(0, 1fr) !important;
-  gap: 18px !important;
-  align-items: start !important;
+  display:grid;
+  grid-template-columns:var(--wiki-sidebar) minmax(0,1fr);
+  grid-template-areas:"profile nav" "profile content";
+  gap:12px 16px;
+  align-items:start;
 }
-
-.profile-panel {
-  top: 72px !important;
-  max-height: calc(100vh - 86px) !important;
-  border-radius: 24px !important;
-  background:
-    radial-gradient(460px 260px at 20% 0%, rgba(99, 231, 255, .07), transparent 70%),
-    linear-gradient(180deg, rgba(14, 21, 33, .985), rgba(8, 13, 21, .99)) !important;
+#editorView[data-sidebar-side="right"] .workspace-grid {
+  grid-template-columns:minmax(0,1fr) var(--wiki-sidebar);
+  grid-template-areas:"nav profile" "content profile";
 }
+.profile-panel { grid-area:profile; position:sticky; top:82px; max-height:calc(100vh - 96px); overflow:auto; padding:0; border-radius:24px; background:linear-gradient(180deg,rgba(14,20,31,.97),rgba(8,13,21,.97)); box-shadow:0 24px 64px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.025); }
+.profile-header { min-height:58px; padding:0 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line); }
+.profile-header > div:first-child { display:flex; align-items:baseline; gap:9px; min-width:0; }
+.profile-subtitle { color:var(--muted2); font-size:9px; }
+.profile-header-tools { display:flex; align-items:center; gap:7px; }
+.profile-settings-btn { width:30px; height:30px; border:1px solid var(--line); border-radius:9px; background:rgba(255,255,255,.025); color:var(--muted); display:grid; place-items:center; }
+.profile-settings-btn:hover { color:var(--accent); border-color:rgba(var(--char-accent-rgb),.24); background:rgba(var(--char-accent-rgb),.04); }
 
-.profile-header {
-  min-height: 62px !important;
-  padding: 0 22px !important;
+.profile-hero-grid { display:flex; flex-direction:column; padding:16px; }
+.profile-information { display:contents; }
+.profile-module { min-width:0; }
+.portrait-column { order:1; }
+.identity-fields { order:2; padding-top:16px; display:grid; gap:12px; }
+.profile-details-module { order:3; }
+.portrait-frame { aspect-ratio:4/5; border-radius:19px; border-color:rgba(var(--char-accent-rgb),.16); background:radial-gradient(circle at 50% 38%,rgba(var(--char-accent-rgb),.09),transparent 32%),linear-gradient(145deg,#111927,#0a0f18); }
+.portrait-frame:hover,.portrait-frame.drop-active { border-color:rgba(var(--char-accent-rgb),.42); box-shadow:inset 0 0 46px rgba(var(--char-accent-rgb),.055); }
+
+.identity-fields .field-block > span { color:#8190a7; }
+#charName { min-height:62px; padding:0 16px; border-radius:14px; font-size:23px; font-weight:760; letter-spacing:-.03em; }
+.core-facts { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+#charAge,#charHeight { min-height:50px; border-radius:12px; font-size:14px; }
+#charName:focus,#charAge:focus,#charHeight:focus { border-color:rgba(var(--char-accent-rgb),.32); box-shadow:0 0 0 3px rgba(var(--char-accent-rgb),.05); }
+.profile-divider { height:1px; background:var(--line); margin:18px 0 15px; }
+.profile-data-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.profile-data-head p { margin:5px 0 0; color:var(--muted2); font-size:9px; line-height:1.5; max-width:34ch; }
+.profile-data-actions { display:flex; gap:6px; align-items:center; }
+.add-data-btn { min-height:36px; padding:0 11px; font-size:10px; white-space:nowrap; }
+.quick-add-trigger { width:36px; height:36px; }
+
+/* reference-list profile details */
+.custom-fields { display:flex; flex-direction:column; gap:2px; margin:12px 0 4px; padding:10px 2px 12px; border-top:1px solid rgba(255,255,255,.045); border-bottom:1px solid rgba(255,255,255,.045); }
+.custom-field { display:grid; grid-template-columns:minmax(118px,max-content) 9px minmax(0,1fr) 25px; grid-template-areas:"label colon value remove"; gap:0 4px; align-items:start; width:100%; padding:3px 1px; border:0; border-radius:7px; background:transparent; }
+.custom-field:hover,.custom-field:focus-within { background:rgba(255,255,255,.018); }
+.custom-field .field-label,.custom-field .field-value { width:100%; min-width:0; min-height:24px; height:auto; margin:0; padding:2px 3px; border:0; border-radius:5px; background:transparent; resize:none; overflow:hidden; white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word; box-shadow:none; }
+.custom-field .field-label { grid-area:label; text-align:right; color:#f1f5fb; font:780 13px/1.45 var(--sans); letter-spacing:0; text-transform:none; }
+.custom-field .field-colon { grid-area:colon; padding-top:2px; color:#f1f5fb; font-size:13px; font-weight:780; line-height:1.45; text-align:center; }
+.custom-field .field-value { grid-area:value; text-align:left; color:#d8e2ef; font:480 13px/1.45 var(--sans); }
+.custom-field .field-label:focus,.custom-field .field-value:focus { outline:0; background:rgba(var(--char-accent-rgb),.035); }
+.custom-field .remove-mini { grid-area:remove; position:static; width:24px; height:24px; opacity:0; border-radius:6px; }
+.custom-field:hover .remove-mini,.custom-field:focus-within .remove-mini { opacity:.7; }
+.custom-field.detail-heading { grid-template-columns:minmax(0,1fr) 25px; grid-template-areas:"label remove"; padding-top:12px; padding-bottom:5px; }
+.custom-field.detail-heading .field-label { text-align:center; font-size:14px; font-weight:820; }
+.custom-empty { padding:14px 8px; text-align:center; line-height:1.6; }
+.dossier-stats { margin-top:12px; padding:10px 0 1px; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:10px; color:var(--muted2); font:700 9px/1.4 var(--mono); }
+
+/* right side */
+.section-nav { grid-area:nav; position:sticky; top:80px; z-index:35; min-height:60px; margin:0; border-radius:18px; padding:8px; display:flex; align-items:center; gap:8px; overflow:hidden; box-shadow:0 16px 38px rgba(0,0,0,.16); }
+.nav-label { padding:0 8px; white-space:nowrap; }
+.section-tabs { flex:1; min-width:0; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; }
+.section-tab { min-height:42px; padding:0 14px; border-color:transparent; background:transparent; color:var(--muted); }
+.section-tab.active { color:var(--text); border-color:rgba(var(--char-accent-rgb),.26); background:rgba(var(--char-accent-rgb),.065); box-shadow:inset 0 -2px var(--accent); }
+.add-tab-btn { min-height:42px; padding:0 13px; color:var(--accent); background:rgba(var(--char-accent-rgb),.035); border-color:rgba(var(--char-accent-rgb),.11); }
+.content-panel { grid-area:content; min-height:calc(100vh - 260px); border-radius:22px; overflow:hidden; display:flex; flex-direction:column; background:linear-gradient(180deg,rgba(13,19,29,.965),rgba(7,11,18,.975)); }
+.content-heading { flex:0 0 auto; min-height:88px; padding:17px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:14px; background:linear-gradient(180deg,rgba(19,27,41,.65),rgba(13,19,29,.35)); }
+.section-name-wrap { flex:1; min-width:0; }
+.section-title-input { font-size:clamp(27px,2.2vw,37px); font-weight:780; }
+.content-actions { display:flex; align-items:center; gap:7px; }
+.rich-editor { flex:1 1 auto; width:100%; max-width:none; min-height:max(640px,calc(100vh - 390px)); margin:0; padding:44px clamp(34px,4.8vw,76px) 88px; font-size:17px; line-height:1.8; }
+.rich-editor > p,.rich-editor > h1,.rich-editor > h2,.rich-editor > h3,.rich-editor > blockquote,.rich-editor > ul,.rich-editor > ol { max-width:82ch; }
+.rich-editor:empty::before { max-width:44ch; color:#58657a; }
+.editor-footer { flex:0 0 auto; min-height:46px; padding:0 18px; background:rgba(5,9,15,.42); }
+
+#editorView.focus-mode .profile-panel { display:none; }
+#editorView.focus-mode .workspace-grid { grid-template-columns:minmax(0,1fr); grid-template-areas:"nav" "content"; }
+#editorView.focus-mode .content-panel { max-width:none; }
+
+/* ---------- Character settings page ---------- */
+.character-settings-page { position:fixed; inset:0; z-index:110; overflow:auto; padding:24px; background:rgba(4,7,12,.88); backdrop-filter:blur(24px) saturate(130%); }
+.settings-shell { width:min(1120px,100%); margin:0 auto; }
+.settings-header { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; padding:18px 2px 22px; border-bottom:1px solid var(--line); }
+.settings-header h2 { margin:7px 0 4px; font-size:clamp(30px,4vw,48px); letter-spacing:-.045em; }
+.settings-header p { margin:0; color:var(--muted); }
+.settings-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; padding:16px 0; }
+.settings-card { padding:20px; border:1px solid var(--line); border-radius:20px; background:linear-gradient(180deg,rgba(15,21,33,.96),rgba(9,14,22,.94)); box-shadow:0 18px 55px rgba(0,0,0,.18); }
+.layout-settings { grid-column:1 / -1; }
+.settings-card-head { display:flex; align-items:flex-start; gap:12px; margin-bottom:18px; }
+.settings-icon { width:38px; height:38px; flex:0 0 auto; display:grid; place-items:center; border-radius:12px; border:1px solid rgba(var(--char-accent-rgb),.18); background:rgba(var(--char-accent-rgb),.055); color:var(--accent); }
+.settings-card h3 { margin:0 0 4px; font-size:18px; }
+.settings-card p { margin:0; color:var(--muted); font-size:11px; line-height:1.55; }
+.color-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.color-control { display:grid; gap:7px; padding:11px; border:1px solid var(--line); border-radius:13px; background:rgba(255,255,255,.018); }
+.color-control > span,.select-control > span,.range-control > span { color:var(--muted); font-size:9px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.color-control > div { display:flex; align-items:center; gap:9px; }
+.color-control input[type=color] { width:38px; height:34px; padding:2px; border:1px solid var(--line); border-radius:9px; background:#0a0f18; }
+.color-control output { font:700 9px/1 var(--mono); color:var(--text); }
+.theme-presets { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+.theme-preset { min-height:35px; padding:0 10px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.02); color:var(--muted); display:flex; align-items:center; gap:7px; font-size:10px; }
+.theme-preset i { width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,var(--a),var(--b)); box-shadow:0 0 12px color-mix(in srgb,var(--a) 40%,transparent); }
+.theme-preset:hover { color:var(--text); border-color:var(--line-strong); }
+.ambient-settings-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.switch-control { display:flex; align-items:center; gap:9px; color:var(--text); font-size:11px; cursor:pointer; }
+.switch-control input { position:absolute; opacity:0; }
+.switch-control span { width:42px; height:24px; border-radius:999px; border:1px solid var(--line); background:#0a0f18; position:relative; transition:.18s; }
+.switch-control span::after { content:""; position:absolute; width:16px; height:16px; left:3px; top:3px; border-radius:50%; background:#768196; transition:.18s; }
+.switch-control input:checked + span { border-color:rgba(var(--char-accent-rgb),.30); background:rgba(var(--char-accent-rgb),.08); }
+.switch-control input:checked + span::after { transform:translateX(18px); background:var(--accent); box-shadow:0 0 13px rgba(var(--char-accent-rgb),.55); }
+.logo-upload-btn { display:inline-flex; align-items:center; cursor:pointer; }
+.settings-note { margin:10px 0 12px !important; color:var(--muted2) !important; font-size:9px !important; }
+.ambient-logo-settings-list { display:grid; gap:8px; }
+.ambient-logo-settings-list:empty::before { content:"No background logos added. This feature is optional."; display:block; padding:18px; border:1px dashed var(--line); border-radius:12px; color:var(--muted2); font-size:10px; text-align:center; }
+.logo-setting-item { display:grid; grid-template-columns:42px minmax(0,1fr) auto; gap:10px; align-items:center; padding:9px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.018); cursor:grab; }
+.logo-setting-item.dragging { opacity:.45; }
+.logo-preview { width:42px; height:42px; object-fit:contain; border-radius:9px; background:rgba(255,255,255,.025); }
+.logo-setting-controls { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.logo-setting-controls label { display:grid; gap:4px; color:var(--muted); font-size:8px; text-transform:uppercase; letter-spacing:.07em; }
+.logo-setting-controls input[type=range] { width:100%; accent-color:var(--accent); }
+.logo-setting-actions { display:flex; gap:5px; }
+.mini-action { width:30px; height:30px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.02); color:var(--muted); }
+.mini-action:hover { color:var(--text); border-color:var(--line-strong); }
+.mini-action.remove:hover { color:var(--danger); border-color:rgba(255,107,129,.25); }
+.layout-options { display:grid; grid-template-columns:minmax(220px,.7fr) minmax(280px,1.3fr); gap:12px; margin-bottom:16px; }
+.select-control,.range-control { display:grid; gap:8px; padding:12px; border:1px solid var(--line); border-radius:13px; background:rgba(255,255,255,.018); }
+.select-control select { min-height:40px; border:1px solid var(--line); border-radius:9px; background:#0a0f18; color:var(--text); padding:0 10px; }
+.range-control input { width:100%; accent-color:var(--accent); }
+.range-control output { color:var(--accent); }
+.layout-sort-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; color:var(--text); font-size:11px; font-weight:750; }
+.layout-sort-head small { color:var(--muted2); font-weight:500; }
+.layout-sort-list { display:grid; gap:7px; }
+.layout-sort-item { display:grid; grid-template-columns:28px minmax(0,1fr) auto; gap:9px; align-items:center; min-height:50px; padding:7px 9px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.018); cursor:grab; }
+.layout-sort-item.dragging { opacity:.45; }
+.drag-grip { color:var(--muted2); text-align:center; font-size:17px; }
+.layout-sort-item b { font-size:11px; }
+.layout-sort-item small { display:block; margin-top:3px; color:var(--muted); font-size:9px; }
+.sort-actions { display:flex; gap:5px; }
+.settings-footer { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 2px 28px; color:var(--muted2); font-size:10px; }
+
+@media (max-width:1150px) {
+  :root { --wiki-sidebar:430px; }
+  .profile-subtitle { display:none; }
+  .content-actions .section-mini-tools { display:none; }
+  .rich-editor { padding-left:38px; padding-right:38px; }
 }
-
-.profile-hero-grid {
-  padding: 20px !important;
+@media (max-width:900px) {
+  #editorView .app-shell,#characterWorkspace.workspace { width:calc(100vw - 18px); }
+  .workspace-grid,#editorView[data-sidebar-side="right"] .workspace-grid { grid-template-columns:1fr; grid-template-areas:"profile" "nav" "content"; gap:10px; }
+  .profile-panel { position:static; max-height:none; overflow:visible; }
+  .profile-hero-grid { display:grid; grid-template-columns:minmax(230px,34%) minmax(0,1fr); gap:18px; }
+  .profile-information { display:contents; }
+  .portrait-column { order:1; grid-row:1 / span 2; }
+  .identity-fields { order:2; padding-top:0; }
+  .profile-details-module { order:3; }
+  .section-nav { top:70px; }
+  .settings-grid { grid-template-columns:1fr; }
+  .layout-settings { grid-column:auto; }
 }
-
-.portrait-frame,
-.identity-top .portrait-frame {
-  border-radius: 22px !important;
-  aspect-ratio: 4 / 4.7 !important;
+@media (max-width:640px) {
+  .topbar { height:58px; padding:0 11px; }
+  .brand-copy small,.public-badge { display:none; }
+  #editorView .app-shell,#characterWorkspace.workspace { width:calc(100vw - 10px); }
+  .story-head { min-height:0; padding:13px; border-radius:17px; display:grid; grid-template-columns:38px minmax(0,1fr); align-items:start; gap:9px; }
+  .story-head-copy h2 { white-space:normal; overflow:visible; font-size:clamp(25px,8vw,33px); margin-top:4px; }
+  .story-head-copy small { display:none; }
+  .head-actions { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); width:100%; gap:6px; }
+  .head-actions button { min-width:0; padding:0 6px; font-size:9px; }
+  .character-bar { flex-direction:column; align-items:stretch; gap:8px; border-radius:16px; padding:9px; }
+  .character-picker { grid-template-columns:1fr; gap:5px; min-width:0; }
+  .character-picker .micro-label { display:none; }
+  .utility-actions { width:100%; display:grid; grid-template-columns:minmax(0,1fr) 44px; gap:7px; }
+  .profile-panel,.content-panel,.section-nav { border-radius:17px; }
+  .profile-header { min-height:50px; padding:0 13px; }
+  .serial { display:none; }
+  .profile-hero-grid { display:flex; flex-direction:column; gap:0; padding:11px; }
+  .profile-information { display:contents; }
+  .portrait-column,.identity-fields,.profile-details-module { grid-row:auto; }
+  .portrait-frame { aspect-ratio:4/5; }
+  .identity-fields { padding-top:14px; }
+  #charName { min-height:56px; font-size:21px; }
+  .core-facts { grid-template-columns:1fr 1fr; }
+  .custom-field { grid-template-columns:minmax(92px,38%) 8px minmax(0,1fr) 24px; gap:0 3px; }
+  .custom-field .field-label,.custom-field .field-value,.custom-field .field-colon { font-size:12px; }
+  .section-nav { top:58px; min-height:54px; padding:6px; }
+  .nav-label { display:none; }
+  .section-tabs { scroll-snap-type:x proximity; overscroll-behavior-x:contain; }
+  .section-tab { min-height:40px; scroll-snap-align:start; }
+  .add-tab-btn { min-height:40px; }
+  .content-heading { min-height:0; padding:13px; flex-direction:column; align-items:stretch; }
+  .section-title-input { font-size:28px; }
+  .content-actions { width:100%; overflow-x:auto; flex-wrap:nowrap; justify-content:flex-start; scrollbar-width:none; }
+  .content-actions::-webkit-scrollbar { display:none; }
+  .content-actions > * { flex:0 0 auto; }
+  .format-panel { position:fixed; left:8px; right:8px; top:auto; bottom:max(10px,env(safe-area-inset-bottom)); width:auto; max-width:none; max-height:45vh; overflow:auto; flex-wrap:wrap; justify-content:center; z-index:1000; }
+  .rich-editor { min-height:520px; padding:28px 18px 60px; font-size:16px; line-height:1.74; }
+  .rich-editor > p,.rich-editor > h1,.rich-editor > h2,.rich-editor > h3,.rich-editor > blockquote,.rich-editor > ul,.rich-editor > ol { max-width:none; }
+  .shortcut-hint { display:none; }
+  .character-atmosphere { inset:58px 0 0; }
+  .ambient-logo { max-width:62vw; }
+  .character-settings-page { padding:10px; }
+  .settings-header { align-items:flex-start; }
+  .settings-header h2 { font-size:31px; }
+  .settings-header p { font-size:11px; }
+  .settings-card { padding:14px; border-radius:16px; }
+  .color-grid { grid-template-columns:1fr; }
+  .ambient-settings-row { align-items:stretch; flex-direction:column; }
+  .logo-upload-btn { justify-content:center; }
+  .logo-setting-item { grid-template-columns:38px minmax(0,1fr); }
+  .logo-setting-actions { grid-column:1/-1; justify-content:flex-end; }
+  .layout-options { grid-template-columns:1fr; }
+  .layout-sort-head { align-items:flex-start; flex-direction:column; }
+  .settings-footer { align-items:flex-start; flex-direction:column-reverse; }
 }
-
-/* Core identity fields should feel important, not tiny form controls. */
-.profile-information {
-  padding-top: 22px !important;
-}
-
-.profile-information .field-block > span {
-  display: block;
-  margin: 0 0 8px !important;
-  font-size: 9px !important;
-  letter-spacing: .14em !important;
-  color: #7fe8f7 !important;
-}
-
-#charName {
-  min-height: 66px !important;
-  padding: 0 18px !important;
-  border-radius: 15px !important;
-  font-size: 25px !important;
-  font-weight: 760 !important;
-  letter-spacing: -.03em !important;
-  background: rgba(255,255,255,.035) !important;
-  border: 1px solid rgba(166, 201, 236, .12) !important;
-}
-
-.core-facts {
-  gap: 12px !important;
-}
-
-#charAge,
-#charHeight {
-  min-height: 54px !important;
-  padding: 0 15px !important;
-  border-radius: 13px !important;
-  font-size: 15px !important;
-  background: rgba(255,255,255,.028) !important;
-  border: 1px solid rgba(166, 201, 236, .105) !important;
-}
-
-#charName:focus,
-#charAge:focus,
-#charHeight:focus {
-  border-color: rgba(110,231,255,.34) !important;
-  background: rgba(110,231,255,.045) !important;
-  box-shadow: 0 0 0 3px rgba(110,231,255,.06) !important;
-}
-
-/* Profile detail section gets stronger hierarchy. */
-.profile-divider {
-  margin: 22px 0 18px !important;
-}
-
-.profile-data-head {
-  margin-bottom: 12px !important;
-}
-
-.profile-data-head .micro-label,
-.custom-field-heading .micro-label {
-  font-size: 9px !important;
-  letter-spacing: .14em !important;
-}
-
-.add-data-btn {
-  min-height: 40px !important;
-  padding: 0 14px !important;
-  border-radius: 11px !important;
-  font-size: 10px !important;
-}
-
-/* Custom fields are now substantial stacked blocks, not tiny rows. */
-.custom-fields {
-  display: grid !important;
-  grid-template-columns: 1fr !important;
-  gap: 10px !important;
-  margin-top: 12px !important;
-  border-top: 0 !important;
-}
-
-.custom-field {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 34px !important;
-  grid-template-areas:
-    "label remove"
-    "value value" !important;
-  gap: 7px 10px !important;
-  padding: 13px !important;
-  border: 1px solid rgba(158,188,224,.09) !important;
-  border-radius: 14px !important;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.027), rgba(255,255,255,.014)) !important;
-  transition: border-color .16s ease, background .16s ease, transform .16s ease !important;
-}
-
-.custom-field:hover {
-  border-color: rgba(110,231,255,.12) !important;
-  background:
-    linear-gradient(180deg, rgba(110,231,255,.035), rgba(255,255,255,.015)) !important;
-}
-
-.custom-field:focus-within {
-  border-color: rgba(110,231,255,.24) !important;
-  background:
-    linear-gradient(180deg, rgba(110,231,255,.05), rgba(255,255,255,.017)) !important;
-  box-shadow: 0 0 0 3px rgba(110,231,255,.035) !important;
-}
-
-.custom-field .field-label {
-  grid-area: label !important;
-  min-height: 36px !important;
-  padding: 8px 10px !important;
-  border-radius: 9px !important;
-  color: #83e8f7 !important;
-  font: 820 10px/1.45 var(--mono) !important;
-  letter-spacing: .08em !important;
-  background: rgba(110,231,255,.025) !important;
-}
-
-.custom-field .field-value {
-  grid-area: value !important;
-  min-height: 62px !important;
-  padding: 11px 12px !important;
-  border-radius: 10px !important;
-  font-size: 14px !important;
-  line-height: 1.62 !important;
-  color: #edf4fd !important;
-  background: rgba(255,255,255,.02) !important;
-}
-
-.custom-field .field-label:focus,
-.custom-field .field-value:focus {
-  border-color: rgba(110,231,255,.18) !important;
-  background: rgba(110,231,255,.035) !important;
-}
-
-.custom-field .remove-mini {
-  grid-area: remove !important;
-  width: 34px !important;
-  height: 34px !important;
-  border-radius: 9px !important;
-}
-
-.quick-data {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 7px !important;
-  margin: 10px 0 14px !important;
-}
-
-.quick-data-btn {
-  min-height: 34px !important;
-  padding: 0 11px !important;
-  border-radius: 999px !important;
-  font-size: 9px !important;
-}
-
-/* ---------- Sections ---------- */
-.section-nav {
-  min-height: 64px !important;
-  padding: 9px !important;
-  border-radius: 20px !important;
-}
-
-.section-tab,
-.add-tab-btn {
-  min-height: 44px !important;
-  padding-left: 15px !important;
-  padding-right: 15px !important;
-  font-size: 11px !important;
-}
-
-/* ---------- Article ---------- */
-/* Make the ARTICLE itself the workspace, rather than a small page inside it. */
-.content-panel {
-  min-height: calc(100vh - 252px) !important;
-  border-radius: 24px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-  background:
-    radial-gradient(920px 420px at 50% 0%, rgba(110,231,255,.028), transparent 68%),
-    linear-gradient(180deg, rgba(13,19,29,.985), rgba(7,11,18,.985)) !important;
-  box-shadow:
-    0 26px 70px rgba(0,0,0,.24),
-    inset 0 1px rgba(255,255,255,.028) !important;
-}
-
-.content-heading {
-  flex: 0 0 auto !important;
-  min-height: 94px !important;
-  padding: 19px 22px !important;
-  background:
-    linear-gradient(180deg, rgba(19,27,41,.78), rgba(13,19,29,.52)) !important;
-}
-
-.section-title-input {
-  font-size: clamp(28px, 2.25vw, 38px) !important;
-  font-weight: 780 !important;
-  letter-spacing: -.035em !important;
-}
-
-.content-actions {
-  gap: 7px !important;
-}
-
-.content-actions button {
-  min-height: 40px !important;
-  padding: 0 12px !important;
-  border-radius: 11px !important;
-}
-
-/* Full-width article canvas. */
-.rich-editor {
-  flex: 1 1 auto !important;
-  width: 100% !important;
-  max-width: none !important;
-  min-height: max(680px, calc(100vh - 390px)) !important;
-  margin: 0 !important;
-  padding: 48px clamp(38px, 5.2vw, 84px) 92px !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  font-size: 17px !important;
-  line-height: 1.82 !important;
-  color: #e2eaf5 !important;
-}
-
-/* Readability: long prose still gets a comfortable reading measure
-   by constraining paragraph-like blocks rather than the whole editor. */
-.rich-editor > p,
-.rich-editor > h1,
-.rich-editor > h2,
-.rich-editor > h3,
-.rich-editor > blockquote,
-.rich-editor > ul,
-.rich-editor > ol {
-  max-width: 82ch;
-}
-
-.rich-editor > p,
-.rich-editor > blockquote,
-.rich-editor > ul,
-.rich-editor > ol {
-  font-size: 17px !important;
-}
-
-.rich-editor:focus {
-  outline: none !important;
-  box-shadow: inset 0 1px 0 rgba(110,231,255,.05) !important;
-}
-
-.rich-editor:empty::before {
-  display: block;
-  max-width: 46ch;
-  font-size: 16px !important;
-  line-height: 1.7 !important;
-  color: #536176 !important;
-}
-
-.editor-footer {
-  flex: 0 0 auto !important;
-  min-height: 48px !important;
-  padding: 0 20px !important;
-  border-top: 1px solid rgba(255,255,255,.05) !important;
-  background: rgba(6,10,16,.54) !important;
-}
-
-/* Focus mode becomes a true full-width writing environment. */
-#editorView.focus-mode .content-panel {
-  max-width: 1480px !important;
-}
-#editorView.focus-mode .rich-editor {
-  width: 100% !important;
-  max-width: none !important;
-}
-
-/* ---------- Tablet ---------- */
-@media (max-width: 1200px) {
-  :root {
-    --wiki-sidebar: clamp(410px, 34vw, 460px);
-  }
-
-  .content-heading {
-    align-items: flex-start !important;
-  }
-
-  .content-actions {
-    max-width: 46%;
-    justify-content: flex-end !important;
-  }
-}
-
-@media (max-width: 920px) {
-  .workspace-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .profile-panel {
-    position: static !important;
-    max-height: none !important;
-  }
-
-  .profile-hero-grid {
-    display: grid !important;
-    grid-template-columns: minmax(260px, 38%) minmax(0, 1fr) !important;
-    gap: 22px !important;
-  }
-
-  .portrait-frame,
-  .identity-top .portrait-frame {
-    aspect-ratio: 4 / 5 !important;
-  }
-
-  .profile-information {
-    padding-top: 0 !important;
-  }
-
-  .custom-fields {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-
-  .rich-editor {
-    min-height: 620px !important;
-    padding-left: clamp(28px, 6vw, 56px) !important;
-    padding-right: clamp(28px, 6vw, 56px) !important;
-  }
-}
-
-/* ---------- Phone ---------- */
-@media (max-width: 640px) {
-  :root {
-    --wiki-sidebar: 100%;
-  }
-
-  #editorView .app-shell,
-  #characterWorkspace.workspace {
-    width: calc(100vw - 10px) !important;
-  }
-
-  .profile-panel,
-  .content-panel,
-  .section-nav {
-    border-radius: 17px !important;
-  }
-
-  .profile-hero-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0 !important;
-    padding: 12px !important;
-  }
-
-  .portrait-frame,
-  .identity-top .portrait-frame {
-    aspect-ratio: 4 / 5 !important;
-    width: 100% !important;
-  }
-
-  .profile-information {
-    padding-top: 16px !important;
-  }
-
-  #charName {
-    min-height: 58px !important;
-    font-size: 22px !important;
-  }
-
-  #charAge,
-  #charHeight {
-    min-height: 50px !important;
-  }
-
-  .custom-fields {
-    grid-template-columns: 1fr !important;
-    gap: 9px !important;
-  }
-
-  .custom-field {
-    padding: 12px !important;
-  }
-
-  .custom-field .field-value {
-    min-height: 58px !important;
-    font-size: 14px !important;
-  }
-
-  .section-nav {
-    min-height: 56px !important;
-    padding: 6px !important;
-  }
-
-  .section-tab,
-  .add-tab-btn {
-    min-height: 42px !important;
-  }
-
-  .content-heading {
-    min-height: 0 !important;
-    padding: 14px !important;
-  }
-
-  .section-title-input {
-    font-size: 28px !important;
-  }
-
-  .content-actions {
-    max-width: none !important;
-    width: 100% !important;
-    overflow-x: auto !important;
-    flex-wrap: nowrap !important;
-    justify-content: flex-start !important;
-    scrollbar-width: none !important;
-  }
-  .content-actions::-webkit-scrollbar { display: none; }
-
-  .content-actions button {
-    flex: 0 0 auto !important;
-    min-height: 38px !important;
-  }
-
-  .rich-editor {
-    min-height: 520px !important;
-    padding: 28px 18px 60px !important;
-    font-size: 16px !important;
-    line-height: 1.74 !important;
-  }
-
-  .rich-editor > p,
-  .rich-editor > h1,
-  .rich-editor > h2,
-  .rich-editor > h3,
-  .rich-editor > blockquote,
-  .rich-editor > ul,
-  .rich-editor > ol {
-    max-width: none !important;
-  }
-
-  .editor-footer {
-    padding: 0 12px !important;
-  }
-}
-
-
-/* ================================================================
-   V15 — PROFILE DETAILS AS A WIKI REFERENCE LIST
-   ================================================================ */
-
-.profile-data-head {
-  margin-bottom: 8px !important;
-}
-
-.profile-data-head p {
-  max-width: 38ch;
-  margin-top: 5px !important;
-}
-
-/* Plain, readable label:value lines instead of input cards. */
-.custom-fields {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2px !important;
-  margin: 12px 0 4px !important;
-  padding: 10px 4px 12px !important;
-  border-top: 1px solid rgba(255,255,255,.045) !important;
-  border-bottom: 1px solid rgba(255,255,255,.045) !important;
-}
-
-.custom-field {
-  display: grid !important;
-  grid-template-columns: minmax(120px, max-content) 10px minmax(0, 1fr) 26px !important;
-  grid-template-areas: "label colon value remove" !important;
-  gap: 0 5px !important;
-  align-items: start !important;
-  width: 100% !important;
-  padding: 3px 2px !important;
-  border: 0 !important;
-  border-radius: 8px !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  transition: background .14s ease !important;
-}
-
-.custom-field:hover,
-.custom-field:focus-within {
-  background: rgba(255,255,255,.018) !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-.custom-field .field-label,
-.custom-field .field-value {
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 24px !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 2px 3px !important;
-  border: 0 !important;
-  border-radius: 5px !important;
-  background: transparent !important;
-  resize: none !important;
-  overflow: hidden !important;
-  white-space: pre-wrap !important;
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-  box-shadow: none !important;
-}
-
-.custom-field .field-label {
-  grid-area: label !important;
-  text-align: right !important;
-  color: #f0f4fa !important;
-  font-family: var(--sans) !important;
-  font-size: 13px !important;
-  font-weight: 780 !important;
-  line-height: 1.45 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-}
-
-.custom-field .field-colon {
-  grid-area: colon !important;
-  padding-top: 2px;
-  color: #f0f4fa;
-  font-size: 13px;
-  font-weight: 780;
-  line-height: 1.45;
-  text-align: center;
-}
-
-.custom-field .field-value {
-  grid-area: value !important;
-  text-align: left !important;
-  color: #dce5f1 !important;
-  font-family: var(--sans) !important;
-  font-size: 13px !important;
-  font-weight: 480 !important;
-  line-height: 1.45 !important;
-}
-
-.custom-field .field-label:focus,
-.custom-field .field-value:focus {
-  outline: none !important;
-  background: rgba(110,231,255,.035) !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-.custom-field .remove-mini {
-  grid-area: remove !important;
-  position: static !important;
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  min-height: 24px !important;
-  align-self: start !important;
-  justify-self: end !important;
-  padding: 0 !important;
-  opacity: 0 !important;
-  border-radius: 6px !important;
-  font-size: 12px !important;
-  transition: opacity .14s ease, background .14s ease !important;
-}
-
-.custom-field:hover .remove-mini,
-.custom-field:focus-within .remove-mini {
-  opacity: .68 !important;
-}
-
-/* A label ending in ":" with no value becomes a heading,
-   e.g. "Basic Character Traits:" */
-.custom-field.detail-heading {
-  grid-template-columns: minmax(0, 1fr) 26px !important;
-  grid-template-areas: "label remove" !important;
-  padding-top: 12px !important;
-  padding-bottom: 5px !important;
-}
-
-.custom-field.detail-heading .field-label {
-  text-align: center !important;
-  color: #f6f8fc !important;
-  font-size: 14px !important;
-  font-weight: 820 !important;
-  line-height: 1.4 !important;
-}
-
-.custom-field.detail-heading .remove-mini {
-  grid-area: remove !important;
-}
-
-.custom-empty {
-  padding: 14px 8px !important;
-  text-align: center !important;
-  line-height: 1.6 !important;
-}
-
-/* Keep the compact label:value look on phones too. */
-@media (max-width: 640px) {
-  .custom-fields {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  .custom-field {
-    grid-template-columns: minmax(92px, 38%) 8px minmax(0,1fr) 24px !important;
-    gap: 0 3px !important;
-  }
-
-  .custom-field .field-label,
-  .custom-field .field-value,
-  .custom-field .field-colon {
-    font-size: 12px !important;
-  }
-
-  .custom-field.detail-heading {
-    grid-template-columns: minmax(0,1fr) 24px !important;
-  }
-
-  .custom-field.detail-heading .field-label {
-    font-size: 13px !important;
-  }
-}
+@media (max-width:390px) { .core-facts { grid-template-columns:1fr; } .head-actions { grid-template-columns:1fr 1fr; } #deleteStoryBtn { grid-column:1/-1; } }
 
 </style>
 </head>
@@ -3529,6 +995,7 @@ body::after { display:none; }
     </section>
 
     <section id="editorView" class="view">
+      <div id="characterAtmosphere" class="character-atmosphere" aria-hidden="true"><div id="ambientLogoLayer" class="ambient-logo-layer"></div></div>
       <section class="story-head glass">
         <button class="icon-btn" id="backBtn" type="button" title="Back to stories">←</button>
         <div class="story-head-copy"><span class="micro-label">Story file</span><h2 id="storyTitle">Untitled story</h2><small>The story name and character names are always separate.</small></div>
@@ -3545,6 +1012,7 @@ body::after { display:none; }
               <button class="menu-action" id="duplicateCharacterBtn" type="button"><span>⧉</span><span><b>Duplicate</b><small>Create a copy of this character</small></span></button>
               <button class="menu-action" id="exportCharacterBtn" type="button"><span>⇩</span><span><b>Export JSON</b><small>Download this character file</small></span></button>
               <button class="menu-action" id="importCharacterBtn" type="button"><span>⇧</span><span><b>Import JSON</b><small>Add a character from a file</small></span></button>
+              <button class="menu-action" id="characterSettingsBtn" type="button"><span>⚙</span><span><b>Character page</b><small>Colors, ambient logos & layout</small></span></button>
               <input id="characterImportInput" type="file" accept="application/json,.json" hidden />
               <div class="menu-rule"></div>
               <button class="menu-action destructive" id="deleteCharacterBtn" type="button"><span>×</span><span><b>Delete character</b><small>Remove this dossier permanently</small></span></button>
@@ -3563,11 +1031,11 @@ body::after { display:none; }
                 <span class="micro-label">Character profile</span>
                 <span class="profile-subtitle">Identity & reference file</span>
               </div>
-              <span class="serial" id="characterSerial">FILE 0000</span>
+              <div class="profile-header-tools"><span class="serial" id="characterSerial">FILE 0000</span><button class="profile-settings-btn" id="characterSettingsQuickBtn" type="button" title="Customize this character page" aria-label="Customize character page">⚙</button></div>
             </div>
 
             <div class="profile-hero-grid">
-              <div class="portrait-column">
+              <div class="portrait-column profile-module" data-profile-module="portrait">
                 <div class="portrait-frame" id="portraitFrame" title="Click or drop an image to upload" role="button" tabindex="0">
                   <input id="portraitInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
                   <img id="portraitImage" alt="Character portrait" />
@@ -3581,7 +1049,7 @@ body::after { display:none; }
               </div>
 
               <div class="profile-information">
-                <div class="identity-fields">
+                <div class="identity-fields profile-module" data-profile-module="identity">
                   <label class="field-block character-name-field">
                     <span>Character name</span>
                     <input id="charName" type="text" placeholder="Character name" autocomplete="off" />
@@ -3599,6 +1067,7 @@ body::after { display:none; }
                   </div>
                 </div>
 
+                <div class="profile-details-module profile-module" data-profile-module="details">
                 <div class="profile-divider"></div>
 
                 <div class="profile-data-head">
@@ -3627,6 +1096,7 @@ body::after { display:none; }
 
                 <div id="customFields" class="custom-fields"></div>
                 <div class="dossier-stats"><span id="dataPointCount">3 data points</span><span id="sectionCount">0 sections</span></div>
+                </div>
               </div>
             </div>
           </aside>
@@ -3680,6 +1150,62 @@ body::after { display:none; }
       </div>
     </section>
   </main>
+
+
+  <section id="characterSettingsPage" class="character-settings-page hidden" aria-labelledby="characterSettingsTitle">
+    <div class="settings-shell">
+      <header class="settings-header">
+        <div>
+          <span class="micro-label">Character page</span>
+          <h2 id="characterSettingsTitle">Customize this character</h2>
+          <p>Appearance and layout are saved only for this character.</p>
+        </div>
+        <button class="secondary-btn" id="closeCharacterSettingsBtn" type="button">Done</button>
+      </header>
+
+      <div class="settings-grid">
+        <section class="settings-card appearance-settings">
+          <div class="settings-card-head"><span class="settings-icon">✦</span><div><h3>Appearance</h3><p>Give this character page its own visual identity.</p></div></div>
+          <div class="color-grid">
+            <label class="color-control"><span>Primary accent</span><div><input id="characterAccentColor" type="color" value="#76e9ff"><output id="characterAccentValue">#76E9FF</output></div></label>
+            <label class="color-control"><span>Secondary accent</span><div><input id="characterAccent2Color" type="color" value="#8b7cff"><output id="characterAccent2Value">#8B7CFF</output></div></label>
+            <label class="color-control"><span>Background tone</span><div><input id="characterBackgroundColor" type="color" value="#070b12"><output id="characterBackgroundValue">#070B12</output></div></label>
+          </div>
+          <div class="theme-presets" aria-label="Theme presets">
+            <button type="button" class="theme-preset" data-theme-preset="cyan" title="Cyan / Violet"><i style="--a:#76e9ff;--b:#8b7cff"></i>Cyan</button>
+            <button type="button" class="theme-preset" data-theme-preset="rose" title="Rose / Violet"><i style="--a:#ff7db7;--b:#9e7bff"></i>Rose</button>
+            <button type="button" class="theme-preset" data-theme-preset="ember" title="Amber / Red"><i style="--a:#ffca63;--b:#ff6b81"></i>Ember</button>
+            <button type="button" class="theme-preset" data-theme-preset="verdant" title="Green / Cyan"><i style="--a:#62f5aa;--b:#69d8ff"></i>Verdant</button>
+            <button type="button" class="theme-preset" data-theme-preset="mono" title="Silver / Blue"><i style="--a:#d8e3f0;--b:#7ea7d8"></i>Mono</button>
+          </div>
+        </section>
+
+        <section class="settings-card ambient-settings">
+          <div class="settings-card-head"><span class="settings-icon">◌</span><div><h3>Ambient logos</h3><p>Optional translucent marks that drift and softly pulse behind the page.</p></div></div>
+          <div class="ambient-settings-row">
+            <label class="switch-control"><input id="ambientLogosEnabled" type="checkbox" checked><span></span><b>Show ambient logos</b></label>
+            <label class="secondary-btn logo-upload-btn">＋ Add logo<input id="ambientLogoInput" type="file" accept="image/png,image/webp,image/jpeg" multiple hidden></label>
+          </div>
+          <p class="settings-note">Up to 4 logos. Transparent PNG/WebP works best. They never block clicks or text.</p>
+          <div id="ambientLogoSettingsList" class="ambient-logo-settings-list"></div>
+        </section>
+
+        <section class="settings-card layout-settings">
+          <div class="settings-card-head"><span class="settings-icon">▦</span><div><h3>Layout</h3><p>Drag the profile blocks to rearrange them. Desktop sidebar settings are character-specific too.</p></div></div>
+
+          <div class="layout-options">
+            <label class="select-control"><span>Profile side</span><select id="profileSideSelect"><option value="left">Left</option><option value="right">Right</option></select></label>
+            <label class="range-control"><span>Profile width <output id="profileWidthValue">500px</output></span><input id="profileWidthRange" type="range" min="400" max="580" step="10" value="500"></label>
+          </div>
+
+          <div class="layout-sort-head"><span>Profile block order</span><small>Drag, or use the arrows on touch devices.</small></div>
+          <div id="profileOrderList" class="layout-sort-list" aria-label="Profile block order"></div>
+        </section>
+      </div>
+
+      <footer class="settings-footer"><button class="secondary-btn" id="resetCharacterAppearanceBtn" type="button">Reset appearance</button><span>Changes save automatically.</span></footer>
+    </div>
+  </section>
 
   <div class="modal-backdrop hidden" id="modalBackdrop">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -3774,6 +1300,26 @@ const focusModeBtn = $("#focusModeBtn");
 const shareStoryBtn = $("#shareStoryBtn");
 const dataPointCount = $("#dataPointCount");
 const sectionCount = $("#sectionCount");
+const characterAtmosphere = $("#characterAtmosphere");
+const ambientLogoLayer = $("#ambientLogoLayer");
+const characterSettingsPage = $("#characterSettingsPage");
+const characterSettingsBtn = $("#characterSettingsBtn");
+const characterSettingsQuickBtn = $("#characterSettingsQuickBtn");
+const closeCharacterSettingsBtn = $("#closeCharacterSettingsBtn");
+const characterAccentColor = $("#characterAccentColor");
+const characterAccent2Color = $("#characterAccent2Color");
+const characterBackgroundColor = $("#characterBackgroundColor");
+const characterAccentValue = $("#characterAccentValue");
+const characterAccent2Value = $("#characterAccent2Value");
+const characterBackgroundValue = $("#characterBackgroundValue");
+const ambientLogosEnabled = $("#ambientLogosEnabled");
+const ambientLogoInput = $("#ambientLogoInput");
+const ambientLogoSettingsList = $("#ambientLogoSettingsList");
+const profileSideSelect = $("#profileSideSelect");
+const profileWidthRange = $("#profileWidthRange");
+const profileWidthValue = $("#profileWidthValue");
+const profileOrderList = $("#profileOrderList");
+const resetCharacterAppearanceBtn = $("#resetCharacterAppearanceBtn");
 
 const modalBackdrop = $("#modalBackdrop");
 const modalForm = $("#modalForm");
@@ -3801,6 +1347,7 @@ let modalResolver = null;
 let saveTimer = null;
 let pendingSave = null;
 let savedSelection = null;
+let settingsDrag = null;
 
 const currentCharacter = () => characters.find(c => c.id === activeCharacterId) || null;
 
@@ -4082,14 +1629,212 @@ function renderCharacterSwitcher() {
   if (exportCharacterBtn) exportCharacterBtn.disabled = characters.length === 0;
 }
 
+
+const DEFAULT_APPEARANCE = Object.freeze({
+  accent: "#76e9ff",
+  accent2: "#8b7cff",
+  background: "#070b12",
+  ambientEnabled: true,
+  logos: [],
+  profileSide: "left",
+  profileWidth: 500,
+  profileOrder: ["portrait", "identity", "details"]
+});
+
+const PROFILE_MODULES = {
+  portrait: { title: "Portrait", description: "The character image." },
+  identity: { title: "Core identity", description: "Name, age and height." },
+  details: { title: "Profile details", description: "Your custom reference fields." }
+};
+
+function validHex(value, fallback) {
+  return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? String(value).toLowerCase() : fallback;
+}
+
+function hexRgb(value) {
+  const hex = validHex(value, "#76e9ff").slice(1);
+  return [parseInt(hex.slice(0,2),16), parseInt(hex.slice(2,4),16), parseInt(hex.slice(4,6),16)].join(",");
+}
+
+function normaliseAppearance(characterOrAppearance = {}) {
+  const raw = characterOrAppearance?.appearance || characterOrAppearance || {};
+  const seen = new Set();
+  const profileOrder = Array.isArray(raw.profileOrder) ? raw.profileOrder.filter(key => PROFILE_MODULES[key] && !seen.has(key) && seen.add(key)) : [];
+  Object.keys(PROFILE_MODULES).forEach(key => { if (!seen.has(key)) profileOrder.push(key); });
+  const logos = Array.isArray(raw.logos) ? raw.logos.slice(0,4).map((logo, index) => ({
+    id: String(logo?.id || uid()),
+    name: String(logo?.name || `Logo ${index + 1}`).slice(0,80),
+    data: typeof logo?.data === "string" && logo.data.startsWith("data:image/") && logo.data.length < 140000 ? logo.data : "",
+    size: Math.min(420, Math.max(120, Number(logo?.size) || 240)),
+    opacity: Math.min(.32, Math.max(.04, Number(logo?.opacity) || .12))
+  })).filter(logo => logo.data) : [];
+  return {
+    accent: validHex(raw.accent, DEFAULT_APPEARANCE.accent),
+    accent2: validHex(raw.accent2, DEFAULT_APPEARANCE.accent2),
+    background: validHex(raw.background, DEFAULT_APPEARANCE.background),
+    ambientEnabled: raw.ambientEnabled !== false,
+    logos,
+    profileSide: raw.profileSide === "right" ? "right" : "left",
+    profileWidth: Math.min(580, Math.max(400, Number(raw.profileWidth) || DEFAULT_APPEARANCE.profileWidth)),
+    profileOrder
+  };
+}
+
+function applyProfileOrder(order) {
+  (order || DEFAULT_APPEARANCE.profileOrder).forEach((key, index) => {
+    const el = document.querySelector(`[data-profile-module="${key}"]`);
+    if (el) el.style.order = String(index + 1);
+  });
+}
+
+const AMBIENT_POSITIONS = [
+  { x: 15, y: 24, duration: 15, delay: -2 },
+  { x: 84, y: 30, duration: 18, delay: -8 },
+  { x: 72, y: 78, duration: 17, delay: -5 },
+  { x: 25, y: 76, duration: 20, delay: -11 }
+];
+
+function renderAmbientLogos(appearance) {
+  if (!ambientLogoLayer) return;
+  const logos = appearance.ambientEnabled ? appearance.logos : [];
+  ambientLogoLayer.innerHTML = logos.map((logo, index) => {
+    const p = AMBIENT_POSITIONS[index % AMBIENT_POSITIONS.length];
+    return `<img class="ambient-logo" alt="" src="${escapeHtml(logo.data)}" style="--logo-x:${p.x}%;--logo-y:${p.y}%;--logo-size:${logo.size}px;--logo-opacity:${logo.opacity};--logo-duration:${p.duration}s;--logo-delay:${p.delay}s">`;
+  }).join("");
+}
+
+function applyCharacterAppearance(character = currentCharacter()) {
+  const appearance = normaliseAppearance(character || {});
+  const themedRoots = [editorView, characterSettingsPage].filter(Boolean);
+  themedRoots.forEach(root => {
+    root.style.setProperty("--accent", appearance.accent);
+    root.style.setProperty("--accent2", appearance.accent2);
+    root.style.setProperty("--char-bg", appearance.background);
+    root.style.setProperty("--char-accent-rgb", hexRgb(appearance.accent));
+    root.style.setProperty("--char-accent2-rgb", hexRgb(appearance.accent2));
+  });
+  editorView.style.setProperty("--wiki-sidebar", `${appearance.profileWidth}px`);
+  editorView.dataset.sidebarSide = appearance.profileSide;
+  applyProfileOrder(appearance.profileOrder);
+  renderAmbientLogos(appearance);
+  return appearance;
+}
+
+async function fileToCompressedLogoDataUrl(file) {
+  if (!file?.type?.startsWith("image/")) throw new Error("Please choose an image file.");
+  const inputUrl = URL.createObjectURL(file);
+  const image = new Image();
+  image.decoding = "async";
+  try {
+    await new Promise((resolve,reject) => { image.onload = resolve; image.onerror = () => reject(new Error("The logo could not be opened.")); image.src = inputUrl; });
+    let scale = Math.min(1, 560 / image.naturalWidth, 560 / image.naturalHeight);
+    let quality = .88;
+    let dataUrl = "";
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const ctx = canvas.getContext("2d", { alpha:true });
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(image,0,0,canvas.width,canvas.height);
+      dataUrl = canvas.toDataURL("image/webp", quality);
+      if (dataUrlBytes(dataUrl) <= 75000) return dataUrl;
+      quality = Math.max(.58, quality - .07);
+      scale *= .84;
+    }
+    if (dataUrlBytes(dataUrl) > 75000) throw new Error("Logo is still too large after compression.");
+    return dataUrl;
+  } finally { URL.revokeObjectURL(inputUrl); }
+}
+
+function renderProfileOrderSettings(appearance) {
+  if (!profileOrderList) return;
+  profileOrderList.innerHTML = appearance.profileOrder.map((key,index) => {
+    const meta = PROFILE_MODULES[key];
+    return `<div class="layout-sort-item" draggable="true" data-layout-key="${key}">
+      <span class="drag-grip" aria-hidden="true">⋮⋮</span>
+      <span><b>${meta.title}</b><small>${meta.description}</small></span>
+      <span class="sort-actions"><button class="mini-action" type="button" data-move-profile="-1" ${index === 0 ? "disabled" : ""}>↑</button><button class="mini-action" type="button" data-move-profile="1" ${index === appearance.profileOrder.length - 1 ? "disabled" : ""}>↓</button></span>
+    </div>`;
+  }).join("");
+}
+
+function renderAmbientLogoSettings(appearance) {
+  if (!ambientLogoSettingsList) return;
+  ambientLogoSettingsList.innerHTML = appearance.logos.map((logo,index) => `
+    <div class="logo-setting-item" draggable="true" data-logo-id="${escapeHtml(logo.id)}">
+      <img class="logo-preview" src="${escapeHtml(logo.data)}" alt="">
+      <div class="logo-setting-controls">
+        <label>Size <input type="range" min="120" max="420" step="10" value="${logo.size}" data-logo-size="${escapeHtml(logo.id)}"></label>
+        <label>Glow <input type="range" min="4" max="32" step="1" value="${Math.round(logo.opacity * 100)}" data-logo-opacity="${escapeHtml(logo.id)}"></label>
+      </div>
+      <div class="logo-setting-actions"><button class="mini-action" type="button" data-move-logo="-1" ${index === 0 ? "disabled" : ""}>↑</button><button class="mini-action" type="button" data-move-logo="1" ${index === appearance.logos.length - 1 ? "disabled" : ""}>↓</button><button class="mini-action remove" type="button" data-remove-logo="${escapeHtml(logo.id)}">×</button></div>
+    </div>`).join("");
+}
+
+function syncCharacterSettingsUI(character = currentCharacter()) {
+  if (!character) return;
+  const a = normaliseAppearance(character);
+  characterAccentColor.value = a.accent;
+  characterAccent2Color.value = a.accent2;
+  characterBackgroundColor.value = a.background;
+  characterAccentValue.textContent = a.accent.toUpperCase();
+  characterAccent2Value.textContent = a.accent2.toUpperCase();
+  characterBackgroundValue.textContent = a.background.toUpperCase();
+  ambientLogosEnabled.checked = a.ambientEnabled;
+  profileSideSelect.value = a.profileSide;
+  profileWidthRange.value = String(a.profileWidth);
+  profileWidthValue.textContent = `${a.profileWidth}px`;
+  renderProfileOrderSettings(a);
+  renderAmbientLogoSettings(a);
+}
+
+function openCharacterSettings() {
+  if (!currentCharacter()) return;
+  document.querySelector('.file-actions-menu')?.removeAttribute('open');
+  syncCharacterSettingsUI();
+  characterSettingsPage.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+function closeCharacterSettings() {
+  characterSettingsPage.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+function saveAppearance(next, {renderSettings=true} = {}) {
+  const character = currentCharacter();
+  if (!character) return;
+  const appearance = normaliseAppearance(next);
+  character.appearance = appearance;
+  scheduleCharacterSave({ appearance });
+  applyCharacterAppearance(character);
+  if (renderSettings && !characterSettingsPage.classList.contains("hidden")) syncCharacterSettingsUI(character);
+}
+
+function patchAppearance(patch, options) {
+  const character = currentCharacter();
+  if (!character) return;
+  saveAppearance({ ...normaliseAppearance(character), ...patch }, options);
+}
+
+function moveArrayItem(items, index, delta) {
+  const next = [...items];
+  const target = index + delta;
+  if (index < 0 || target < 0 || target >= next.length) return next;
+  const [item] = next.splice(index,1);
+  next.splice(target,0,item);
+  return next;
+}
+
 function renderCharacter(force = false) {
   const character = currentCharacter();
   const exists = !!character;
   noCharacters.classList.toggle("hidden", exists);
   characterWorkspace.classList.toggle("hidden", !exists);
-  if (!character) return;
+  if (!character) { applyCharacterAppearance({}); return; }
 
   characterSerial.textContent = `FILE ${character.id.slice(0, 4).toUpperCase()}`;
+  applyCharacterAppearance(character);
 
   if (force || document.activeElement !== charName) charName.value = character.name || "";
   if (force || document.activeElement !== charAge) charAge.value = character.age || "";
@@ -4271,6 +2016,7 @@ async function createCharacter() {
       age: "",
       height: "",
       profileData: "",
+      appearance: { ...DEFAULT_APPEARANCE, logos: [], profileOrder: [...DEFAULT_APPEARANCE.profileOrder] },
       fields: [],
       sections: [
         { id: uid(), title: "Personality", contentHtml: "" },
@@ -4317,6 +2063,7 @@ async function duplicateCurrentCharacter() {
       height: source.height || "",
       profileData: source.profileData || "",
       profileUrl: source.profileUrl || "",
+      appearance: normaliseAppearance(source),
       fields: (source.fields || []).map(field => ({ ...field, id: uid() })),
       sections: normaliseSections(source).map(section => ({ ...section, id: uid() })),
       createdAt: serverTimestamp(),
@@ -4343,6 +2090,7 @@ function exportCurrentCharacter() {
       age: character.age || "",
       height: character.height || "",
       profileData: character.profileData || "",
+      appearance: normaliseAppearance(character),
       fields: (character.fields || []).map(({ id, ...field }) => field),
       sections: normaliseSections(character).map(({ id, ...section }) => section)
     }
@@ -4370,6 +2118,7 @@ async function importCharacterFile(file) {
       age: String(data.age || "").slice(0, 80),
       height: String(data.height || "").slice(0, 80),
       profileData,
+      appearance: normaliseAppearance(data.appearance || {}),
       fields,
       sections,
       createdAt: serverTimestamp(),
@@ -4935,6 +2684,7 @@ async function copyStoryLink() {
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
+    if (characterSettingsPage && !characterSettingsPage.classList.contains("hidden")) { closeCharacterSettings(); return; }
     closeFormatPanel();
     if (editorView.classList.contains("focus-mode")) {
       editorView.classList.remove("focus-mode");
@@ -4947,6 +2697,135 @@ document.addEventListener("keydown", event => {
 const shortcutMod = shortcutLabel();
 $$('[data-shortcut]').forEach(el => {
   el.textContent = el.dataset.shortcut.replace("MOD", shortcutMod);
+});
+
+
+characterSettingsBtn?.addEventListener("click", openCharacterSettings);
+characterSettingsQuickBtn?.addEventListener("click", openCharacterSettings);
+closeCharacterSettingsBtn?.addEventListener("click", closeCharacterSettings);
+
+function handleColorSetting(input, output, key) {
+  input?.addEventListener("input", () => {
+    output.textContent = input.value.toUpperCase();
+    patchAppearance({ [key]: input.value }, { renderSettings:false });
+  });
+  input?.addEventListener("change", () => syncCharacterSettingsUI());
+}
+handleColorSetting(characterAccentColor, characterAccentValue, "accent");
+handleColorSetting(characterAccent2Color, characterAccent2Value, "accent2");
+handleColorSetting(characterBackgroundColor, characterBackgroundValue, "background");
+
+const THEME_PRESETS = {
+  cyan: { accent:"#76e9ff", accent2:"#8b7cff", background:"#070b12" },
+  rose: { accent:"#ff7db7", accent2:"#9e7bff", background:"#0c0811" },
+  ember: { accent:"#ffca63", accent2:"#ff6b81", background:"#100a08" },
+  verdant: { accent:"#62f5aa", accent2:"#69d8ff", background:"#06100d" },
+  mono: { accent:"#d8e3f0", accent2:"#7ea7d8", background:"#090c11" }
+};
+document.querySelector('.theme-presets')?.addEventListener('click', event => {
+  const button = event.target.closest('[data-theme-preset]');
+  if (!button) return;
+  const preset = THEME_PRESETS[button.dataset.themePreset];
+  if (preset) patchAppearance(preset);
+});
+ambientLogosEnabled?.addEventListener("change", () => patchAppearance({ ambientEnabled: ambientLogosEnabled.checked }));
+profileSideSelect?.addEventListener("change", () => patchAppearance({ profileSide: profileSideSelect.value }));
+profileWidthRange?.addEventListener("input", () => {
+  profileWidthValue.textContent = `${profileWidthRange.value}px`;
+  patchAppearance({ profileWidth: Number(profileWidthRange.value) }, { renderSettings:false });
+});
+profileWidthRange?.addEventListener("change", () => syncCharacterSettingsUI());
+
+ambientLogoInput?.addEventListener("change", async () => {
+  const character = currentCharacter();
+  if (!character) return;
+  const current = normaliseAppearance(character);
+  const files = [...(ambientLogoInput.files || [])].filter(file => file.type.startsWith("image/"));
+  const room = Math.max(0, 4 - current.logos.length);
+  if (!room) { toast("This character already has the maximum of 4 ambient logos."); ambientLogoInput.value = ""; return; }
+  try {
+    setSaveState("saving", "Processing logos…");
+    const additions = [];
+    for (const file of files.slice(0,room)) {
+      const data = await fileToCompressedLogoDataUrl(file);
+      additions.push({ id:uid(), name:file.name, data, size:240, opacity:.12 });
+    }
+    patchAppearance({ logos:[...current.logos,...additions] });
+    toast(`${additions.length} ambient logo${additions.length === 1 ? "" : "s"} added.`);
+  } catch (error) {
+    console.error(error); toast(error.message || "Could not add that logo.", "error");
+  } finally { ambientLogoInput.value = ""; }
+});
+
+ambientLogoSettingsList?.addEventListener("input", event => {
+  const character = currentCharacter(); if (!character) return;
+  const a = normaliseAppearance(character);
+  const sizeId = event.target.dataset.logoSize;
+  const opacityId = event.target.dataset.logoOpacity;
+  if (!sizeId && !opacityId) return;
+  const id = sizeId || opacityId;
+  const logos = a.logos.map(logo => logo.id === id ? { ...logo, ...(sizeId ? {size:Number(event.target.value)} : {opacity:Number(event.target.value)/100}) } : logo);
+  patchAppearance({ logos }, { renderSettings:false });
+});
+ambientLogoSettingsList?.addEventListener("change", () => syncCharacterSettingsUI());
+ambientLogoSettingsList?.addEventListener("click", event => {
+  const character = currentCharacter(); if (!character) return;
+  const a = normaliseAppearance(character);
+  const remove = event.target.closest('[data-remove-logo]');
+  if (remove) { patchAppearance({ logos:a.logos.filter(l => l.id !== remove.dataset.removeLogo) }); return; }
+  const move = event.target.closest('[data-move-logo]');
+  if (move) {
+    const row = move.closest('[data-logo-id]');
+    const index = a.logos.findIndex(l => l.id === row?.dataset.logoId);
+    patchAppearance({ logos:moveArrayItem(a.logos,index,Number(move.dataset.moveLogo)) });
+  }
+});
+
+profileOrderList?.addEventListener("click", event => {
+  const move = event.target.closest('[data-move-profile]');
+  if (!move) return;
+  const character = currentCharacter(); if (!character) return;
+  const a = normaliseAppearance(character);
+  const row = move.closest('[data-layout-key]');
+  const index = a.profileOrder.indexOf(row?.dataset.layoutKey);
+  patchAppearance({ profileOrder:moveArrayItem(a.profileOrder,index,Number(move.dataset.moveProfile)) });
+});
+
+function makeSortable(container, rowSelector, keyAttr, onOrder) {
+  if (!container) return;
+  container.addEventListener("dragstart", event => {
+    const row = event.target.closest(rowSelector); if (!row) return;
+    settingsDrag = row;
+    row.classList.add("dragging");
+    event.dataTransfer.effectAllowed = "move";
+  });
+  container.addEventListener("dragend", () => {
+    settingsDrag?.classList.remove("dragging"); settingsDrag = null;
+    onOrder([...container.querySelectorAll(rowSelector)].map(row => row.dataset[keyAttr]));
+  });
+  container.addEventListener("dragover", event => {
+    event.preventDefault();
+    if (!settingsDrag || !container.contains(settingsDrag)) return;
+    const rows = [...container.querySelectorAll(`${rowSelector}:not(.dragging)` )];
+    const after = rows.find(row => event.clientY <= row.getBoundingClientRect().top + row.getBoundingClientRect().height / 2);
+    if (after) container.insertBefore(settingsDrag, after); else container.append(settingsDrag);
+  });
+}
+makeSortable(profileOrderList, '.layout-sort-item', 'layoutKey', order => {
+  const a = normaliseAppearance(currentCharacter() || {});
+  if (order.length === a.profileOrder.length) patchAppearance({ profileOrder:order });
+});
+makeSortable(ambientLogoSettingsList, '.logo-setting-item', 'logoId', order => {
+  const a = normaliseAppearance(currentCharacter() || {});
+  const byId = new Map(a.logos.map(logo => [logo.id,logo]));
+  const logos = order.map(id => byId.get(id)).filter(Boolean);
+  if (logos.length === a.logos.length) patchAppearance({ logos });
+});
+
+resetCharacterAppearanceBtn?.addEventListener("click", () => {
+  if (!currentCharacter() || !confirm("Reset this character's colors, logos and page layout?")) return;
+  saveAppearance({ ...DEFAULT_APPEARANCE, logos:[], profileOrder:[...DEFAULT_APPEARANCE.profileOrder] });
+  toast("Character page appearance reset.");
 });
 
 storySearch.addEventListener("input", renderStories);
@@ -5004,7 +2883,7 @@ if (deepStoryMatch) {
   try { openStory(decodeURIComponent(deepStoryMatch[1])); } catch {}
 }
 
-console.info("Stories With Friends — Character Wiki v15 loaded");
+console.info("Stories With Friends — Character Wiki v16 loaded");
 </script>
 </body>
 </html>
