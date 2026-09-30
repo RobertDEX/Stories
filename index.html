@@ -956,6 +956,394 @@ input, select { color-scheme: dark; }
 }
 @media (max-width:390px) { .core-facts { grid-template-columns:1fr; } .head-actions { grid-template-columns:1fr 1fr; } #deleteStoryBtn { grid-column:1/-1; } }
 
+
+/* =====================================================================
+   V17 — FIT & BALANCE PASS
+   A compact, coherent wiki layout designed to fit a normal viewport.
+   ===================================================================== */
+
+:root {
+  --wiki-frame: 1680px;
+  --wiki-sidebar: 410px;
+}
+
+/* ---------- frame / top chrome ---------- */
+#editorView .app-shell,
+#characterWorkspace.workspace {
+  width: min(var(--wiki-frame), calc(100vw - 28px)) !important;
+}
+
+.story-head {
+  min-height: 88px !important;
+  padding: 14px 16px !important;
+  border-radius: 20px !important;
+}
+.story-head-copy h2 {
+  font-size: clamp(28px, 2.25vw, 38px) !important;
+  line-height: 1.04 !important;
+}
+.story-head-copy small { font-size: 10px !important; }
+.head-actions { gap: 7px !important; }
+.head-actions button { min-height: 38px !important; }
+
+.character-bar {
+  min-height: 60px !important;
+  margin-top: 8px !important;
+  padding: 8px 10px !important;
+  border-radius: 16px !important;
+}
+.character-picker {
+  grid-template-columns: auto minmax(260px, 460px) !important;
+  gap: 10px !important;
+}
+.character-select { min-height: 40px !important; }
+.compact-primary,
+.more-actions-btn { min-height: 40px !important; }
+
+/* Character action menu: short, contained, and never absurdly tall. */
+.file-actions-popover {
+  width: 270px !important;
+  padding: 7px !important;
+  border-radius: 14px !important;
+  z-index: 200 !important;
+}
+.file-actions-popover .menu-action {
+  min-height: 48px !important;
+  padding: 7px 8px !important;
+}
+.file-actions-popover .menu-action small { font-size: 8px !important; }
+
+/* ---------- balanced wiki workspace ---------- */
+#characterWorkspace.workspace { margin-top: 10px !important; }
+.workspace-grid {
+  grid-template-columns: minmax(350px, min(var(--wiki-sidebar), 440px)) minmax(0, 1fr) !important;
+  grid-template-areas: "profile nav" "profile content" !important;
+  column-gap: 16px !important;
+  row-gap: 10px !important;
+  align-items: start !important;
+}
+#editorView[data-sidebar-side="right"] .workspace-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(350px, min(var(--wiki-sidebar), 440px)) !important;
+  grid-template-areas: "nav profile" "content profile" !important;
+}
+
+/* ---------- profile ---------- */
+.profile-panel {
+  position: sticky !important;
+  top: 74px !important;
+  max-height: calc(100dvh - 88px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  border-radius: 20px !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--char-accent-rgb), .20) transparent;
+}
+.profile-panel::-webkit-scrollbar { width: 6px; }
+.profile-panel::-webkit-scrollbar-thumb { background: rgba(var(--char-accent-rgb), .18); border-radius: 999px; }
+.profile-header {
+  min-height: 48px !important;
+  padding: 0 14px !important;
+}
+.profile-header .micro-label { font-size: 8px !important; }
+.profile-subtitle { display: none !important; }
+.profile-settings-btn { width: 28px !important; height: 28px !important; }
+.profile-hero-grid { padding: 12px !important; }
+
+/* Keep the portrait prominent without allowing it to consume the whole screen. */
+.portrait-frame {
+  width: 100% !important;
+  height: clamp(300px, 39vh, 390px) !important;
+  aspect-ratio: auto !important;
+  border-radius: 16px !important;
+}
+.portrait-frame img {
+  width: 100%; height: 100%; object-fit: cover !important;
+}
+.portrait-placeholder b { width: 44px !important; height: 44px !important; font-size: 22px !important; }
+.portrait-placeholder strong { font-size: 12px !important; }
+.portrait-placeholder small { font-size: 8px !important; }
+
+.identity-fields {
+  padding-top: 12px !important;
+  gap: 9px !important;
+}
+.identity-fields .field-block > span {
+  margin-bottom: 5px !important;
+  font-size: 8px !important;
+}
+#charName {
+  min-height: 52px !important;
+  padding: 0 14px !important;
+  border-radius: 11px !important;
+  font-size: 20px !important;
+}
+.core-facts { gap: 8px !important; }
+#charAge, #charHeight {
+  min-height: 44px !important;
+  padding: 0 12px !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+}
+
+.profile-divider { margin: 14px 0 12px !important; }
+.profile-data-head { align-items: center !important; }
+.profile-data-head p { display: none !important; }
+.add-data-btn { min-height: 32px !important; padding: 0 9px !important; font-size: 9px !important; }
+.quick-add-trigger { width: 32px !important; height: 32px !important; }
+
+/* Reference-list fields: readable, compact, but not tiny. */
+.custom-fields {
+  margin: 8px 0 2px !important;
+  padding: 8px 0 10px !important;
+}
+.custom-field {
+  grid-template-columns: minmax(100px, 38%) 8px minmax(0, 1fr) 24px !important;
+  gap: 0 3px !important;
+  padding: 4px 2px !important;
+}
+.custom-field .field-label,
+.custom-field .field-value,
+.custom-field .field-colon {
+  font-size: 12px !important;
+  line-height: 1.48 !important;
+}
+.custom-field .field-label,
+.custom-field .field-value { min-height: 25px !important; }
+.custom-field.detail-heading .field-label { font-size: 13px !important; }
+.dossier-stats {
+  margin-top: 8px !important;
+  padding: 8px 0 0 !important;
+  font-size: 8px !important;
+}
+
+/* ---------- sections ---------- */
+.section-nav {
+  position: sticky !important;
+  top: 74px !important;
+  z-index: 34 !important;
+  min-height: 54px !important;
+  padding: 6px !important;
+  border-radius: 16px !important;
+  gap: 6px !important;
+}
+.nav-label { padding: 0 6px !important; }
+.section-tab,
+.add-tab-btn {
+  min-height: 38px !important;
+  padding: 0 12px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+/* ---------- article ---------- */
+.content-panel {
+  min-height: 0 !important;
+  border-radius: 18px !important;
+  overflow: visible !important;
+}
+.content-heading {
+  min-height: 72px !important;
+  padding: 13px 16px !important;
+  gap: 10px !important;
+  border-radius: 18px 18px 0 0 !important;
+}
+.content-heading .micro-label { font-size: 8px !important; }
+.section-title-input {
+  font-size: clamp(26px, 2vw, 34px) !important;
+  line-height: 1.08 !important;
+}
+.content-actions { gap: 6px !important; }
+.content-actions button {
+  min-height: 36px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  border-radius: 10px !important;
+  font-size: 9px !important;
+}
+.section-mini-tools { display: none !important; }
+
+/* The article grows with its content instead of creating a giant empty box. */
+.rich-editor {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: clamp(430px, 52vh, 560px) !important;
+  margin: 0 !important;
+  padding: 34px clamp(28px, 4.3vw, 64px) 54px !important;
+  font-size: 16px !important;
+  line-height: 1.78 !important;
+}
+.rich-editor > p,
+.rich-editor > h1,
+.rich-editor > h2,
+.rich-editor > h3,
+.rich-editor > blockquote,
+.rich-editor > ul,
+.rich-editor > ol {
+  max-width: 78ch !important;
+}
+.rich-editor:empty::before {
+  max-width: 34ch !important;
+  font-size: 15px !important;
+}
+.editor-footer {
+  min-height: 40px !important;
+  padding: 0 14px !important;
+  border-radius: 0 0 18px 18px !important;
+}
+.shortcut-hint { opacity: .7; font-size: 8px !important; }
+
+/* Formatting sits above content, not across it. */
+.format-panel {
+  z-index: 220 !important;
+  max-width: min(650px, calc(100vw - 40px)) !important;
+}
+
+/* ---------- desktop refinements ---------- */
+@media (max-width: 1250px) {
+  .workspace-grid {
+    grid-template-columns: minmax(330px, min(var(--wiki-sidebar), 390px)) minmax(0, 1fr) !important;
+  }
+  #editorView[data-sidebar-side="right"] .workspace-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(330px, min(var(--wiki-sidebar), 390px)) !important;
+  }
+  .portrait-frame { height: clamp(280px, 36vh, 350px) !important; }
+  .shortcut-hint { display: none !important; }
+}
+
+/* ---------- tablet ---------- */
+@media (max-width: 900px) {
+  #editorView .app-shell,
+  #characterWorkspace.workspace { width: calc(100vw - 16px) !important; }
+
+  .workspace-grid,
+  #editorView[data-sidebar-side="right"] .workspace-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "profile" "nav" "content" !important;
+    gap: 9px !important;
+  }
+
+  .profile-panel {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .profile-hero-grid {
+    display: grid !important;
+    grid-template-columns: minmax(220px, 32%) minmax(0, 1fr) !important;
+    gap: 16px !important;
+    align-items: start !important;
+  }
+  .profile-information { display: contents !important; }
+  .portrait-column { grid-row: 1 / span 2 !important; }
+  .portrait-frame { height: 330px !important; }
+  .identity-fields { padding-top: 0 !important; }
+  .profile-details-module { min-width: 0; }
+  .section-nav { top: 62px !important; }
+  .rich-editor { min-height: 440px !important; }
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 640px) {
+  #editorView .app-shell,
+  #characterWorkspace.workspace { width: calc(100vw - 8px) !important; }
+
+  .topbar { height: 56px !important; }
+  .story-head {
+    min-height: 0 !important;
+    padding: 11px !important;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    border-radius: 15px !important;
+  }
+  .story-head-copy h2 { font-size: clamp(24px, 7.8vw, 31px) !important; }
+  .head-actions {
+    grid-column: 1 / -1 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+  }
+  .head-actions button { min-height: 36px !important; font-size: 8px !important; }
+
+  .character-bar { padding: 7px !important; }
+  .character-picker { grid-template-columns: 1fr !important; }
+  .character-picker .micro-label { display: none !important; }
+  .utility-actions { display: grid !important; grid-template-columns: minmax(0, 1fr) 42px !important; gap: 6px !important; width: 100% !important; }
+  .compact-primary, .more-actions-btn { width: 100% !important; min-height: 38px !important; }
+
+  /* More-actions becomes a bottom sheet on phones. */
+  .file-actions-popover {
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    top: auto !important;
+    bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    max-height: 70dvh !important;
+    overflow-y: auto !important;
+    border-radius: 18px !important;
+    padding: 8px !important;
+  }
+
+  .profile-hero-grid { display: flex !important; flex-direction: column !important; padding: 10px !important; }
+  .portrait-column { width: 100% !important; }
+  .portrait-frame { height: min(56vh, 460px) !important; min-height: 320px !important; }
+  .identity-fields { padding-top: 12px !important; }
+  #charName { min-height: 50px !important; font-size: 19px !important; }
+  .core-facts { grid-template-columns: 1fr 1fr !important; }
+  #charAge, #charHeight { min-height: 43px !important; }
+  .custom-field {
+    grid-template-columns: minmax(86px, 36%) 7px minmax(0, 1fr) 22px !important;
+  }
+  .custom-field .field-label,
+  .custom-field .field-value,
+  .custom-field .field-colon { font-size: 11px !important; }
+
+  .section-nav { top: 56px !important; min-height: 50px !important; padding: 5px !important; }
+  .nav-label { display: none !important; }
+  .section-tab, .add-tab-btn { min-height: 38px !important; }
+
+  .content-heading {
+    min-height: 0 !important;
+    padding: 12px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .section-title-input { font-size: 26px !important; }
+  .content-actions {
+    width: 100% !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none !important;
+  }
+  .content-actions::-webkit-scrollbar { display: none; }
+  .content-actions > * { flex: 0 0 auto !important; }
+  .rich-editor {
+    min-height: 380px !important;
+    padding: 24px 16px 44px !important;
+    font-size: 16px !important;
+    line-height: 1.72 !important;
+  }
+  .rich-editor > p,
+  .rich-editor > h1,
+  .rich-editor > h2,
+  .rich-editor > h3,
+  .rich-editor > blockquote,
+  .rich-editor > ul,
+  .rich-editor > ol { max-width: none !important; }
+  .editor-footer { padding: 0 10px !important; }
+
+  .character-settings-page { padding: 8px !important; }
+  .settings-shell { width: 100% !important; }
+  .settings-header { padding-top: 10px !important; }
+  .settings-card { padding: 13px !important; }
+}
+
+@media (max-width: 390px) {
+  .core-facts { grid-template-columns: 1fr !important; }
+  .head-actions { grid-template-columns: 1fr 1fr !important; }
+  #deleteStoryBtn { grid-column: 1 / -1 !important; }
+}
+
 </style>
 </head>
 <body>
@@ -1195,7 +1583,7 @@ input, select { color-scheme: dark; }
 
           <div class="layout-options">
             <label class="select-control"><span>Profile side</span><select id="profileSideSelect"><option value="left">Left</option><option value="right">Right</option></select></label>
-            <label class="range-control"><span>Profile width <output id="profileWidthValue">500px</output></span><input id="profileWidthRange" type="range" min="400" max="580" step="10" value="500"></label>
+            <label class="range-control"><span>Profile width <output id="profileWidthValue">410px</output></span><input id="profileWidthRange" type="range" min="340" max="460" step="10" value="410"></label>
           </div>
 
           <div class="layout-sort-head"><span>Profile block order</span><small>Drag, or use the arrows on touch devices.</small></div>
@@ -1637,7 +2025,7 @@ const DEFAULT_APPEARANCE = Object.freeze({
   ambientEnabled: true,
   logos: [],
   profileSide: "left",
-  profileWidth: 500,
+  profileWidth: 410,
   profileOrder: ["portrait", "identity", "details"]
 });
 
@@ -1675,7 +2063,7 @@ function normaliseAppearance(characterOrAppearance = {}) {
     ambientEnabled: raw.ambientEnabled !== false,
     logos,
     profileSide: raw.profileSide === "right" ? "right" : "left",
-    profileWidth: Math.min(580, Math.max(400, Number(raw.profileWidth) || DEFAULT_APPEARANCE.profileWidth)),
+    profileWidth: Math.min(460, Math.max(340, Number(raw.profileWidth) || DEFAULT_APPEARANCE.profileWidth)),
     profileOrder
   };
 }
@@ -2883,7 +3271,7 @@ if (deepStoryMatch) {
   try { openStory(decodeURIComponent(deepStoryMatch[1])); } catch {}
 }
 
-console.info("Stories With Friends — Character Wiki v16 loaded");
+console.info("Stories With Friends — Character Wiki v17 loaded");
 </script>
 </body>
 </html>
